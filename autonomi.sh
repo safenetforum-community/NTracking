@@ -27,7 +27,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.0" --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.1 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
