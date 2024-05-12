@@ -1,6 +1,7 @@
 # NTracking Dashboard
 
-![safe-ntracking ddns net_4000_d_7JdIffTn9z_safe-dashboard_orgId=1 var-bucket=_monitoring var-host=s00 var-inter=$__auto_interval_inter from=now-12h to=now (1)](https://github.com/safenetforum-community/NTracking/assets/25412853/dc4e4ff3-14f1-4482-bf4f-799784b48abb)
+![image](https://github.com/safenetforum-community/NTracking/assets/25412853/3eb93d09-a2aa-431a-a442-247b41acba33)
+
 
 
 whiptail script to set up NTracking stack 
@@ -53,7 +54,8 @@ Grafana can be accesed on ```<IP Address>:3000```
 3. Search for InfluxDB
 4. Enter details as below using the ip or hostname and port of the fluxdb install you are connecting to
 5. click safe and test and if it goes green InfluxDB and Grafana are now connected.
-![image](https://github.com/safenetforum-community/NTracking/assets/25412853/eb6adb4f-f2df-45f0-b215-2413f9e1a8ae)
+![image](https://github.com/safenetforum-community/NTracking/assets/25412853/99c5c77b-7261-43ba-9a6f-11e0d4596425)
+
 
 
 # Import Grafana dashboard
