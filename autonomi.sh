@@ -31,7 +31,7 @@ SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.0" --radiolist
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
-"3" "Stop Nodes update upgrade & restart system" OFF \
+"3" "Stop Nodes update upgrade & restart system!!  " OFF \
 "4" "Get Test Coins" ON \
 "5" "Upgrade Nodes" OFF \
 "6" "Start Vdash" OFF \
