@@ -4,7 +4,7 @@
 
 
 
-whiptail script to set up NTracking stack 
+whiptail script to set up NTracking 
 
 # Prereq
 
