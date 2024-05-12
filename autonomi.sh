@@ -12,7 +12,7 @@ PEER="/ip4/144.126.234.162/udp/37284/quic-v1/p2p/12D3KooWFTMioLueKChk9rWEFNFGTH3
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/autonomi.sh)
 
 # first node port can edited in menu later
-NODE_PORT_FIRST=4700
+NODE_PORT_FIRST=12000
 NUMBER_NODES=50
 NUMBER_COINS=1
 CPU_TARGET=70
