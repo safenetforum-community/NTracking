@@ -8,6 +8,7 @@ base_dir="/var/safenode-manager/services"
 
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
+time_min=$(date +"%M")
 
 # Counters
 total_rewards_balance=0
@@ -112,7 +113,6 @@ $influx_time"
 # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
 # https://www.coingecko.com/api/documentation
 ##############################################################################################
-time_min=$(date +"%M")
 if (( $time_min == 0 )) || (( $time_min == 15 )) || (( $time_min == 30 )) || (( $time_min == 45 ))
 then
 coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
