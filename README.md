@@ -63,7 +63,7 @@ Grafana can be accesed on ```<IP Address>:3000```
 after connecting Grafana and InfluxDB select the option to import Dashboard
 
 1. copy the Dashboard json from the file
-https://github.com/safenetforum-community/NTracking/blob/main/Grafana%20Dashboard%20json
+https://github.com/safenetforum-community/NTracking/blob/main/NTracking%20Dashboard
 3. paste it into the import dashboard window and save
 4. refresh Grafana and load the dashboard
 
