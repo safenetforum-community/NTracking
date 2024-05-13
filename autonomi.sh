@@ -153,6 +153,8 @@ yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[]
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 
+rm -rf ~/.local/share/ntracking/
+
 rustup update
 sudo apt update -y && sudo apt upgrade -y
 sudo reboot
