@@ -139,7 +139,91 @@ total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 echo "nodes_totals total_disk="$total_disk"i $influx_time"
 fi
 
+####################################################################
 #### test if grafana is installed if so then calculate network size
+####################################################################
 if echo "$(docker ps)" | grep -q "grafana/grafana-enterprise"; then
-python3 /usr/bin/network-size.py
+# Define the base path where the node directories are located
+node_base_path="/var/log/safenode/"
+
+# Check if the node base path exists
+if [[ ! -d "$node_base_path" ]]; then
+    echo "Node base path does not exist: $node_base_path"
+    exit 1
+fi
+
+# Function to calculate total nodes from kBucket data
+calculate_total_nodes() {
+    kbucket_data="$1"
+    # Remove all non-numeric characters except commas and numbers to simplify processing
+    cleaned_data=$(echo "$kbucket_data" | tr -d '[]() ' | tr ',' ' ')
+
+    # Initialize counters
+    nodes_in_non_full_buckets=0
+    num_of_full_buckets=0
+
+    # Parse and process each bucket entry
+    IFS=' ' read -ra data <<< "$cleaned_data"
+    for (( i=0; i<${#data[@]}; i+=3 )); do
+        depth="${data[i]}"
+        nodes="${data[i+1]}"
+        capacity="${data[i+2]}"
+
+        # Check if the bucket has exactly 20 nodes to be considered as full
+        if (( nodes == 20 )); then
+            (( num_of_full_buckets++ ))
+        else
+            (( nodes_in_non_full_buckets += nodes ))
+        fi
+    done
+
+    # Calculate total nodes
+    total_nodes=$(( (nodes_in_non_full_buckets + 1) * (2 ** num_of_full_buckets) ))
+    echo "$total_nodes"
+}
+
+# Array to store total nodes from each node directory
+total_nodes_list=()
+
+# Iterate through each node directory within the base path
+for node_dir in "$node_base_path"/*; do
+    if [[ -d "$node_dir" ]]; then
+        echo "Processing node directory: $node_dir"
+
+        # Define the path to the safenode.log file
+        log_path="$node_dir/safenode.log"
+
+        # Check if the log file exists
+        if [[ -f "$log_path" ]]; then
+            # Extract the latest kBucket data from the log file
+            latest_kbucket=$(grep "kBucketTable" "$log_path" | tail -1 | sed -E 's/.*kBucketTable.*\[(.*)\].*/\1/')
+
+            # Check if kBucket data was found
+            if [[ -n "$latest_kbucket" ]]; then
+                echo "Latest kBucket for $node_dir: $latest_kbucket"
+                # Calculate the total nodes based on the latest kBucket data
+                total_nodes=$(calculate_total_nodes "$latest_kbucket")
+                echo "Total nodes calculated for $node_dir: $total_nodes"
+                # Append total nodes to list
+                total_nodes_list+=("$total_nodes")
+            else
+                echo "No kBucket data found in $log_path"
+            fi
+        else
+            echo "Log file not found in $node_dir"
+        fi
+    fi
+done
+
+# Calculate the average of total nodes across all safenodes
+if [ ${#total_nodes_list[@]} -eq 0 ]; then
+    echo "No total node data available to calculate average."
+else
+    sum=0
+    for total in "${total_nodes_list[@]}"; do
+        sum=$((sum + total))
+    done
+    average=$((sum / ${#total_nodes_list[@]}))
+    echo "Average total nodes across all safenodes: $average"
+fi
 fi
