@@ -143,6 +143,8 @@ fi
 #### test if grafana is installed if so then calculate network size
 ####################################################################
 if echo "$(docker ps)" | grep -q "grafana/grafana-enterprise"; then
+#!/bin/bash
+
 # Define the base path where the node directories are located
 node_base_path="/var/log/safenode/"
 
@@ -188,7 +190,7 @@ total_nodes_list=()
 # Iterate through each node directory within the base path
 for node_dir in "$node_base_path"/*; do
     if [[ -d "$node_dir" ]]; then
-        echo "Processing node directory: $node_dir"
+        #echo "Processing node directory: $node_dir"
 
         # Define the path to the safenode.log file
         log_path="$node_dir/safenode.log"
@@ -200,10 +202,10 @@ for node_dir in "$node_base_path"/*; do
 
             # Check if kBucket data was found
             if [[ -n "$latest_kbucket" ]]; then
-                echo "Latest kBucket for $node_dir: $latest_kbucket"
+                #echo "Latest kBucket for $node_dir: $latest_kbucket"
                 # Calculate the total nodes based on the latest kBucket data
                 total_nodes=$(calculate_total_nodes "$latest_kbucket")
-                echo "Total nodes calculated for $node_dir: $total_nodes"
+                #echo "Total nodes calculated for $node_dir: $total_nodes"
                 # Append total nodes to list
                 total_nodes_list+=("$total_nodes")
             else
@@ -217,13 +219,13 @@ done
 
 # Calculate the average of total nodes across all safenodes
 if [ ${#total_nodes_list[@]} -eq 0 ]; then
-    echo "No total node data available to calculate average."
+    echo "nodes_totals network_size=0"
 else
     sum=0
     for total in "${total_nodes_list[@]}"; do
         sum=$((sum + total))
     done
     average=$((sum / ${#total_nodes_list[@]}))
-    echo "Average total nodes across all safenodes: $average"
+    echo "nodes_totals network_size="$average"i"
 fi
 fi
