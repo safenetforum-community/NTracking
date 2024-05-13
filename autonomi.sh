@@ -81,7 +81,7 @@ fi
 
 ############################## Stop Nodes and delete safe folder
 
-sudo env "PATH=$PATH" safenode-manager reset
+yes y | sudo env "PATH=$PATH" safenode-manager reset
 
 # sudo snap remove curl
 # sudo apt install curl
