@@ -67,7 +67,5 @@ https://github.com/safenetforum-community/NTracking/blob/main/NTracking%20Dashbo
 3. paste it into the import dashboard window and save
 4. refresh Grafana and load the dashboard
 
-# after NTracking is set up you can use autonomi.sh to start and stop nodes but is not necessary
-
-```bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/autonomi.sh)```
+# after NTracking is set up start some nodes with safe node manager and track ther progree in Grafana.
 
