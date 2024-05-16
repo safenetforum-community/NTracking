@@ -1,6 +1,7 @@
+
 #!/bin/bash
 
-#11/05/2024 19:13
+#15/05/2024 22:55
 
 # if cpu over 90% exit monitoring script
 cpu=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1) ; }' \
@@ -50,6 +51,8 @@ for dir in "$base_dir"/*; do
         if [[ $node_details == *"- RUNNING"* ]]; then
             total_nodes_running=$((total_nodes_running + 1))
             status=TRUE
+			#remove after cpu issues have been resolved
+			node_cpu=$(ps -p ${dir_pid[$dir_name]} -o %cpu | awk 'FNR == 2 {print $1}')
         else
             total_nodes_killed=$((total_nodes_killed + 1))
             status=FALSE
@@ -61,7 +64,7 @@ for dir in "$base_dir"/*; do
         total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
 
         # Format for InfluxDB
-        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
+        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,average_cpu=$node_cpu,records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
     fi
 done
 
