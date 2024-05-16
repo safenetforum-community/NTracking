@@ -3,11 +3,6 @@
 
 #15/05/2024 22:55
 
-# if cpu over 90% exit monitoring script
-#cpu=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1) ; }' \
-#<(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat))
-#if [ 1 -eq "$(echo "$cpu > 90.0" | bc)" ]; then exit 0; fi
-
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
