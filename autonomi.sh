@@ -183,7 +183,7 @@ sudo env "PATH=$PATH" safenode-manager upgrade --interval 11000  | tee -a /tmp/i
 
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "6" ]]; then
-vdash --glob-path "/var/log/safenode/*/safenode.log"
+vdash --glob-path "$HOME/.local/share/safe/node/safenode*/safenode.log"
 ######################################################################################################################### spare
 elif [[ "$SELECTION" == "7" ]]; then
 
