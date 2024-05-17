@@ -9,7 +9,7 @@ if [ 1 -eq "$(echo "$cpu > 95.0" | bc)" ]; then exit 0; fi
 
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
-base_dir="/var/safenode-manager/services"
+base_dir="$HOME/.local/share/safe/node/"
 
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
@@ -82,7 +82,7 @@ echo "nodes latency=$latency $influx_time"
 # (?-is)^.*IncomingConnectionError.*ConnectionClose.*\R?  #note to self for sercing for strings
 
 #grep a errors from all node logs from last 5 min to a combined file
-grep "$(date "+%Y-%m-%dT%H:%M" -d '5 min ago')" /var/log/safenode/safenode*/safenode.log | grep "error" > /tmp/influx-resources/combined_logs
+grep "$(date "+%Y-%m-%dT%H:%M" -d '5 min ago')" $HOME/.local/share/safe/node/safenode*/logs/safenode.log | grep "error" > /tmp/influx-resources/combined_logs
 
 #grep for errors wit two sting patterns
 OutgoingConnectionError_HandshakeTimedOut=$(grep -E 'OutgoingConnectionError|HandshakeTimedOut' /tmp/influx-resources/combined_logs  | wc -l)
