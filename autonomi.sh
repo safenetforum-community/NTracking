@@ -27,7 +27,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.2 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.3 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -103,15 +103,16 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE"
-
+safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE"
+#sudo env "PATH=$PATH" 
 else
 # for home nodes hole punching
-sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE"
+safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE"
+#sudo env "PATH=$PATH" 
 fi
 
-sudo env "PATH=$PATH" safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
-
+safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
+#sudo env "PATH=$PATH" 
 ##sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES"  --peer "$PEER"  --url http://safe-logs.ddns.net/safenode.tar.gz
 
 
