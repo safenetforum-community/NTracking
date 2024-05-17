@@ -129,6 +129,8 @@ safe wallet get-faucet "$FAUCET"
 ######################################################################################################################## Stop Nodes
 elif [[ "$SELECTION" == "3" ]]; then
 
+safenode-manager reset -f
+
 sudo pkill -e safe
 
 # stop nodes
