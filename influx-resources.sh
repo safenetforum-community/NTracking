@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#16/05/2024 19:13
+#18/05/2024 19:13  updated for new node dir's
 
 # if cpu over 90% exit monitoring script
 cpu=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1) ; }' \
