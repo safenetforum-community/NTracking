@@ -27,7 +27,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.5 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.6 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -81,7 +81,7 @@ fi
 
 ############################## Stop Nodes and delete safe folder
 
-yes y | sudo env "PATH=$PATH" safenode-manager reset
+yes y | sudo $HOME/.local/bin/safenode-manager reset
 
 # sudo snap remove curl
 # sudo apt install curl
@@ -92,8 +92,8 @@ yes y | sudo env "PATH=$PATH" safenode-manager reset
 
 rm -rf $HOME/.local/share/safe/node
 
-safeup node-manager --version $NODE_MANAGER
-safeup client --version "$CLIENT"
+$HOME/.local/bin/safeup node-manager --version $NODE_MANAGER
+$HOME/.local/bin/safeup client --version "$CLIENT"
 
 cargo install vdash
 
@@ -103,16 +103,14 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" 
-#sudo env "PATH=$PATH" 
+sudo $HOME/.local/bin/safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" 
 else
 # for home nodes hole punching
-safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" 
-#sudo env "PATH=$PATH" 
+sudo $HOME/.local/bin/safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" 
 fi
 
-safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
-#sudo env "PATH=$PATH" 
+sudo $HOME/.local/bin/safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
+
 ##sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES"  --peer "$PEER"  --url http://safe-logs.ddns.net/safenode.tar.gz
 
 
@@ -122,9 +120,9 @@ elif [[ "$SELECTION" == "2" ]]; then
 
 rm -rf $HOME/.local/share/safe/client
 
-safeup client
+$HOME/.local/bin/safeup client
 
-safe wallet get-faucet "$FAUCET"
+$HOME/.local/bin/safe wallet get-faucet "$FAUCET"
 
 ######################################################################################################################## Stop Nodes
 elif [[ "$SELECTION" == "3" ]]; then
@@ -172,18 +170,18 @@ fi
 
 for (( c=1; c<=$NUMBER_COINS; c++ ))
 do
-   safe wallet get-faucet "$FAUCET"
+   $HOME/.local/bin/safe wallet get-faucet "$FAUCET"
    sleep 1
 done
 
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
-sudo env "PATH=$PATH" safenode-manager upgrade --interval 11000  | tee -a /tmp/influx-resources/node_upgrade_report
+sudo $HOME/.local/bin/safenode-manager upgrade --interval 11000  | tee -a /tmp/influx-resources/node_upgrade_report
 
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "6" ]]; then
-vdash --glob-path "$HOME/.local/share/safe/node/safenode*/logs/safenode.log"
+vdash --glob-path "/var/log/safenode/safenode*/safenode.log"
 ######################################################################################################################### spare
 elif [[ "$SELECTION" == "7" ]]; then
 
