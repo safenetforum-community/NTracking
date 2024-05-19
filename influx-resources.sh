@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#18/05/2024 19:13  updated for new node dir's
+#16/05/2024 19:12
 
 # if cpu over 90% exit monitoring script
 cpu=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1) ; }' \
@@ -9,7 +9,7 @@ if [ 1 -eq "$(echo "$cpu > 95.0" | bc)" ]; then exit 0; fi
 
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
-base_dir="$HOME/.local/share/safe/node/"
+base_dir="/var/safenode-manager/services"
 
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
@@ -27,7 +27,7 @@ declare -A node_numbers
 declare -A node_details_store
 
 # Fetch node overview from node-manager
-safenode-manager status --details > /tmp/influx-resources/nodes_overview
+sudo $HOME/.local/bin/safenode-manager status --details > /tmp/influx-resources/nodes_overview
 if [ $? -ne 0 ]; then
     echo "Failed to get node overview from safenode-manager."
     exit 1
@@ -82,7 +82,7 @@ echo "nodes latency=$latency $influx_time"
 # (?-is)^.*IncomingConnectionError.*ConnectionClose.*\R?  #note to self for sercing for strings
 
 #grep a errors from all node logs from last 5 min to a combined file
-grep "$(date "+%Y-%m-%dT%H:%M" -d '5 min ago')" $HOME/.local/share/safe/node/safenode*/logs/safenode.log | grep "error" > /tmp/influx-resources/combined_logs
+grep "$(date "+%Y-%m-%dT%H:%M" -d '5 min ago')" /var/log/safenode/safenode*/safenode.log | grep "error" > /tmp/influx-resources/combined_logs
 
 #grep for errors wit two sting patterns
 OutgoingConnectionError_HandshakeTimedOut=$(grep -E 'OutgoingConnectionError|HandshakeTimedOut' /tmp/influx-resources/combined_logs  | wc -l)
