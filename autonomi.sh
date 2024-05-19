@@ -103,12 +103,10 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE"
-#sudo env "PATH=$PATH" 
+sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" 
 else
 # for home nodes hole punching
-safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE"
-#sudo env "PATH=$PATH" 
+sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" 
 fi
 
 safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
