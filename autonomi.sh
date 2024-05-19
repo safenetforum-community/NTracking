@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 CLIENT=0.91.2
-NODE=0.106.2
+NODE=0.106.3
 FAUCET=165.232.45.224:8000
-NODE_MANAGER=0.7.5
+NODE_MANAGER=0.7.6
 PEER="/ip4/144.126.234.162/udp/37284/quic-v1/p2p/12D3KooWFTMioLueKChk9rWEFNFGTH3zRQ6eTiGxjL2ss1wWgZ11"
 # get from https://sn-testnet.s3.eu-west-2.amazonaws.com/network-contacts
 
@@ -27,7 +27,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.4 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.5 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -46,7 +46,7 @@ fi
 if [[ "$SELECTION" == "1" ]]; then
 
 
-NODE_TYPE=$(whiptail --title "Safe Network Testnet 1.1" --radiolist \
+NODE_TYPE=$(whiptail --title "Safe Network Testnet   " --radiolist \
 "Type of Nodes to start                              " 20 70 10 \
 "1" "Node from home no port forwarding    " OFF \
 "2" "Cloud based nodes with port forwarding   " ON 3>&1 1>&2 2>&3)
@@ -103,10 +103,12 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" 
+safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" 
+#sudo env "PATH=$PATH" 
 else
 # for home nodes hole punching
-sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" 
+safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" 
+#sudo env "PATH=$PATH" 
 fi
 
 safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
