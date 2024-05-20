@@ -91,7 +91,7 @@ yes y | sudo safenode-manager reset
 #curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
 #source ~/.config/safe/env
 
-rm -rf $HOME/.local/share/safe/node
+rm -rf $HOME/.local/share/safe
 
 safeup node-manager --version $NODE_MANAGER
 safeup client --version "$CLIENT"
