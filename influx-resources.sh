@@ -62,7 +62,7 @@ for dir in "$base_dir"/*; do
         total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
 
         # Format for InfluxDB
-        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=$node_version,records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
+        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=\"$node_version\",records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
     fi
 done
 
