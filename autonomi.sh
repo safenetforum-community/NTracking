@@ -89,12 +89,12 @@ yes y | sudo safenode-manager reset
 
 # disable installing safe up for every run
 #curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
-source ~/.config/safe/env
+#source ~/.config/safe/env
 
 rm -rf $HOME/.local/share/safe/node
 
 safeup node-manager --version $NODE_MANAGER
-bin/safeup client --version "$CLIENT"
+safeup client --version "$CLIENT"
 
 cargo install vdash
 
