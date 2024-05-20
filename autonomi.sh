@@ -16,7 +16,7 @@ NODE_PORT_FIRST=12000
 NUMBER_NODES=50
 NUMBER_COINS=1
 CPU_TARGET=70
-DELAY_BETWEEN_NODES=301000
+DELAY_BETWEEN_NODES=180000
 
 export NEWT_COLORS='
 window=,white
@@ -27,7 +27,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.8 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Testnet punchbow 1.9 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
