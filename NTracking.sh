@@ -501,7 +501,8 @@ fi
 #setup cron job for resources
 echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
-
+#set utc time zone
+sudo timedatectl set-timezone UTC
 
 ################################################################### download script to gather node resources
 
