@@ -37,6 +37,12 @@
     },
     {
       "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "stat",
       "name": "Stat",
       "version": ""
@@ -153,7 +159,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "12h",
       "title": "Total Rewards in Dirvines",
       "transformations": [
         {
@@ -231,7 +236,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "12h",
       "title": "Total Node Disk Usage",
       "transformations": [
         {
@@ -310,7 +314,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "6h",
       "title": "Earnings",
       "transformations": [
         {
@@ -388,7 +391,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "6h",
       "title": "Total nodes running",
       "transformations": [
         {
@@ -434,7 +436,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
+        "w": 2,
         "x": 12,
         "y": 1
       },
@@ -466,7 +468,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "6h",
       "title": "Total nodes Killed",
       "transformations": [
         {
@@ -481,6 +482,89 @@
         }
       ],
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 14,
+        "y": 1
+      },
+      "id": 65114,
+      "options": {
+        "displayLabels": [
+          "value",
+          "name"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -15m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> keep(columns: [\"_value\", \"_field\"])\r\n  |> group(columns: [\"version\"])\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Node versions",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "_field": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "_value": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "type": "piechart"
     },
     {
       "datasource": {
@@ -514,7 +598,7 @@
       "gridPos": {
         "h": 7,
         "w": 3,
-        "x": 15,
+        "x": 16,
         "y": 1
       },
       "id": 65107,
@@ -545,7 +629,6 @@
           "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
         }
       ],
-      "timeFrom": "6h",
       "title": "Exchange Rate",
       "transformations": [
         {
@@ -569,39 +652,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 41,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 8,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -623,22 +674,26 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 6,
-        "x": 18,
+        "w": 5,
+        "x": 19,
         "y": 1
       },
       "id": 65111,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "10.4.0",
       "targets": [
@@ -647,11 +702,10 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -24h, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"network_size\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -24h, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"network_size\")\r\n    |> filter(fn: (r) => r.host == \"s00\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
         }
       ],
-      "timeFrom": "24h",
       "title": "Network size",
       "transformations": [
         {
@@ -665,7 +719,7 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -2933,7 +2987,7 @@
         "x": 0,
         "y": 63
       },
-      "id": 65090,
+      "id": 65113,
       "options": {
         "legend": {
           "calcs": [],
@@ -4358,6 +4412,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 56,
+  "version": 76,
   "weekStart": ""
 }
