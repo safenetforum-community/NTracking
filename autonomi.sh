@@ -6,7 +6,6 @@ FAUCET=161.35.173.105:8000
 NODE_MANAGER=0.8.0
 # get from https://sn-testnet.s3.eu-west-2.amazonaws.com/network-contacts
 
-
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/autonomi.sh)
 
