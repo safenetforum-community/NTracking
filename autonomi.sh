@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Testnet notbeta 1.1 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Testnet notbeta 1.2 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -43,6 +43,10 @@ fi
 ################################################################################################################ start or Upgrade Client & Node to Latest
 if [[ "$SELECTION" == "1" ]]; then
 
+Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "timbobjohnes" 3>&1 1>&2 2>&3)
+if [[ $? -eq 255 ]]; then
+exit 0
+fi
 
 NODE_TYPE=$(whiptail --title "Safe Network Testnet   " --radiolist \
 "Type of Nodes to start                              " 20 70 10 \
@@ -102,10 +106,10 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" --owner timbobjohnes
+sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --version "$NODE" --owner $Discord_Username
 else
 # for home nodes hole punching
-sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" --owner timbobjohnes
+sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" --version "$NODE" --owner $Discord_Username
 fi
 
 sudo env "PATH=$PATH" safenode-manager start --interval $DELAY_BETWEEN_NODES | tee /tmp/influx-resources/nodemanager_output & disown
