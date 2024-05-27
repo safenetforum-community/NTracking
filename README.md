@@ -67,5 +67,5 @@ https://github.com/safenetforum-community/NTracking/blob/main/NTracking%20Dashbo
 3. paste it into the import dashboard window and save
 4. refresh Grafana and load the dashboard
 
-# after NTracking is set up start some nodes with safe node manager and track ther progree in Grafana.
+# after NTracking is set up start some nodes with safe node manager and track there progress in Grafana.
 
