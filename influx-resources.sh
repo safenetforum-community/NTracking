@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#before removing safe node manager call
 #16/05/2024 19:12
 
 # if cpu over 90% exit monitoring script
@@ -23,16 +22,8 @@ total_nodes_killed=0
 
 # Arrays
 declare -A dir_pid
-declare -A dir_peer_ids
 declare -A node_numbers
 declare -A node_details_store
-
-# Fetch node overview from node-manager
-sudo env "PATH=$PATH" safenode-manager status --details > /tmp/influx-resources/nodes_overview
-if [ $? -ne 0 ]; then
-    echo "Failed to get node overview from safenode-manager."
-    exit 1
-fi
 
 # Process nodes
 for dir in "$base_dir"/*; do
@@ -41,14 +32,14 @@ for dir in "$base_dir"/*; do
         dir_pid["$dir_name"]=$(cat "$dir/safenode.pid")
         node_number=${dir_name#safenode}
         node_numbers["$dir_name"]=$node_number
-        node_details=$(grep -A 12 "$dir_name - " /tmp/influx-resources/nodes_overview)
+        node_details=$(jq '.nodes[] | select(.service_name == "'$dir_name'")' /var/safenode-manager/node_registry.json)
 
         # Skip if node status is ADDED
-        if [[ $node_details == *"- ADDED"* ]]; then
+        if [[ $(jq -r .status <<< "$node_details") == "Added" ]]; then
             continue
         fi
 
-        if [[ $node_details == *"- RUNNING"* ]]; then
+        if [[ $(jq -r .status <<< "$node_details") == "Running" ]]; then
             total_nodes_running=$((total_nodes_running + 1))
             status=TRUE
         else
@@ -56,10 +47,9 @@ for dir in "$base_dir"/*; do
             status=FALSE
         fi
 
-        peer_id=$(echo "$node_details" | grep "Peer ID:" | awk '{print $3}')
-        dir_peer_ids["$dir_name"]="$peer_id"
-        node_version=$(echo "$node_details" | grep "Version:" | awk '{print $2}')
-        rewards_balance=$(echo "$node_details" | grep "Reward balance:" | awk '{print $3}')
+        peer_id=$(jq -r .peer_id <<< "$node_details")
+        node_version=$(jq -r .version <<< "$node_details")
+        rewards_balance=$(safe wallet balance --peer-id /var/safenode-manager/services/safenode$node_number | awk 'NR==3{print $7}')
         total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
 
         # Format for InfluxDB
