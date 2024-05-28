@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#before removing safe node manager call
 #16/05/2024 19:12
 
 # if cpu over 90% exit monitoring script
