@@ -54,6 +54,8 @@ for dir in "$base_dir"/*; do
 
         # Format for InfluxDB
         node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=\"$node_version\",records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
+        #sleep to slow script down to spread out cpu spike
+        sleep 3
     fi
 done
 
