@@ -1,12 +1,5 @@
 #!/bin/bash
 
-#16/05/2024 19:12
-
-# if cpu over 90% exit monitoring script
-cpu=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1) ; }' \
-<(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat))
-if [ 1 -eq "$(echo "$cpu > 95.0" | bc)" ]; then exit 0; fi
-
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
@@ -39,12 +32,18 @@ for dir in "$base_dir"/*; do
             continue
         fi
 
-        if [[ $(jq -r .status <<< "$node_details") == "Running" ]]; then
-            total_nodes_running=$((total_nodes_running + 1))
-            status=TRUE
+        # Retrieve process information
+        process_info=$(ps -o rss,%cpu -p "${dir_pid[$dir_name]}" | awk 'NR>1')
+        if [[ -n "$process_info" ]]; then
+        total_nodes_running=$((total_nodes_running + 1))
+        status="TRUE"
+        mem_used=$(echo "$process_info" | awk '{print $1/1024 "MB"}')
+        cpu_usage=$(echo "$process_info" | awk '{print $2"%"}')
         else
-            total_nodes_killed=$((total_nodes_killed + 1))
-            status=FALSE
+        total_nodes_killed=$((total_nodes_killed + 1))
+        status="FALSE"
+        mem_used=0
+        cpu_usage=0
         fi
 
         peer_id=$(jq -r .peer_id <<< "$node_details")
@@ -55,22 +54,13 @@ for dir in "$base_dir"/*; do
         # Format for InfluxDB
         node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=\"$node_version\",records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
         #sleep to slow script down to spread out cpu spike
-        sleep 3
+        sleep 4
     fi
 done
-
-# Sort
-for num in $(echo "${!node_details_store[@]}" | tr ' ' '\n' | sort -n); do
-    echo "${node_details_store[$num]}"
-done
-
-# Output
-echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
 
 
 # Latency
 latency=$(ping -c 4 8.8.8.8 | tail -1| awk '{print $4}' | cut -d '/' -f 2)
-echo "nodes latency=$latency $influx_time"
 
 ######### error logging
 # (?-is)^.*IncomingConnectionError.*ConnectionClose.*\R?  #note to self for sercing for strings
@@ -93,20 +83,9 @@ Problematic_HandshakeTimedOut=$(grep -E 'Problematic|HandshakeTimedOut' /tmp/inf
 Total_Errors=$(($OutgoingConnectionError_HandshakeTimedOut + $OutgoingConnectionError_ResourceLimitExceeded + $OutgoingConnectionError_NoReservation + $IncomingConnectionError_HandshakeTimedOut + $IncomingConnectionError_ConnectionClose + $OutgoingTransport_Canceled + $OutgoingTransport_NoReservation + $OutgoingTransport_ResourceLimitExceeded + $OutgoingTransport_HandshakeTimedOut + $Problematic_HandshakeTimedOut))
 Average_Errors=$(($Total_Errors / $total_nodes_running))
 
-#print to influx
-echo "nodes_errors \
-OutgoingConnectionError_HandshakeTimedOut="$OutgoingConnectionError_HandshakeTimedOut"i,\
-OutgoingConnectionError_ResourceLimitExceeded="$OutgoingConnectionError_ResourceLimitExceeded"i,\
-OutgoingConnectionError_NoReservation="$OutgoingConnectionError_NoReservation"i,\
-IncomingConnectionError_HandshakeTimedOut="$IncomingConnectionError_HandshakeTimedOut"i,\
-IncomingConnectionError_ConnectionClose="$IncomingConnectionError_ConnectionClose"i,\
-OutgoingTransport_Canceled="$OutgoingTransport_Canceled"i,\
-OutgoingTransport_NoReservation="$OutgoingTransport_NoReservation"i,\
-OutgoingTransport_ResourceLimitExceeded="$OutgoingTransport_ResourceLimitExceeded"i,\
-OutgoingTransport_HandshakeTimedOut="$OutgoingTransport_HandshakeTimedOut"i,\
-Problematic_HandshakeTimedOut="$Problematic_HandshakeTimedOut"i,\
-Average_Errors=$Average_Errors \
-$influx_time"
+
+
+
 
 ##############################################################################################
 # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
@@ -125,19 +104,18 @@ earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
 earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
 
 
-echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
-echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
-
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 echo "nodes_totals total_disk="$total_disk"i $influx_time"
 fi
 
+#!/bin/bash
+
+
 ####################################################################
 #### test if grafana is installed if so then calculate network size
 ####################################################################
 if echo "$(docker ps)" | grep -q "grafana/grafana-enterprise"; then
-#!/bin/bash
 
 # Define the base path where the node directories are located
 node_base_path="/var/log/safenode/"
@@ -213,13 +191,46 @@ done
 
 # Calculate the average of total nodes across all safenodes
 if [ ${#total_nodes_list[@]} -eq 0 ]; then
-    echo "nodes_totals network_size=0"
+    networkSize="nodes_totals network_size=0"
 else
     sum=0
     for total in "${total_nodes_list[@]}"; do
         sum=$((sum + total))
     done
     average=$((sum / ${#total_nodes_list[@]}))
-    echo "nodes_totals network_size="$average"i"
+    networkSize="nodes_totals network_size="$average"i"
 fi
 fi
+
+
+# sleep till all nodes have systems have finished prosessing
+
+while (( $(("$time_min" + "5")) > $(date +"%M"))); do
+sleep 10
+done
+
+
+# Sort
+for num in $(echo "${!node_details_store[@]}" | tr ' ' '\n' | sort -n); do
+    echo "${node_details_store[$num]}"
+done
+
+# Output
+echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
+echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
+echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
+echo "nodes_errors \
+OutgoingConnectionError_HandshakeTimedOut="$OutgoingConnectionError_HandshakeTimedOut"i,\
+OutgoingConnectionError_ResourceLimitExceeded="$OutgoingConnectionError_ResourceLimitExceeded"i,\
+OutgoingConnectionError_NoReservation="$OutgoingConnectionError_NoReservation"i,\
+IncomingConnectionError_HandshakeTimedOut="$IncomingConnectionError_HandshakeTimedOut"i,\
+IncomingConnectionError_ConnectionClose="$IncomingConnectionError_ConnectionClose"i,\
+OutgoingTransport_Canceled="$OutgoingTransport_Canceled"i,\
+OutgoingTransport_NoReservation="$OutgoingTransport_NoReservation"i,\
+OutgoingTransport_ResourceLimitExceeded="$OutgoingTransport_ResourceLimitExceeded"i,\
+OutgoingTransport_HandshakeTimedOut="$OutgoingTransport_HandshakeTimedOut"i,\
+Problematic_HandshakeTimedOut="$Problematic_HandshakeTimedOut"i,\
+Average_Errors=$Average_Errors \
+$influx_time"
+echo "$networkSize"
+echo "nodes latency=$latency $influx_time"
