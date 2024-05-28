@@ -504,6 +504,9 @@ echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /u
 #set utc time zone
 sudo timedatectl set-timezone UTC
 
+#install jq
+sudo apt-get install jq -y
+
 ################################################################### download script to gather node resources
 
 #remove old script if exists
