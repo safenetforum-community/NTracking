@@ -106,7 +106,7 @@ earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
-echo "nodes_totals total_disk="$total_disk"i $influx_time"
+
 fi
 
 #!/bin/bash
@@ -217,6 +217,7 @@ done
 
 # Output
 echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
+echo "nodes_totals total_disk="$total_disk"i $influx_time"
 echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
 echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
 echo "nodes_errors \
