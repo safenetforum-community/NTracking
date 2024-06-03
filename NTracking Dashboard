@@ -512,14 +512,14 @@
       },
       "id": 65114,
       "options": {
-        "displayLabels": [
-          "value",
-          "name"
-        ],
+        "displayLabels": [],
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
         },
         "pieType": "donut",
         "reduceOptions": {
@@ -540,30 +540,11 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -15m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> keep(columns: [\"_value\", \"_field\"])\r\n  |> group(columns: [\"version\"])\r\n",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
           "refId": "A"
         }
       ],
       "title": "Node versions",
-      "transformations": [
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "_field": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "aggregate"
-              },
-              "_value": {
-                "aggregations": [],
-                "operation": "groupby"
-              }
-            }
-          }
-        }
-      ],
       "type": "piechart"
     },
     {
@@ -2834,7 +2815,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 2048,
+          "max": 4096,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2843,8 +2824,12 @@
                 "value": null
               },
               {
+                "color": "#EAB839",
+                "value": 3600
+              },
+              {
                 "color": "red",
-                "value": 1848
+                "value": 3800
               }
             ]
           },
@@ -4381,7 +4366,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -4412,6 +4397,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 76,
+  "version": 83,
   "weekStart": ""
 }
