@@ -1,4 +1,4 @@
-![image](https://github.com/safenetforum-community/NTracking/assets/25412853/ad745272-f1db-46dc-9c25-25608c25eab6)![image](https://github.com/safenetforum-community/NTracking/assets/25412853/ad745272-f1db-46dc-9c25-25608c25eab6)# NTracking Dashboard
+# NTracking Dashboard
 
 ![image](https://github.com/safenetforum-community/NTracking/assets/25412853/3eb93d09-a2aa-431a-a442-247b41acba33)
 
@@ -14,11 +14,6 @@ Do not run as root user if you need to create a normal user with sudo rights and
 adduser <username>
 usermod -aG sudo <username>
 su - u <username>
-```
-
-all machines sending data with telegraf to influx and Grafana must be in UTC time zone !!!
-```
-sudo timedatectl set-timezone UTC
 ```
 
 # to Run
@@ -73,4 +68,3 @@ https://github.com/safenetforum-community/NTracking/blob/main/NTracking%20Dashbo
 4. refresh Grafana and load the dashboard
 
 # after NTracking is set up start some nodes with safe node manager and track there progress in Grafana.
-
