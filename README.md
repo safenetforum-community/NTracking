@@ -18,7 +18,7 @@ su - u <username>
 
 All Machines running Telegraf to send data to Influx and Grafana must be set to UTC time zone !!!
 
-'''
+```
 sudo timedatectl set-timezone UTC
 ```
 
