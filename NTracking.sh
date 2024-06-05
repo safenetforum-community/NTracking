@@ -484,7 +484,7 @@ docker compose --project-directory $HOME/.local/share/tig-stack/telegraf down
 docker remove telegraf
 #remove old folders and config files if they exist 
 sudo rm -rf $HOME/.local/share/tig-stack/telegraf
-rm -rf /tmp/influx-resources
+sudo rm -rf /tmp/influx-resources
 
 # enter the ipaddress and port of the influx instalation
 INFLUXDB_IP_PORT=$(whiptail --title "IP address & Port of InfluxDB2" --inputbox "\nIP Address & Port of Influxdb2" 8 60 127.0.0.1:$INFLUXDB_PORT 3>&1 1>&2 2>&3)
