@@ -94,6 +94,8 @@ yes y | sudo env "PATH=$PATH" safenode-manager reset
 #source ~/.config/safe/env
 
 rm -rf $HOME/.local/share/safe
+rm $HOME/.local/bin/safe
+rm /usr/bin/safe
 
 safeup node-manager
 safeup client
