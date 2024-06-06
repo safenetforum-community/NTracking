@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.4 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.5 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -46,6 +46,11 @@ if [[ "$SELECTION" == "1" ]]; then
 Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "timbobjohnes" 3>&1 1>&2 2>&3)
 if [[ $? -eq 255 ]]; then
 exit 0
+fi
+if [ -z "${Discord_Username// /}" ]; then
+    sleep 0
+else
+   Discord_Username="--owner $Discord_Username";
 fi
 
 NODE_TYPE=$(whiptail --title "Safe Network Testnet   " --radiolist \
@@ -110,10 +115,10 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" --owner $Discord_Username --auto-restart --peer "/ip4/38.102.85.104/udp/12040/quic-v1/p2p/12D3KooWHQGYbYoMy8Fayb1tspbcVQ3YKkWNJz52KsoNYkJ54YjQ"
+sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --auto-restart --peer "/ip4/38.102.85.104/udp/12040/quic-v1/p2p/12D3KooWHQGYbYoMy8Fayb1tspbcVQ3YKkWNJz52KsoNYkJ54YjQ"
 else
 # for home nodes hole punching
-sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" --owner $Discord_Username --auto-restart --peer "/ip4/38.102.85.104/udp/12040/quic-v1/p2p/12D3KooWHQGYbYoMy8Fayb1tspbcVQ3YKkWNJz52KsoNYkJ54YjQ"
+sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username --auto-restart --peer "/ip4/38.102.85.104/udp/12040/quic-v1/p2p/12D3KooWHQGYbYoMy8Fayb1tspbcVQ3YKkWNJz52KsoNYkJ54YjQ"
 fi
 
 # --version "$NODE"
