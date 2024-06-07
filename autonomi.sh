@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.5 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.6 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -168,7 +168,11 @@ yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[]
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 
-rm -rf ~/.local/share/ntracking/
+#close fire wall ports
+for i in {1..60}
+do
+sudo ufw delete allow $((12000+$i))/udp
+done
 
 rustup update
 sudo apt update -y && sudo apt upgrade -y
