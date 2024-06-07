@@ -115,10 +115,10 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --auto-restart --peer "/ip4/38.102.85.104/udp/12040/quic-v1/p2p/12D3KooWHQGYbYoMy8Fayb1tspbcVQ3YKkWNJz52KsoNYkJ54YjQ"
+sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --auto-restart
 else
 # for home nodes hole punching
-sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username --auto-restart --peer "/ip4/38.102.85.104/udp/12040/quic-v1/p2p/12D3KooWHQGYbYoMy8Fayb1tspbcVQ3YKkWNJz52KsoNYkJ54YjQ"
+sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username --auto-restart
 fi
 
 # --version "$NODE"
