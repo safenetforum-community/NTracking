@@ -37,8 +37,8 @@ for dir in "$base_dir"/*; do
         if [[ -n "$process_info" ]]; then
         total_nodes_running=$((total_nodes_running + 1))
         status="TRUE"
-        mem_used=$(echo "$process_info" | awk '{print $1/1024 "MB"}')
-        cpu_usage=$(echo "$process_info" | awk '{print $2"%"}')
+        mem_used=$(echo "$process_info" | awk '{print $1/1024}')
+        cpu_usage=$(echo "$process_info" | awk '{print $2}')
         else
         total_nodes_killed=$((total_nodes_killed + 1))
         status="FALSE"
@@ -52,7 +52,7 @@ for dir in "$base_dir"/*; do
         total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
 
         # Format for InfluxDB
-        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=\"$node_version\",records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance $influx_time"
+        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=\"$node_version\",records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance,cpu=$cpu_usage,mem=$mem_used $influx_time"
         #sleep to slow script down to spread out cpu spike
         sleep 4
     fi
