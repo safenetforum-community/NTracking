@@ -10,7 +10,7 @@ NODE_MANAGER=0.8.0
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/autonomi.sh)
 
 # first node port can edited in menu later
-NODE_PORT_FIRST=12000
+NODE_PORT_FIRST=12001
 NUMBER_NODES=40
 NUMBER_COINS=1
 CPU_TARGET=70
