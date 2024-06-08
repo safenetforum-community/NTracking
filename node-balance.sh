@@ -45,6 +45,7 @@ for dir in "$base_dir"/*; do
 			total_nodes_Stopped=$((total_nodes_Stopped + 1))       
 		fi
     fi
+sleep 4
 done
 
 echo
