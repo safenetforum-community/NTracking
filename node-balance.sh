@@ -4,6 +4,12 @@
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
 
+#exit if script is already running
+if test -f /tmp/influx-resources/nodemanager_output.lock; then
+  exit 0
+fi
+
+
 total_nodes_running=0
 total_nodes_Added=0
 total_nodes_Stopped=0
