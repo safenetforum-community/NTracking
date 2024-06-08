@@ -11,7 +11,7 @@ NodesToStop=""
 
 TargetLoadAverage=13
 MaxLoadAverage=20
-LoadAverage15=$(uptime | awk '{print $12}')
+LoadAverage15=$(uptime | awk '{print $10}')
 
 
 # Process nodes
