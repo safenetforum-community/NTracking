@@ -13,7 +13,6 @@ fi
 total_nodes_running=0
 total_nodes_Added=0
 total_nodes_Stopped=0
-NodesToStop=""
 
 TargetLoadAverage=13
 MaxLoadAverage=20
@@ -83,24 +82,33 @@ elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nod
 touch /tmp/influx-resources/nodemanager_output.lock
 TotalNodes=$total_nodes_running
 NumberToStop=$total_nodes_running
-echo "load is higher than 15 stoping $NumberToStop nodes and all nodes have already been started stoping $NumberToStop safenodes"
+echo "load is higher than $MaxLoadAverage stopping $NumberToStop nodes."
+echo
 for (( i = 0; i < $NumberToStop; i))
 do
-       NodeToStop="$(echo "$TotalNodes - $NumberToStop + 1" | bc)"
-       sudo systemctl stop safenode$NodeToStop
+       NodesToStop=$(echo "$TotalNodes - $NumberToStop + 1" | bc)
+       echo Stopping safenode$NodesToStop
+       sudo systemctl stop safenode$NodesToStop
        NumberToStop=$(echo "$NumberToStop - 1" | bc)
 done
+
+echo
 sleep 180
+echo "System cool down completed starting $total_nodes_running nodes"
+echo
+
 NumberToStart=$total_nodes_running
 for (( i = 0; i < $NumberToStart; i))
 do
-       NodeToStart="$(echo "$TotalNodes - $NumberToStart + 1" | bc)"
-       sudo systemctl start safenode$NodeToStart
+       NodesToStart=$(echo "$TotalNodes - $NumberToStart + 1" | bc)
+       echo Starting safenode$NodesToStart
+       sudo systemctl start safenode$NodesToStart
        NumberToStart=$(echo "$NumberToStart - 1" | bc)
        sleep 45
 done
 
 rm /tmp/influx-resources/nodemanager_output.lock
+
 
 #if load is higher than target value and all nodes have already been started stop a node
 elif (($(echo "$LoadAverage15 > $TargetLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
