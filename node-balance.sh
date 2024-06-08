@@ -68,7 +68,7 @@ do
        NumberToStop=$(echo "$NumberToStop - 1" | bc)
 done
 echo "load is higher than 15 stoping 10 nodes and all nodes have already been started stoping $NumberToStop safenode"
-sudo env "PATH=$PATH" safenode-manager stop "$NodesToStop"
+sudo env "PATH=$PATH" safenode-manager stop $NodesToStop
 
 
 #if load is higher than target value and all nodes have already been started stop a node
