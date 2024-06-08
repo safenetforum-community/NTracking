@@ -7,8 +7,10 @@ base_dir="/var/safenode-manager/services"
 total_nodes_running=0
 total_nodes_Added=0
 total_nodes_Stopped=0
+NodesToStop=""
 
 TargetLoadAverage=13
+MaxLoadAverage=20
 LoadAverage15=$(uptime | awk '{print $12}')
 
 
@@ -52,6 +54,21 @@ elif (($(echo "$LoadAverage15 < $TargetLoadAverage" | bc))) && (($(echo "$total_
 NodeToStart=$((total_nodes_running + 1))
 echo "load is lower than target value and there are stoped nodes start safenode$NodeToStart"
 sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodeToStart
+
+
+#if load is higher than Max Load Average and all nodes have already been started stop a nodes
+elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
+TotalNodes=$total_nodes_running
+
+NumberToStop=20
+
+for (( i = 0; i <= $NumberToStop; i))
+do
+       NodesToStop="$NodesToStop --service-name safenode$(echo "$TotalNodes - $NumberToStop" | bc)"
+       NumberToStop=$(echo "$NumberToStop - 1" | bc)
+done
+echo "load is higher than 15 stoping 20 nodes and all nodes have already been started stoping $NumberToStop safenode"
+sudo env "PATH=$PATH" safenode-manager stop "$NodesToStop"
 
 
 #if load is higher than target value and all nodes have already been started stop a node
