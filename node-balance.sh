@@ -11,8 +11,23 @@ NodesToStop=""
 
 TargetLoadAverage=13
 MaxLoadAverage=20
-LoadAverage15=$(uptime | awk '{print $(NF-0)}' FS=,)
 
+LoadAverage1=$(uptime | awk '{print $(NF-2)}' | awk '{print $(NF-1)}' FS=,)
+LoadAverage5=$(uptime | awk '{print $(NF-1)}'  | awk '{print $(NF-1)}' FS=,)
+LoadAverage15=$(uptime | awk '{print $(NF-0)}' | awk '{print $(NF-1)}' FS=,)
+
+echo "LoadAverage1  $LoadAverage1"
+echo "LoadAverage5  $LoadAverage5"
+echo "LoadAverage15  $LoadAverage15"
+
+#compare load averages to determin if load system load is in an upward trend
+if (($(echo "$LoadAverage1 < $LoadAverage5" | bc ))) && (($(echo "$LoadAverage5 < $LoadAverage15" | bc ))); then
+echo "System system load droping"
+LoadTrend=0
+else
+echo "System system load rising"
+LoadTrend=1
+fi
 
 # Process nodes
 for dir in "$base_dir"/*; do
@@ -57,7 +72,7 @@ sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodeToStart
 
 
 #if load is higher than Max Load Average and all nodes have already been started stop a nodes
-elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
+elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))) && (($(echo "$LoadTrend == 1" | bc))); then
 TotalNodes=$total_nodes_running
 
 NumberToStop=20
