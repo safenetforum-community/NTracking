@@ -78,7 +78,7 @@ NumberToStop=20
 echo "load is higher than 15 stoping $NumberToStop nodes and all nodes have already been started stoping $NumberToStop safenodes"
 for (( i = 0; i < $NumberToStop; i))
 do
-       NodesToStop="$NodesToStop --service-name safenode$(echo "$TotalNodes - $NumberToStop" | bc)"
+       NodesToStop="$NodesToStop --service-name safenode$(echo "$TotalNodes - $NumberToStop + 1" | bc)"
        NumberToStop=$(echo "$NumberToStop - 1" | bc)
 done
 sudo env "PATH=$PATH" safenode-manager stop $NodesToStop
