@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Environment setup
+export PATH=$PATH:$HOME/.local/bin
+base_dir="/var/safenode-manager/services"
+
+total_nodes_running=0
+total_nodes_Added=0
+total_nodes_Stopped=0
+
+TargetLoadAverage=12
+LoadAverage15=$(uptime | awk '{print $12}')
+
+
+# Process nodes
+for dir in "$base_dir"/*; do
+    if [[ -f "$dir/safenode.pid" ]]; then
+        dir_name=$(basename "$dir")
+        node_number=${dir_name#safenode}
+        node_details=$(jq '.nodes[] | select(.service_name == "'$dir_name'")' /var/safenode-manager/node_registry.json)
+
+        # Skip if node status is ADDED
+        if [[ $(jq -r .status <<< "$node_details") == "Added" ]]; then
+            total_nodes_Added=$((total_nodes_Added + 1))
+        elif [[ $(jq -r .status <<< "$node_details") == "Running" ]]; then
+			total_nodes_running=$((total_nodes_running + 1))
+        elif [[ $(jq -r .status <<< "$node_details") == "Stopped" ]]; then
+			total_nodes_Stopped=$((total_nodes_Stopped + 1))       
+		fi
+    fi
+done
+
+echo
+echo "nodes added $total_nodes_Added"
+echo "node running $total_nodes_running"
+echo "total nodes added $total_nodes_Stopped"
+echo
+
+#echo $TargetLoadAverage
+#echo $LoadAverage15
+#echo
+#echo $(echo "$LoadAverage15 < $TargetLoadAverage" | bc)
+#echo $(echo "$total_nodes_Stopped == 0" | bc)
+
+#exit if load average is bellow target valaue and all nodes are running
+if (($(echo "$LoadAverage15 < $TargetLoadAverage" | bc))) && (($(echo "$total_nodes_Stopped == 0" | bc))); then
+echo "exit if load average is bellow target valaue and all nodes are running"
+
+
+#if load is lower than target value and there are stoped nodes start a node
+elif (($(echo "$LoadAverage15 < $TargetLoadAverage" | bc))) && (($(echo "$total_nodes_Stopped > 0" | bc))); then
+NodeToStart=$((total_nodes_running + 1))
+echo "load is lower than target value and there are stoped nodes start safenode$NodeToStart"
+sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodeToStart
+
+
+#if load is higher than target value and all nodes have already been started stop a node
+elif (($(echo "$LoadAverage15 > $TargetLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
+NodeToStop=$total_nodes_running
+echo "load is higher than target value and all nodes have already been started stop safenode$total_nodes_running"
+sudo env "PATH=$PATH" safenode-manager stop --service-name safenode$NodeToStop
+
+fi
