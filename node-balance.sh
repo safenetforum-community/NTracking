@@ -31,9 +31,9 @@ for dir in "$base_dir"/*; do
 done
 
 echo
-echo "nodes added $total_nodes_Added"
-echo "node running $total_nodes_running"
-echo "total nodes added $total_nodes_Stopped"
+echo "nodes Added $total_nodes_Added"
+echo "node Running $total_nodes_running"
+echo "total nodes Stopped $total_nodes_Stopped"
 echo
 
 #echo $TargetLoadAverage
