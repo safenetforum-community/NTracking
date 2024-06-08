@@ -8,7 +8,7 @@ total_nodes_running=0
 total_nodes_Added=0
 total_nodes_Stopped=0
 
-TargetLoadAverage=12
+TargetLoadAverage=13
 LoadAverage15=$(uptime | awk '{print $12}')
 
 
