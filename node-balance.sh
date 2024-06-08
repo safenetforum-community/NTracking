@@ -60,14 +60,14 @@ sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodeToStart
 elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
 TotalNodes=$total_nodes_running
 
-NumberToStop=20
+NumberToStop=10
 
 for (( i = 0; i <= $NumberToStop; i))
 do
        NodesToStop="$NodesToStop --service-name safenode$(echo "$TotalNodes - $NumberToStop" | bc)"
        NumberToStop=$(echo "$NumberToStop - 1" | bc)
 done
-echo "load is higher than 15 stoping 20 nodes and all nodes have already been started stoping $NumberToStop safenode"
+echo "load is higher than 15 stoping 10 nodes and all nodes have already been started stoping $NumberToStop safenode"
 sudo env "PATH=$PATH" safenode-manager stop "$NodesToStop"
 
 
