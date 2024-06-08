@@ -60,9 +60,9 @@ sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodeToStart
 elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
 TotalNodes=$total_nodes_running
 
-NumberToStop=10
+NumberToStop=20
 
-for (( i = 0; i <= $NumberToStop; i))
+for (( i = 0; i < $NumberToStop; i))
 do
        NodesToStop="$NodesToStop --service-name safenode$(echo "$TotalNodes - $NumberToStop" | bc)"
        NumberToStop=$(echo "$NumberToStop - 1" | bc)
