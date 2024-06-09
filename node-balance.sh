@@ -102,7 +102,8 @@ for (( i = 0; i < $NumberToStart; i))
 do
        NodesToStart=$(echo "$TotalNodes - $NumberToStart + 1" | bc)
        echo Starting safenode$NodesToStart
-       sudo systemctl start safenode$NodesToStart
+       #sudo systemctl start safenode$NodesToStart
+       sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodesToStart
        NumberToStart=$(echo "$NumberToStart - 1" | bc)
        sleep 45
 done
