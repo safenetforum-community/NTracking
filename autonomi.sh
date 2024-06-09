@@ -141,8 +141,6 @@ safe wallet get-faucet "$FAUCET"
 ######################################################################################################################## Stop Nodes
 elif [[ "$SELECTION" == "3" ]]; then
 
-rm /tmp/influx-resources/nodemanager_output.lock
-
 sudo pkill -e safe
 
 # stop nodes
@@ -175,6 +173,8 @@ for i in {1..60}
 do
 sudo ufw delete allow $((12000+$i))/udp
 done
+
+rm /tmp/influx-resources/nodemanager_output.lock
 
 rustup update
 sudo apt update -y && sudo apt upgrade -y
