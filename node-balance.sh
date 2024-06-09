@@ -79,30 +79,42 @@ sudo env "PATH=$PATH" safenode-manager start --service-name safenode$NodeToStart
 
 #if load is higher than Max Load Average and all nodes have already been started stop all nodes a and restart one by one
 elif (($(echo "$LoadAverage15 > $MaxLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))) && (($(echo "$LoadTrend == 1" | bc))); then
-touch /tmp/influx-resources/nodemanager_output.lock
 
-       sudo pkill -e safe
-       sudo systemctl stop safenode*
+sudo pkill -e safe
 
-echo
-sleep 180
-echo "System cool down completed starting $total_nodes_running nodes"
-echo
- 
-TotalNodes=$total_nodes_running
-NumberToStart=$total_nodes_running
-for (( i = 0; i < $NumberToStart; i))
+# stop nodes
+# nuke safe node manager services 1 - 100 untill nuke comand exists
+
+for i in {1..100}
 do
-       NodesToStart=$(echo "$TotalNodes - $NumberToStart + 1" | bc)
-       echo Starting safenode$NodesToStart
-       sudo systemctl start safenode$NodesToStart
-       NumberToStart=$(echo "$NumberToStart - 1" | bc)
-       sleep 180
+ # your-unix-command-here
+ sudo systemctl disable --now safenode$i
 done
 
-sudo env "PATH=$PATH" safenode-manager status
-sleep 1800
+sudo rm /etc/systemd/system/safenode*
+sudo systemctl daemon-reload
+
+sudo rm -rf /var/safenode-manager
+sudo rm -rf /var/log/safenode
+rm -rf $HOME/.local/share/safe/node
+
+sleep 2
+############################## close fire wall
+yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
+yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
+yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
+
+#close fire wall ports
+for i in {1..60}
+do
+sudo ufw delete allow $((12000+$i))/udp
+done
+
 rm /tmp/influx-resources/nodemanager_output.lock
+
+rustup update
+sudo apt update -y && sudo apt upgrade -y
+sudo reboot
 
 #if load is higher than target value and all nodes have already been started stop a node
 elif (($(echo "$LoadAverage15 > $TargetLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
