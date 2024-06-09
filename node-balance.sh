@@ -88,7 +88,7 @@ echo
 sleep 180
 echo "System cool down completed starting $total_nodes_running nodes"
 echo
-
+ 
 TotalNodes=$total_nodes_running
 NumberToStart=$total_nodes_running
 for (( i = 0; i < $NumberToStart; i))
