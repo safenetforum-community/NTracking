@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.9 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.0 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -140,6 +140,8 @@ safe wallet get-faucet "$FAUCET"
 
 ######################################################################################################################## Stop Nodes
 elif [[ "$SELECTION" == "3" ]]; then
+
+rm /tmp/influx-resources/nodemanager_output.lock
 
 sudo pkill -e safe
 
