@@ -101,8 +101,8 @@ do
 done
 
 sudo env "PATH=$PATH" safenode-manager status
-rm /tmp/influx-resources/nodemanager_output.lock
 sleep 1800
+rm /tmp/influx-resources/nodemanager_output.lock
 
 #if load is higher than target value and all nodes have already been started stop a node
 elif (($(echo "$LoadAverage15 > $TargetLoadAverage" | bc))) && (($(echo "$total_nodes_Added == 0" | bc))); then
