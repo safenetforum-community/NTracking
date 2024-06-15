@@ -66,6 +66,10 @@ fi
 sudo rm /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
+#install latest load balancing script
+sudo rm -f /usr/bin/node-balance.sh && sudo wget -P /usr/bin/  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/node-balance.sh && sudo chmod u+x /usr/bin/node-balance.sh
+echo "5-59/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /usr/bin/bash /usr/bin/node-balance.sh > /tmp/influx-resources/node_balance" | sudo tee /etc/cron.d/node_balance
+
 ##############################  close fire wall
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 
