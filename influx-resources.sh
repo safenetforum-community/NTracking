@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#1
-
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
@@ -180,7 +178,7 @@ fi
 
 # sleep till all nodes have systems have finished prosessing
 
-while (( $(("$time_min" + "5")) > $(date +"%M"))); do
+while (( $(("$time_min" + "50")) > $(date +"%M"))); do
 sleep 10
 done
 
