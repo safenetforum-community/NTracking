@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.2 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.3 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -119,7 +119,7 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port $(($NODE_PORT_FIRST+1000))-$(($NODE_PORT_FIRST+$NUMBER_NODES-1+1000)) --data-dir-path $HOME/node-data --log-dir-path $HOME/node-logs
+sudo env "PATH=$PATH" safenode-manager add --user $USER --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port $(($NODE_PORT_FIRST+1000))-$(($NODE_PORT_FIRST+$NUMBER_NODES-1+1000)) --data-dir-path $HOME/node-data --log-dir-path $HOME/node-logs
 else
 # for home nodes hole punching
 sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username
@@ -149,9 +149,9 @@ elif [[ "$SELECTION" == "3" ]]; then
 sudo pkill -e safe
 
 # stop nodes
-# nuke safe node manager services 1 - 100 untill nuke comand exists
+# nuke safe node manager services 1 - 500 untill nuke comand exists
 
-for i in {1..100}
+for i in {1..500}
 do
  # your-unix-command-here
  sudo systemctl disable --now safenode$i
@@ -164,6 +164,7 @@ sudo rm -rf /var/safenode-manager
 sudo rm -rf /var/log/safenode
 
 rm -rf $HOME/.local/share/safe/node
+sudo rm -rf $HOME/node-*
 
 sleep 2
 
@@ -172,12 +173,6 @@ sleep 2
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
-
-#close fire wall ports
-for i in {1..60}
-do
-sudo ufw delete allow $((12000+$i))/udp
-done
 
 rm /tmp/influx-resources/nodemanager_output.lock
 
