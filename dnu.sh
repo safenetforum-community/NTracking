@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.4 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.5 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
