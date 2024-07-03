@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.8 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.9 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -200,7 +200,42 @@ sudo env "PATH=$PATH" safenode-manager upgrade --interval 11000  | tee -a /tmp/i
 
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "6" ]]; then
-vdash --glob-path "$HOME/node-logs/safenode*/safenode.log"
+
+# Function to generate log paths
+generate_log_paths() {
+    local start=$1
+    local end=$2
+    local log_paths=""
+    for i in $(seq $start $end); do
+        log_paths="$log_paths $HOME/node-logs/safenode$i/safenode.log"
+    done
+    echo $log_paths
+}
+
+# Prompt the user for input
+echo "Enter a single number or a range (e.g., 1-5):"
+read input
+
+# Determine if the input is a range or a single number
+if [[ $input =~ ^[0-9]+-[0-9]+$ ]]; then
+    # Input is a range
+    start=$(echo $input | cut -d'-' -f1)
+    end=$(echo $input | cut -d'-' -f2)
+elif [[ $input =~ ^[0-9]+$ ]]; then
+    # Input is a single number
+    start=$input
+    end=$input
+else
+    echo "Invalid input. Please enter a single number or a range (e.g., 1-5)."
+    exit 1
+fi
+
+# Generate log paths
+log_paths=$(generate_log_paths $start $end)
+
+# Execute vdash command
+vdash --glob-path $log_paths
+
 ######################################################################################################################### spare
 elif [[ "$SELECTION" == "7" ]]; then
 
