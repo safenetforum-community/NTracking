@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 1.9 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 1.10 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -234,7 +234,7 @@ fi
 log_paths=$(generate_log_paths $start $end)
 
 # Execute vdash command
-vdash --glob-path $log_paths
+vdash $log_paths
 
 ######################################################################################################################### spare
 elif [[ "$SELECTION" == "7" ]]; then
