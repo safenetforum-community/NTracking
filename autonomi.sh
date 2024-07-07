@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -119,7 +119,7 @@ mkdir -p /tmp/influx-resources
 
 if [[ "$NODE_TYPE" == "2" ]]; then
 # for cloud instances
-"PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port $(($NODE_PORT_FIRST+1000))-$(($NODE_PORT_FIRST+$NUMBER_NODES-1+1000))
+sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port $(($NODE_PORT_FIRST+1000))-$(($NODE_PORT_FIRST+$NUMBER_NODES-1+1000))
 else
 # for home nodes hole punching
 sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username
