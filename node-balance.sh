@@ -14,8 +14,8 @@ total_nodes_running=0
 total_nodes_Added=0
 total_nodes_Stopped=0
 
-TargetLoadAverage=8
-MaxLoadAverage=20
+TargetLoadAverage=12
+MaxLoadAverage=23
 
 LoadAverage1=$(uptime | awk '{print $(NF-2)}' | awk '{print $(NF-1)}' FS=,)
 LoadAverage5=$(uptime | awk '{print $(NF-1)}'  | awk '{print $(NF-1)}' FS=,)
