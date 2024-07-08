@@ -36,7 +36,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
 
         if [[ -n "$node_details" ]]; then
-        total_nodes_running=$((total_nodes_running + 1))
+        total_nodes_running=$(($total_nodes_running + 1))
         status="TRUE"
         mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
         cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
@@ -45,7 +45,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
                 
         else
-        total_nodes_killed=$((total_nodes_killed + 1))
+        total_nodes_killed=$(($total_nodes_killed + 1))
         status="FALSE"
         mem_used=0
         cpu_usage=0
