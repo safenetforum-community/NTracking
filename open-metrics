@@ -64,6 +64,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
 done
 
+network_size=$(echo "$total_network_size / $NumberOfNodes" | bc )
 
 # Latency
 latency=$(ping -c 4 8.8.8.8 | tail -1| awk '{print $4}' | cut -d '/' -f 2)
@@ -105,5 +106,5 @@ echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_ru
 echo "nodes_totals total_disk="$total_disk"i $influx_time"
 echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
 echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
-echo "$networkSize"
+echo "nodes_network size="$network_size"i $influx_time
 echo "nodes latency=$latency $influx_time"
