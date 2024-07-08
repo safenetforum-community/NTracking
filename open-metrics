@@ -41,6 +41,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
+        rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
+        
         else
         total_nodes_killed=$((total_nodes_killed + 1))
         status="FALSE"
@@ -73,9 +75,6 @@ exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<< $coingecko)
 market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
 exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
 market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
-
-NanosEarned=$($total_rewards_balance / 1000000000)
-echo "nanos $NanosEarned"
 
 # calculate earnings in usd & gbp
 earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
