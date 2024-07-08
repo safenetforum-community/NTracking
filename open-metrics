@@ -74,6 +74,9 @@ market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
 exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
 market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
 
+NanosEarned=$($total_rewards_balance / 1000000000)
+echo "nanos $NanosEarned"
+
 # calculate earnings in usd & gbp
 earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
 earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
