@@ -31,7 +31,7 @@ MetricsPortFirst=$(($MetricsPortFirst -1 ))
 # Process nodes
 for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
-        node_name=safenode$i
+        node_name=safenode$(seq -f "%03g" $i)
         node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
 
 
