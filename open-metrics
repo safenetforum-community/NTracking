@@ -15,6 +15,7 @@ time_min=$(date +"%M")
 total_rewards_balance=0
 total_nodes_running=0
 total_nodes_killed=0
+total_network_size=0
 
 # Arrays
 declare -A dir_pid
@@ -40,6 +41,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
         cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
+        network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
         
@@ -53,6 +55,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         fi
 
         total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
+        total_network_size=$(($total_network_size + $network_size))
 
         # Format for InfluxDB
         node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,rewards=$rewards_balance,cpu="$cpu_usage"i,mem="$mem_used"i $influx_time"
