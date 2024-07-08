@@ -50,6 +50,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         mem_used=0
         cpu_usage=0
         records=0
+        network_size=0
         rewards_balance=0
         fi
 
