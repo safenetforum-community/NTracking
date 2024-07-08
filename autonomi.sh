@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.2 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -151,7 +151,7 @@ sudo pkill -e safe
 # stop nodes
 # nuke safe node manager services 1 - 100 untill nuke comand exists
 
-for i in {1..100}
+for i in {1..500}
 do
  # your-unix-command-here
  sudo systemctl disable --now safenode$i
