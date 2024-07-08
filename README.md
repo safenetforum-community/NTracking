@@ -3,6 +3,9 @@
 ![image](https://github.com/safenetforum-community/NTracking/assets/25412853/3eb93d09-a2aa-431a-a442-247b41acba33)
 
 
+# usage
+nodes must be started with safe node manager and have open-metrics enabled with metrics port set from 13001 for safe node iterating up in line with safe node number
+
 
 whiptail script to set up NTracking 
 
