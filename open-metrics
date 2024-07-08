@@ -1,5 +1,8 @@
 #!/bin/bash
 
+MetricsPortFirst=5700
+
+
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
@@ -18,44 +21,42 @@ declare -A dir_pid
 declare -A node_numbers
 declare -A node_details_store
 
+# count node foldrs
+NumberOfNodes=$(ls $base_dir | wc -l)
+
+# drop node first port by 1 as i had to be 1 in the for loop for correct node names
+MetricsPortFirst=$(($MetricsPortFirst -1 ))
+
 # Process nodes
-for dir in "$base_dir"/*; do
-    if [[ -f "$dir/safenode.pid" ]]; then
-        dir_name=$(basename "$dir")
-        dir_pid["$dir_name"]=$(cat "$dir/safenode.pid")
-        node_number=${dir_name#safenode}
-        node_numbers["$dir_name"]=$node_number
-        node_details=$(jq '.nodes[] | select(.service_name == "'$dir_name'")' /var/safenode-manager/node_registry.json)
+for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
-        # Skip if node status is ADDED
-        if [[ $(jq -r .status <<< "$node_details") == "Added" ]]; then
-            continue
-        fi
+        node_name=safenode$i
+        node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
 
-        # Retrieve process information
-        process_info=$(ps -o rss,%cpu -p "${dir_pid[$dir_name]}" | awk 'NR>1')
-        if [[ -n "$process_info" ]]; then
+
+        if [[ -n "$node_details" ]]; then
         total_nodes_running=$((total_nodes_running + 1))
         status="TRUE"
-        mem_used=$(echo "$process_info" | awk '{print $1/1024}')
-        cpu_usage=$(echo "$process_info" | awk '{print $2}')
+        mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
+        cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
+        records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
+        rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
         else
         total_nodes_killed=$((total_nodes_killed + 1))
         status="FALSE"
         mem_used=0
         cpu_usage=0
+        records=0
+        rewards_balance=0
         fi
 
-        peer_id=$(jq -r .peer_id <<< "$node_details")
-        node_version=$(jq -r .version <<< "$node_details")
-        rewards_balance=$(safe wallet balance --peer-id /var/safenode-manager/services/safenode$node_number | awk 'NR==3{print $7}')
         total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
 
         # Format for InfluxDB
-        node_details_store[$node_number]="nodes,id=$dir_name,peer_id=$peer_id status=$status,pid=${dir_pid[$dir_name]}i,version=\"$node_version\",records=$(find "$dir/record_store" -type f | wc -l)i,rewards=$rewards_balance,cpu=$cpu_usage,mem=$mem_used $influx_time"
+        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,rewards=$rewards_balance,cpu="$cpu_usage"i,mem="$mem_used"i $influx_time"
         #sleep to slow script down to spread out cpu spike
-        sleep 4
-    fi
+        sleep 1
+
 done
 
 
