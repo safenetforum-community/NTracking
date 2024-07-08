@@ -4,7 +4,7 @@
 
 
 # usage
-nodes must be started with safe node manager and have open-metrics enabled with metrics port set from 13001 for safe node iterating up in line with safe node number
+nodes must be started with safe node manager and have open-metrics enabled with metrics port set from 13001 for safe node 1 iterating up in line with safe node number
 
 
 whiptail script to set up NTracking 
