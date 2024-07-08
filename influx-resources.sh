@@ -64,7 +64,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
 done
 
-network_size=$(echo "$total_network_size / $NumberOfNodes" | bc )
+network_size=$(echo "$total_network_size / $total_nodes_running" | bc )
 
 # Latency
 latency=$(ping -c 4 8.8.8.8 | tail -1| awk '{print $4}' | cut -d '/' -f 2)
