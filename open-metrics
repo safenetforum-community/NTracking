@@ -89,12 +89,13 @@ sleep 10
 done
 
 
+# Output
+
 # Sort
 for num in $(echo "${!node_details_store[@]}" | tr ' ' '\n' | sort -n); do
     echo "${node_details_store[$num]}"
 done
 
-# Output
 echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
 echo "nodes_totals total_disk="$total_disk"i $influx_time"
 echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
