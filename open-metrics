@@ -179,7 +179,7 @@ fi
 
 # sleep till all nodes have systems have finished prosessing
 
-while (( $(("$time_min" + "50")) > $(date +"%M"))); do
+while (( $(("$time_min" + "5")) > $(date +"%M"))); do
 sleep 10
 done
 
