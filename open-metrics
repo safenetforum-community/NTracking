@@ -43,8 +43,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
         network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
-        rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
-        
+                
         else
         total_nodes_killed=$((total_nodes_killed + 1))
         status="FALSE"
@@ -54,13 +53,13 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         rewards_balance=0
         fi
 
-        total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
-        total_network_size=$(($total_network_size + $network_size))
-
         # Format for InfluxDB
         node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,rewards=$rewards_balance,cpu="$cpu_usage"i,mem="$mem_used"i $influx_time"
         #sleep to slow script down to spread out cpu spike
-        sleep 1
+
+        rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
+        total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
+        total_network_size=$(($total_network_size + $network_size))
 
 done
 
