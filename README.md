@@ -6,7 +6,7 @@
 # usage
 nodes must be started with safe node manager and have open-metrics enabled with metrics port set from 13001 for safe node 1 iterating up in line with safe node number
 
-ie an example for 50 nodes --node-port can be customised or -- home network may be used
+ie an example for 50 nodes --node-port can be customised or -- home network may be used.
 update the --owner flag for your discord id or remove the --owner flag and timbobjohnes if you are not in a wave
 ```
 sudo env "PATH=$PATH" safenode-manager add --node-port 12001-12050  --count 50 --owner timbobjohnes --enable-metrics-server --metrics-port 13001-13050
