@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#run with bash <(curl -s http://safe-logs.ddns.net/scrip/scrape.sh)bash
+#run with bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/scrape.sh)
 
 #ReceiveingAddress="909d2487061b425c328781b910cdc943b57218a26a3c4b13608364949294680293718080e6452cabc67b4c583b3366ad"
 
