@@ -8,7 +8,7 @@ nodes must be started with safe node manager and have open-metrics enabled with 
 
 ie an example for 50 nodes --node-port can be customised or -- home network may be used
 ```
-sudo env "PATH=$PATH" safenode-manager add --node-port 12001-12050  --count 50 --owner timbobjohnes --enable-metrics-server --metrics-port 13001-13450
+sudo env "PATH=$PATH" safenode-manager add --node-port 12001-12050  --count 50 --owner timbobjohnes --enable-metrics-server --metrics-port 13001-13050
 sudo env "PATH=$PATH" safenode-manager start --interval 301000
 ```
 
