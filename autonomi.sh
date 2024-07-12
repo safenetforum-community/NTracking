@@ -14,7 +14,7 @@ NODE_PORT_FIRST=12001
 NUMBER_NODES=40
 NUMBER_COINS=1
 CPU_TARGET=70
-DELAY_BETWEEN_NODES=301000
+DELAY_BETWEEN_NODES=121000
 
 export NEWT_COLORS='
 window=,white
@@ -25,7 +25,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.3 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -67,8 +67,8 @@ sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.g
 echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
 #install latest load balancing script
-sudo rm -f /usr/bin/node-balance.sh && sudo wget -P /usr/bin/  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/node-balance.sh && sudo chmod u+x /usr/bin/node-balance.sh
-echo "5-59/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /usr/bin/bash /usr/bin/node-balance.sh > /tmp/influx-resources/node_balance" | sudo tee /etc/cron.d/node_balance
+#sudo rm -f /usr/bin/node-balance.sh && sudo wget -P /usr/bin/  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/node-balance.sh && sudo chmod u+x /usr/bin/node-balance.sh
+#echo "5-59/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /usr/bin/bash /usr/bin/node-balance.sh > /tmp/influx-resources/node_balance" | sudo tee /etc/cron.d/node_balance
 
 ##############################  close fire wall
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
