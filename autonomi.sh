@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#not used at present
 CLIENT=0.92.0
 NODE=0.106.5
 FAUCET=161.35.173.105:8000
@@ -12,8 +13,6 @@ NODE_MANAGER=0.8.0
 # first node port can edited in menu later
 NODE_PORT_FIRST=12001
 NUMBER_NODES=40
-NUMBER_COINS=1
-CPU_TARGET=70
 DELAY_BETWEEN_NODES=301000
 
 export NEWT_COLORS='
