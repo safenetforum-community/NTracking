@@ -30,7 +30,7 @@ SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
 "3" "Stop Nodes update upgrade & restart system!!  " OFF \
-"4" "Get Test Coins" ON \
+"4" "Spare   " ON \
 "5" "Upgrade Nodes" OFF \
 "6" "Start Vdash" OFF \
 "7" "Spare                        " OFF \
@@ -65,10 +65,6 @@ fi
 #install latest infux resources script from github
 sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
-
-#install latest load balancing script
-#sudo rm -f /usr/bin/node-balance.sh && sudo wget -P /usr/bin/  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/node-balance.sh && sudo chmod u+x /usr/bin/node-balance.sh
-#echo "5-59/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /usr/bin/bash /usr/bin/node-balance.sh > /tmp/influx-resources/node_balance" | sudo tee /etc/cron.d/node_balance
 
 ##############################  close fire wall
 yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}')) && yes y | sudo ufw delete $(sudo ufw status numbered |(grep 'safe nodes'|awk -F"[][]" '{print $2}'))
@@ -123,7 +119,6 @@ sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NO
 else
 # for home nodes hole punching
 sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port 13001-$((13001+$NUMBER_NODES-1))
-#--peer "/ip4/104.152.208.126/udp/12040/quic-v1/p2p/12D3KooWNUYCcX3iJaJX5i7RZMKK1rLAFrKCNnWyrFjCdPLd5pcd"
 fi
 
 # --version "$NODE"
@@ -186,18 +181,10 @@ sudo apt update -y && sudo apt upgrade -y
 sudo reboot
 
 
-######################################################################################################################## Get Test Coins
+######################################################################################################################## spare
 elif [[ "$SELECTION" == "4" ]]; then
-NUMBER_COINS=$(whiptail --title "Number of Coins" --inputbox "\nEnter number of Coins" 8 40 $NUMBER_COINS 3>&1 1>&2 2>&3)
-if [[ $? -eq 255 ]]; then
-exit 0
-fi
 
-for (( c=1; c<=$NUMBER_COINS; c++ ))
-do
-   safe wallet get-faucet "$FAUCET"
-   sleep 1
-done
+echo "spare 4"
 
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
