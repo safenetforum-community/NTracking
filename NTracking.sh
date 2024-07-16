@@ -507,6 +507,9 @@ sudo timedatectl set-timezone UTC
 #install jq
 sudo apt-get install jq -y
 
+#install bc
+sudo apt-get install bc -y
+
 ################################################################### download script to gather node resources
 
 #remove old script if exists
