@@ -122,7 +122,7 @@ if [[ "$NODE_TYPE" == "2" ]]; then
 sudo env "PATH=$PATH" safenode-manager add --node-port "$NODE_PORT_FIRST"-$(($NODE_PORT_FIRST+$NUMBER_NODES-1))  --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port 13001-$((13001+$NUMBER_NODES-1))
 else
 # for home nodes hole punching
-sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port $(($NODE_PORT_FIRST+1000))-$(($NODE_PORT_FIRST+$NUMBER_NODES-1+1000))
+sudo env "PATH=$PATH" safenode-manager add --home-network --count "$NUMBER_NODES" $Discord_Username --enable-metrics-server --metrics-port 13001-$((13001+$NUMBER_NODES-1))
 #--peer "/ip4/104.152.208.126/udp/12040/quic-v1/p2p/12D3KooWNUYCcX3iJaJX5i7RZMKK1rLAFrKCNnWyrFjCdPLd5pcd"
 fi
 
