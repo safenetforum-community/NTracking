@@ -43,6 +43,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
         network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
+        connected_peers=$(echo "$node_details" | grep sn_networking_connected_peers | awk 'NR==3 {print $2}')
+        store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
                 
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
@@ -52,10 +54,12 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         records=0
         network_size=0
         rewards_balance=0
+        connected_peers=0
+        store_cost=0
         fi
 
         # Format for InfluxDB
-        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,rewards=$rewards_balance,cpu="$cpu_usage"i,mem="$mem_used"i $influx_time"
+        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i $influx_time"
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
