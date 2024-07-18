@@ -187,20 +187,20 @@ sudo reboot
 ######################################################################################################################## scrape nanos
 elif [[ "$SELECTION" == "4" ]]; then
 
-ReceiveingAddress=$(whiptail --title "Receiveing Address" --inputbox "\nEnter Receiveing Address" 8 40 "909d2487061b425c328781b910cdc943b57218a26a3c4b13608364949294680293718080e6452cabc67b4c583b3366ad" 3>&1 1>&2 2>&3)
-if [[ $? -eq 255 ]]; then
-exit 0
-fi
 
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
 
 safe wallet address
-
 wallet_address=$(safe wallet address | awk 'NR==3{print $1}')
-
 echo "$wallet_address"
+
+# set custom receving address for final transaction if desiered
+ReceiveingAddress=$(whiptail --title "Receiveing Address" --inputbox "\nEnter Receiveing Address" 8 40 "$wallet_address" 3>&1 1>&2 2>&3)
+if [[ $? -eq 255 ]]; then
+exit 0
+fi
 
 # Process nodes
 for dir in "$base_dir"/*; do
