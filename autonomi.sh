@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -320,18 +320,18 @@ for service_file in $SERVICE_DIR/safenode*.service; do
         # Check if the --owner parameter is already present
         if ! grep -q '--owner' "$service_file"; then
             # Add the --owner parameter to the ExecStart line
-            sed -i "s|\(ExecStart=.*\)|\1 --owner $OWNER|" "$service_file"
+            sudo sed -i "s|\(ExecStart=.*\)|\1 --owner $OWNER|" "$service_file"
             echo "Updated $service_file with owner $OWNER"
         fi
     fi
 done
 
 # Reload the systemd unit files
-systemctl daemon-reload
+sudo systemctl daemon-reload
 
 # Search for all running services starting with 'safenode' and restart them
 for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
-    systemctl restart "$service"
+    sudo systemctl restart "$service"
     echo "Restarted $service"
 done
 
