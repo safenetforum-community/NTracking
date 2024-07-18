@@ -262,6 +262,7 @@ echo ""
 echo ""
 echo ""
 echo ""
+# if custom recieving address is set set balance on to that machine and print deposit string
 if [[ "$wallet_address" == "$ReceiveingAddress" ]]; then
 exit 0
 else
