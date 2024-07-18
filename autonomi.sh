@@ -197,7 +197,7 @@ wallet_address=$(safe wallet address | awk 'NR==3{print $1}')
 echo "$wallet_address"
 
 # set custom receving address for final transaction if desiered
-ReceiveingAddress=$(whiptail --title "Receiveing Address" --inputbox "\nEnter Receiveing Address" 8 40 "$wallet_address" 3>&1 1>&2 2>&3)
+ReceiveingAddress=$(whiptail --title "Receiveing Address" --inputbox "\nLeave this as default to keep coins on this machine" 8 40 "$wallet_address" 3>&1 1>&2 2>&3)
 if [[ $? -eq 255 ]]; then
 exit 0
 fi
