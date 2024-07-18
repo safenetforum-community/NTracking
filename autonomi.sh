@@ -32,8 +32,8 @@ SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
 "4" "Spare   " ON \
 "5" "Upgrade Nodes" OFF \
 "6" "Start Vdash" OFF \
-"7" "Spare                        " OFF \
-"8" "Spare   " OFF 3>&1 1>&2 2>&3)
+"7" "Remove node owner                        " OFF \
+"8" "Add node owner   " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
 exit 0
@@ -197,14 +197,63 @@ sudo env "PATH=$PATH" safenode-manager upgrade --interval 60000  | tee -a /tmp/i
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "6" ]]; then
 vdash --glob-path "/var/log/safenode/safenode*/safenode.log"
-######################################################################################################################### spare
+######################################################################################################################### remove owner from nodes
 elif [[ "$SELECTION" == "7" ]]; then
 
-echo "spare 7"
+# Verzeichnis mit den Service-Dateien
+SERVICE_DIR="/etc/systemd/system"
 
-######################################################################################################################### spare
+# Suche alle Dateien, die mit 'safenode' beginnen
+for service_file in $SERVICE_DIR/safenode*.service; do
+    if [ -f "$service_file" ]; then
+        # Entferne das --owner Flag aus der ExecStart Zeile
+        sed -i 's/--owner \S*//' "$service_file"
+        echo "Updated $service_file"
+    fi
+done
+
+# Neu laden der Systemd-Unit-Dateien
+systemctl daemon-reload
+
+# Suche alle laufenden Services, die mit 'safenode' beginnen und starte sie neu
+for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
+    systemctl restart "$service"
+    echo "Restarted $service"
+done
+
+######################################################################################################################### add user back to nodes
 elif [[ "$SELECTION" == "8" ]]; then
 
-echo "spare 8"
+Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "timbobjohnes" 3>&1 1>&2 2>&3)
+if [[ $? -eq 255 ]]; then
+exit 0
+fi
+
+# Besitzer-Parameter
+OWNER=$Discord_Username
+
+# Directory containing the service files
+SERVICE_DIR="/etc/systemd/system"
+
+# Search for all files starting with 'safenode'
+for service_file in $SERVICE_DIR/safenode*.service; do
+    if [ -f "$service_file" ]; then
+        # Check if the --owner parameter is already present
+        if ! grep -q '--owner' "$service_file"; then
+            # Add the --owner parameter to the ExecStart line
+            sed -i "s|\(ExecStart=.*\)|\1 --owner $OWNER|" "$service_file"
+            echo "Updated $service_file with owner $OWNER"
+        fi
+    fi
+done
+
+# Reload the systemd unit files
+systemctl daemon-reload
+
+# Search for all running services starting with 'safenode' and restart them
+for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
+    systemctl restart "$service"
+    echo "Restarted $service"
+done
 
 fi
