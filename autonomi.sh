@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.2 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.3 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -262,7 +262,11 @@ echo ""
 echo ""
 echo ""
 echo ""
+if [[ "$wallet_address" == "$ReceiveingAddress" ]]; then
+exit 0
+else
 deposit=$(safe wallet send $client_balance $ReceiveingAddress | awk 'NR==10{print $1}')
+fi
 echo
 echo
 echo
