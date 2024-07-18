@@ -80,6 +80,10 @@ NODE_PORT_FIRST=$(whiptail --title "Port Number of first Node" --inputbox "\nEnt
 if [[ $? -eq 255 ]]; then
 exit 0
 fi
+
+############################## disable swap
+sudo swapoff -a
+
 ############################## open ports
 sudo ufw allow $NODE_PORT_FIRST:$(($NODE_PORT_FIRST+$NUMBER_NODES-1))/udp comment 'safe nodes'
 sleep 2
