@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.2 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -286,17 +286,17 @@ SERVICE_DIR="/etc/systemd/system"
 for service_file in $SERVICE_DIR/safenode*.service; do
     if [ -f "$service_file" ]; then
         # Entferne das --owner Flag aus der ExecStart Zeile
-        sed -i 's/--owner \S*//' "$service_file"
+        sudo sed -i 's/--owner \S*//' "$service_file"
         echo "Updated $service_file"
     fi
 done
 
 # Neu laden der Systemd-Unit-Dateien
-systemctl daemon-reload
+sudo systemctl daemon-reload
 
 # Suche alle laufenden Services, die mit 'safenode' beginnen und starte sie neu
 for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
-    systemctl restart "$service"
+    sudo systemctl restart "$service"
     echo "Restarted $service"
 done
 
