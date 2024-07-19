@@ -112,3 +112,7 @@ echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$ma
 echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
 echo "nodes_network size="$network_size"i $influx_time"
 echo "nodes latency=$latency $influx_time"
+
+# once per day check node version
+
+
