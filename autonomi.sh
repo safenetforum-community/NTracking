@@ -303,8 +303,9 @@ sudo systemctl daemon-reload
 for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
     sudo systemctl restart "$service"
     echo "Restarted $service"
-    sleep 30
-done
+    echo "sleeping 60s this process is disowned"
+    sleep 60
+done & disown
 
 ######################################################################################################################### add user back to nodes
 elif [[ "$SELECTION" == "8" ]]; then
@@ -339,7 +340,8 @@ sudo systemctl daemon-reload
 for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
     sudo systemctl restart "$service"
     echo "Restarted $service"
-    sleep 30
-done
+    echo "sleeping 60s this process is disowned"
+    sleep 60
+done & disown
 
 fi
