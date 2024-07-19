@@ -303,7 +303,7 @@ sudo systemctl daemon-reload
 for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
     sudo systemctl restart "$service"
     echo "Restarted $service"
-    sleep 5
+    sleep 30
 done
 
 ######################################################################################################################### add user back to nodes
@@ -339,7 +339,7 @@ sudo systemctl daemon-reload
 for service in $(systemctl list-units --type=service --state=running | grep 'safenode' | awk '{print $1}'); do
     sudo systemctl restart "$service"
     echo "Restarted $service"
-    sleep 5
+    sleep 30
 done
 
 fi
