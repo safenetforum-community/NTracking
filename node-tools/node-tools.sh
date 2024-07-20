@@ -31,7 +31,7 @@ for tool in "${required_tools[@]}"; do
     if ! command -v "$tool" &> /dev/null; then
         echo "Error: '$tool' is not installed. Please install it and try again."
         echo "You can install all the required utilities, with command."
-        echo "sudo apt install ${required_tools[@]}"
+        echo "sudo apt install $tool"
         exit 1
     fi
 done

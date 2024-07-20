@@ -135,8 +135,6 @@ process_node() {
             node_put_chunk=$(echo "$node_details" | grep -oP '(?<=sn_node_put_record_ok_total{record_type="Chunk"} )\d+' || echo 0 )
             node_put_spend=$(echo "$node_details" | grep -oP '(?<=sn_node_put_record_ok_total{record_type="Spend"} )\d+' || echo 0 )
             node_put_error=$(echo "$node_details" | grep -oP '(?<=sn_node_put_record_err_total )\d+' || echo 0 )
-
-
         fi
     fi
 
