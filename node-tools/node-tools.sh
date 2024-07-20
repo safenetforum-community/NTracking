@@ -15,7 +15,7 @@ base_dir="undefined"                        #location of binarys TODO: need to c
 
 # // NOTE : Changing things below this line might break functionality
 
-tools_version="0.1.0-July 2024"             #Version of script
+tools_version="0.1.1-July 2024"             #Version of script
 
 bold=$(tput bold)
 normal=$(tput sgr0)
