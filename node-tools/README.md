@@ -56,3 +56,7 @@ RB      =   *NOTE: This is a Metrics parameter - Rewards Balance, this will be n
 FB      =   *NOTE: This is a Metrics parameter - Forward Balance, this is nano's that have been earned and forwarded as part of beta rewards - they should appear in /rank
 
 Ver     =   Version of node Software being run
+
+## Example Screen
+
+![screenshot](img/upload.jpg)
