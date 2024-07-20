@@ -4,6 +4,8 @@ A simple utility to provide more information on the autonomi node, without requi
 
 ## Install
 
+Sorry, this currently only works on Linux, a working Powershell script is in development.
+
 The utility needs some basic packages to function, you will need to install those first;
 
 `sudo apt install jq curl awk ps grep head sort`
