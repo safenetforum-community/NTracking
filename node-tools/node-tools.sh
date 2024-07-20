@@ -168,7 +168,7 @@ for i in $(jq -c '.nodes[]' $json_file ); do
        input_string="$service_name:$status:$owner:$user_mode:$network_type:$node_port:$records:$store_cost:$rewards_balance:$rewards_forward:$version"
 
        # Print formatted output using AWK
-       echo "$input_string" | awk -F: '{ printf "%-11s | Status: %-7s | Owner: %-20s | Mode: %-6s | Net: %-8s | Port: %-5s | Rec: %-4s | SC: %-4s | RB: %-4s | RF: %-4s | Ver: %-10s\n", $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}'
+       echo "$input_string" | awk -F: '{ printf "%-11s | Status: %-7s | Owner: %-20s | Mode: %-6s | Net: %-8s | Port: %-5s | Rec: %-4s | SC: %-4s | RB: %-4s | FB: %-4s | Ver: %-10s\n", $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}'
     else
        input_string="$service_name:$status:$owner:$user_mode:$network_type:$node_port:$version"
 
