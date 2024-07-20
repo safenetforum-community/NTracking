@@ -1,4 +1,4 @@
-# node=exporter-adv.sh
+# node-exporter-adv.sh
 
 This script is based on the original `influx-resources.sh`, but changes the functionality to be decoupled.
 
@@ -18,12 +18,14 @@ The code makes use of a few standard BASH shell utilities, that need to be insta
 There are 4 parts to getting the script working;
 
 ### 1) download the script to `/usr/local/bin` and make executable
+        
         ```
         sudo su -
         curl -sSL https://raw.githubusercontent.com/jadkins-me/NTracking/main/node-exporter/node-exporter-adv.sh
         mv node-exporter-adv.sh /usr/local/bin
         chmod +x /usr/local/bin/node-exporter-adv.sh
         ```
+        
 ### 2) update the cron job to include the new script
 
         `sudo nano /etc/cron.d/influx_resources`
@@ -47,6 +49,7 @@ There are 4 parts to getting the script working;
           from_beginning = true
           watch_method = "poll"
         ```
+        
     Save and Exit - Ctrl+X, then Y to save
 
     Then restart Telegraf to read the new configuration
