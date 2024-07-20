@@ -21,8 +21,7 @@ There are 4 parts to getting the script working;
         
         ```
         sudo su -
-        curl -sSL https://raw.githubusercontent.com/jadkins-me/NTracking/main/node-exporter/node-exporter-adv.sh
-        mv node-exporter-adv.sh /usr/local/bin
+        curl -o /usr/local/bin/node-exporter-adv.sh https://raw.githubusercontent.com/jadkins-me/NTracking/main/node-exporter/node-exporter-adv.sh
         chmod +x /usr/local/bin/node-exporter-adv.sh
         ```
         
