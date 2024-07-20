@@ -1,0 +1,21 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary builds
+*.test
+
+#Release folder
+releases/
+
+#Test folder
+test/
+
+#Qemu image for emulated architecture build ARM32 & ARM64
+qemu-base/
+
+#Temporary Jenkins files from build
+jenkins/
