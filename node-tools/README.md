@@ -1,14 +1,14 @@
-#node-tools.sh
+# node-tools.sh
 
 A simple utility to provide more information on the autonomi node, without requiring Vdash or Safenode-Manager to be installed.
 
-##Install
+## Install
 
 The utility needs some basic packages to function, you will need to install those first;
 
 `sudo apt install jq curl awk ps grep head sort`
 
-##Running
+## Running
 
 The script is designed to run directly from github:
 
@@ -26,7 +26,7 @@ chmod +x /usr/local/bin/node-tools.sh
 
 to launch, just call `node-tools.sh`
 
-##Usage
+## Usage
 
 Node-tools reads the contents of the node_registry file created by autonomi safenode-manager and the node-launchpad.  It then passes this file, and displays information on the nodes being run on the machine.
 
