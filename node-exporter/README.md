@@ -11,6 +11,8 @@ This script is based on the original `influx-resources.sh`, but changes the func
 
 ## Pre-Requisits
 
+Sorry, this currently only works on Linux, a working Powershell script is in development.
+
 The code makes use of a few standard BASH shell utilities, that need to be installed via `sudo` or `root`.  A script is provided called `pre-req.sh` which will attempty to install all the required packages.
 
 ## Install
