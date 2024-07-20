@@ -1,6 +1,6 @@
 # node-exporter-adv.sh
 
-This script is based on the original `influx-resources.sh`, but changes the functionality to be decoupled.
+This script is based on the original `influx-resources.sh`, but changes the functionality to be decoupled - You will need to be running a working influxDB and Grafana System, along with telegraf agent installed on the node machine.
 
 1) No longer linked to safenode-manager or node-launchpad to query nodes.
 2) Able to dynamically work out Autonomi node ports by query node JSON file.
