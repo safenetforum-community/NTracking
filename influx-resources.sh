@@ -47,6 +47,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
+        ver="$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}')"
+        
                
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
@@ -60,6 +62,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=0
         gets=0
         puts=0
+        ver="0"
         fi
 
         # Format for InfluxDB
