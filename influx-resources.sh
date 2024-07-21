@@ -63,7 +63,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         fi
 
         # Format for InfluxDB
-        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i $influx_time"
+        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i $influx_time"
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
