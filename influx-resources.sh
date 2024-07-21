@@ -45,7 +45,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
         connected_peers=$(echo "$node_details" | grep sn_networking_connected_peers | awk 'NR==3 {print $2}')
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
-                
+        gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
+               
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
         status="FALSE"
@@ -56,6 +57,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         rewards_balance=0
         connected_peers=0
         store_cost=0
+        gets=0
+        puts=0
         fi
 
         # Format for InfluxDB
