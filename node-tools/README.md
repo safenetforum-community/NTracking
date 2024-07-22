@@ -1,12 +1,10 @@
-# node-tools.sh
+# node-tools
 
 A simple utility to provide more information on the autonomi node, without requiring Vdash or Safenode-Manager to be installed.
 
 ## -= Install-Windows10 / 11 =-
 
-The script uses Powershell, which is included by default on Windows 10 and 11 - you shouldn't need to install any other applications for the script to work.
-
-If your machine has Powershell removed, you will need to install Powershell Version 5+ on the machine.
+The script uses Powershell, which is included on Windows 10 and 11 - you shouldn't need to install any other applications for the script to work.
 
 Download the script from Github, to your downloads folder - click the link below, then in the Github Window select the `...` on upper right of screen above `history` - select `download`
 
@@ -16,6 +14,10 @@ Locate the script `node-tools` in the `downloads` folder
 
 right-click on it, and select `Run With Powershell`
 
+*Note1:* You might get prompted with Windows execution exception, asking if you trust the script - the default is `N` - no, you will need to select `y` yes, else it might not work correctly.
+
+*Note2:* Please don't try to run this with nodes created with safenode-manager, as some of the options needed by the script might fail - It should not be used where more than 50 nodes are running on a machine, as the script hasn't been tested above 50 and Y.M.M.V.
+
 ### Example Screen - Powershell
 ![screenshot](img/node-tools.ps1.01.jpg)
 
@@ -23,7 +25,7 @@ right-click on it, and select `Run With Powershell`
 
 The utility needs some basic packages to function, you will need to install those first;
 
-`sudo apt install jq curl awk ps grep head sort`
+`sudo apt install parallel jq curl awk ps grep head sort`
 
 ### Running
 
