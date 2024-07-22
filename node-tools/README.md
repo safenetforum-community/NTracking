@@ -10,7 +10,7 @@ If your machine has Powershell removed, you will need to install Powershell Vers
 
 Download the script from Github, to your downloads folder - click the link below, then in the Github Window select the `...` on upper right of screen above `history` - select `download`
 
-`https://github.com/jadkins-me/NTracking/blob/main/node-tools/node-tools.ps1`
+[https://github.com/jadkins-me/NTracking/blob/main/node-tools/node-tools.ps1]
 
 Locate the script `node-tools` in the `downloads` folder
 
