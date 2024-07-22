@@ -8,9 +8,9 @@ The script uses Powershell, which is included by default on Windows 10 and 11 - 
 
 If your machine has Powershell removed, you will need to install Powershell Version 5+ on the machine.
 
-Download the script from Github, to your downloads folder - it might get blocked by your browser, so you might need to select `keep`
+Download the script from Github, to your downloads folder - click the link below, then in the Github Window select the `...` on upper right of screen above `history` - select `download`
 
-'https://raw.githubusercontent.com/jadkins-me/NTracking/main/node-tools/node-tools.ps1'
+`https://github.com/jadkins-me/NTracking/blob/main/node-tools/node-tools.ps1`
 
 Locate the script `node-tools` in the `downloads` folder
 
