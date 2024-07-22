@@ -2,15 +2,30 @@
 
 A simple utility to provide more information on the autonomi node, without requiring Vdash or Safenode-Manager to be installed.
 
-## Install
+## -= Install-Windows10 / 11 =-
 
-Sorry, this currently only works on Linux, a working Powershell script is in development.
+The script uses Powershell, which is included by default on Windows 10 and 11 - you shouldn't need to install any other applications for the script to work.
+
+If your machine has Powersehll removed, you will need to install Powershell Version 5+ on the machine.
+
+Download the script from Github, to your downloads folder - it might get blocked by your browser, so you might need to select `keep`
+
+'https://raw.githubusercontent.com/jadkins-me/NTracking/main/node-tools/node-tools.ps1'
+
+Locate the script `node-tools` in the `downloads` folder
+
+right-click on it, and select `Run With Powershell`
+
+### Example Screen - Powershell
+![screenshot](img/node-tools.ps1.01.JPG)
+
+## -= Install-Linux =-
 
 The utility needs some basic packages to function, you will need to install those first;
 
 `sudo apt install jq curl awk ps grep head sort`
 
-## Running
+### Running
 
 The script is designed to run directly from github:
 
@@ -28,7 +43,7 @@ chmod +x /usr/local/bin/node-tools.sh
 
 to launch, just call `node-tools.sh`
 
-## Usage
+### Usage
 
 Node-tools reads the contents of the node_registry file created by autonomi safenode-manager and the node-launchpad.  It then passes this file, and displays information on the nodes being run on the machine.
 
@@ -59,6 +74,6 @@ FB      =   *NOTE: This is a Metrics parameter - Forward Balance, this is nano's
 
 Ver     =   Version of node Software being run
 
-## Example Screen
+### Example Screen - Linux
 
 ![screenshot](img/node-tools.sh.01.JPG)
