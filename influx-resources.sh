@@ -47,7 +47,9 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
-        ver="$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')"
+        ver=$(jq '.nodes[] | select(.service_name == "'safenode$i'") | .version ' /var/safenode-manager/node_registry.json)
+        peer_id=$(jq '.nodes[] | select(.service_name == "'safenode$i'") | .peer_id ' /var/safenode-manager/node_registry.json)
+        
         
                
         else
@@ -63,10 +65,11 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         gets=0
         puts=0
         ver="0"
+        peer_id="0"
         fi
 
         # Format for InfluxDB
-        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=\"$ver\" $influx_time"
+        node_details_store[$i]="nodes,id=$node_name,peer_id=$peer_id status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=\"$ver\" $influx_time"
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
