@@ -6,7 +6,7 @@ A simple utility to provide more information on the autonomi node, without requi
 
 The script uses Powershell, which is included by default on Windows 10 and 11 - you shouldn't need to install any other applications for the script to work.
 
-If your machine has Powersehll removed, you will need to install Powershell Version 5+ on the machine.
+If your machine has Powershell removed, you will need to install Powershell Version 5+ on the machine.
 
 Download the script from Github, to your downloads folder - it might get blocked by your browser, so you might need to select `keep`
 
@@ -17,7 +17,7 @@ Locate the script `node-tools` in the `downloads` folder
 right-click on it, and select `Run With Powershell`
 
 ### Example Screen - Powershell
-![screenshot](img/node-tools.ps1.01.JPG)
+![screenshot](img/node-tools.ps1.01.jpg)
 
 ## -= Install-Linux =-
 
