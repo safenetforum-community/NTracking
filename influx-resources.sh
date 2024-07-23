@@ -125,6 +125,8 @@ echo "nodes latency=$latency $influx_time"
 
 if (($(echo "$time_min == 0" | bc ))) && (($(echo "$time_min == 0" | bc ))) ; then
 
+        cat /tmp/influx-resources/influx-resources-tmp-workaround
+        
         for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
         node_name=safenode$(seq -f "%03g" $i $i)
@@ -136,16 +138,12 @@ if (($(echo "$time_min == 0" | bc ))) && (($(echo "$time_min == 0" | bc ))) ; th
         node_details_store_2[$i]="nodes,id=$node_name $peer_id$ver $influx_time"
 
         #sleep to slow script down to spread out cpu spike
-        sleep 5
+        sleep 2.5
 
-        done
-
-        while (( $(("$time_min" + "55")) > $(date +"%M"))); do
-        sleep 30
         done
 
         # Sort
         for num in $(echo "${!node_details_store_2[@]}" | tr ' ' '\n' | sort -n); do
-        echo "${node_details_store_2[$num]}" >> /tmp/influx-resources/influx-resources
+        echo "${node_details_store_2[$num]}" > /tmp/influx-resources/influx-resources-tmp-workaround
         done
 fi
