@@ -152,7 +152,7 @@ sudo pkill -e safe
 for i in {1..500}
 do
  # your-unix-command-here
- sudo systemctl disable --now safenode$i
+ sudo systemctl stop --now safenode$i
 done
 
 sudo rm /etc/systemd/system/safenode*
