@@ -142,8 +142,10 @@ if (($(echo "$time_min == 0" | bc ))) && (($(echo "$time_min == 0" | bc ))) ; th
 
         done
 
+        rm /tmp/influx-resources/influx-resources-tmp-workaround
+
         # Sort
         for num in $(echo "${!node_details_store_2[@]}" | tr ' ' '\n' | sort -n); do
-        echo "${node_details_store_2[$num]}" > /tmp/influx-resources/influx-resources-tmp-workaround
+        echo "${node_details_store_2[$num]}" >> /tmp/influx-resources/influx-resources-tmp-workaround
         done
 fi
