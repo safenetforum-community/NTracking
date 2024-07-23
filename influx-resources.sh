@@ -123,7 +123,7 @@ echo "nodes latency=$latency $influx_time"
 
 ## temp work around to get peer id and version once every 24 hours
 
-if (($(echo "$time_hour == 2" | bc ))) && (($(echo "$time_min == 0" | bc ))) ; then
+if (($(echo "$time_min == 0" | bc ))) && (($(echo "$time_min == 0" | bc ))) ; then
 
         for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
