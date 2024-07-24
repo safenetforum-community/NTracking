@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.3 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.4 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -202,6 +202,8 @@ if [[ $? -eq 255 ]]; then
 exit 0
 fi
 
+if [[ 1 ]]; then
+
 # Process nodes
 for dir in "$base_dir"/*; do
     if [[ -f "$dir/safenode.pid" ]]; then
@@ -272,6 +274,7 @@ echo
 echo
 echo
 
+fi & disown
 
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
