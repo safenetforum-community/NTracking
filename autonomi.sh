@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.6 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.7 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -203,6 +203,10 @@ exit 0
 fi
 
 if [[ 1 ]]; then
+
+base_dir=$base_dir
+wallet_address=$wallet_address
+ReceiveingAddress=$ReceiveingAddress
 
 # Process nodes
 for dir in "$base_dir"/*; do
