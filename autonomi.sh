@@ -271,7 +271,7 @@ else
 deposit=$(safe wallet send $client_balance $ReceiveingAddress | awk 'NR==10{print $1}')
 fi
 echo
-echo       "          Finished enter to exit"
+echo       "          Finished  ctl c  to exit"
 echo
 
 fi > $HOME/.local/share/safe/client/scrape.log & disown
