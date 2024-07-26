@@ -271,10 +271,13 @@ else
 deposit=$(safe wallet send $client_balance $ReceiveingAddress | awk 'NR==10{print $1}')
 fi
 echo
-echo
+echo       "          Finished enter to exit"
 echo
 
 fi > $HOME/.local/share/safe/client/scrape.log & disown
+
+# tail the log file
+tail -f $HOME/.local/share/safe/client/scrape.log
 
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
