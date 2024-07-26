@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.7 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.8 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -278,7 +278,7 @@ echo
 echo       "          Finished  ctl c  to exit"
 echo
 
-fi > $HOME/.local/share/safe/client/scrape.log & disown
+fi > $HOME/.local/share/safe/client/scrape.log & disown -a
 
 # tail the log file
 tail -f $HOME/.local/share/safe/client/scrape.log
