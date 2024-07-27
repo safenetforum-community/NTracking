@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.8 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.9 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -202,7 +202,7 @@ if [[ $? -eq 255 ]]; then
 exit 0
 fi
 
-if [[ 1 ]]; then
+nohup if [[ 1 ]]; then
 
 base_dir=$base_dir
 wallet_address=$wallet_address
@@ -278,7 +278,7 @@ echo
 echo       "          Finished  ctl c  to exit"
 echo
 
-fi > $HOME/.local/share/safe/client/scrape.log & disown -a
+fi > $HOME/.local/share/safe/client/scrape.log
 
 # tail the log file
 tail -f $HOME/.local/share/safe/client/scrape.log
