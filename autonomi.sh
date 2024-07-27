@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -282,7 +282,11 @@ echo
 done > $HOME/.local/share/safe/client/scrape.log & disown
 
 # tail the log file
-tail -f $HOME/.local/share/safe/client/scrape.log
+
+echo
+echo "to view progress"
+echo "tail -f $HOME/.local/share/safe/client/scrape.log"
+echo
 
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
