@@ -2,8 +2,6 @@
 
 MetricsPortFirst=13001
 
-
-
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
@@ -23,7 +21,6 @@ total_network_size=0
 declare -A dir_pid
 declare -A node_numbers
 declare -A node_details_store
-declare -A node_details_store_2
 
 # count node foldrs
 NumberOfNodes=$(ls $base_dir | wc -l)
@@ -50,6 +47,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
+        ver=$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')
 
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
@@ -63,10 +61,11 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=0
         gets=0
         puts=0
+        ver="0.0.0"
         fi
 
         # Format for InfluxDB
-        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i$ver $influx_time"
+        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=/"$ver/" $influx_time"
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
@@ -119,34 +118,3 @@ echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$ma
 echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
 echo "nodes_network size="$network_size"i $influx_time"
 echo "nodes latency=$latency $influx_time"
-
-
-
-## temp work around to get peer id and version once every 24 hours
-
-if (($(echo "$time_min == 0" | bc ))) && (($(echo "$time_min == 0" | bc ))) ; then
-
-        cat /tmp/influx-resources/influx-resources-tmp-workaround
-        
-        for (( i = 1; i <= $NumberOfNodes; i++ )); do
-
-        node_name=safenode$(seq -f "%03g" $i $i)
-
-        peer_id="peer_id=$(jq '.nodes[] | select(.service_name == "'safenode$i'") | .peer_id ' /var/safenode-manager/node_registry.json)"
-        ver=",version=\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
-
-        # Format for InfluxDB
-        node_details_store_2[$i]="nodes,id=$node_name $peer_id$ver $influx_time"
-
-        #sleep to slow script down to spread out cpu spike
-        sleep 2.5
-
-        done
-
-        rm /tmp/influx-resources/influx-resources-tmp-workaround
-
-        # Sort
-        for num in $(echo "${!node_details_store_2[@]}" | tr ' ' '\n' | sort -n); do
-        echo "${node_details_store_2[$num]}" >> /tmp/influx-resources/influx-resources-tmp-workaround
-        done
-fi
