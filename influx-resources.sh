@@ -8,7 +8,6 @@ base_dir="/var/safenode-manager/services"
 
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
-time_hour=$(date +"%H")
 time_min=$(date +"%M")
 
 # Counters
@@ -47,7 +46,12 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
-        ver=$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')
+        
+        #check version once per hour
+        if (($(echo "$time_min == 0" | bc ))) ; then
+        ver=",version=\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
+        fi
+
 
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
@@ -61,11 +65,14 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=0
         gets=0
         puts=0
-        ver="0.0.0"
+        #check version once per hour
+        if (($(echo "$time_min == 0" | bc ))) ; then
+        ver=",version=\"0.0.0\""
+        fi
         fi
 
         # Format for InfluxDB
-        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=/"$ver/" $influx_time"
+        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i$ver $influx_time"
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
