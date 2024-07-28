@@ -13,7 +13,7 @@ NODE_MANAGER=0.8.0
 # first node port can edited in menu later
 NODE_PORT_FIRST=12001
 NUMBER_NODES=40
-DELAY_BETWEEN_NODES=61000
+DELAY_BETWEEN_NODES=301000
 
 export NEWT_COLORS='
 window=,white
@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
