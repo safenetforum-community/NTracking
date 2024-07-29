@@ -24,7 +24,7 @@ button=black,white
 
 ############################################## select test net action
 
-SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.0 " --radiolist \
+SELECTION=$(whiptail --title "Autonomi Network Beta 2 1.1 " --radiolist \
 "Testnet Actions                              " 20 70 10 \
 "1" "Install & Start Nodes " OFF \
 "2" "Upgrade Client to Latest" OFF \
@@ -292,7 +292,11 @@ echo
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
-sudo env "PATH=$PATH" safenode-manager upgrade --interval $DELAY_BETWEEN_NODES  | tee -a /tmp/influx-resources/node_upgrade_report
+#upgrade node manager
+safeup node-manager
+
+# start upgrade
+sudo env "PATH=$PATH" safenode-manager upgrade --interval $DELAY_BETWEEN_NODES  | tee /tmp/influx-resources/node_upgrade_report & disown
 
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "6" ]]; then
