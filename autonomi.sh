@@ -13,7 +13,7 @@ NODE_MANAGER=0.8.0
 # first node port can edited in menu later
 NODE_PORT_FIRST=12001
 NUMBER_NODES=40
-DELAY_BETWEEN_NODES=301000
+DELAY_BETWEEN_NODES=601000
 
 export NEWT_COLORS='
 window=,white
