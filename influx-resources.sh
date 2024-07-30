@@ -50,6 +50,9 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         #check version once per hour
         if (($(echo "$time_min == 0" | bc ))) ; then
         ver=",version=\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
+        #status="$(sudo systemctl status $node_name.service --no-page)"
+        #PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
+        
         fi
 
 
