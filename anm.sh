@@ -5,7 +5,7 @@
 #Action=1
 
 #sudo rm -f /usr/bin/anm.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm.sh && sudo chmod u+x /usr/bin/anm.sh
-#echo "* * * * * $USER /usr/bin/mkdir -p /var/safenode-manager && /bin/bash /usr/bin/anm.sh > /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
+#echo "* * * * * $USER /bin/bash /usr/bin/anm.sh > /var/anm/log" | sudo tee /etc/cron.d/anm
 
 
 #print date and time
@@ -23,43 +23,43 @@ LatestNodeVer=$($NodePath -V | awk '{print $3}')
 
 # declare or load array from file
 declare -A node_details_store
-. /var/safenode-manager/NodeDetails >/dev/null 2>&1
+. /var/anm/NodeDetails >/dev/null 2>&1
 
 CheckSetUp() {
-        if [[ -f "/var/safenode-manager/system" ]]; then
+        if [[ -f "/var/anm/system" ]]; then
                 echo "existing install found loading info" && echo
-                . /var/safenode-manager/system
-                . /var/safenode-manager/counters
-                rm /var/safenode-manager/counters
-                . /var/safenode-manager/config
+                . /var/anm/system
+                . /var/anm/counters
+                rm /var/anm/counters
+                . /var/anm/config
         else
                 echo "first install creating folders and info" && echo
-                sudo mkdir -p /var/safenode-manager
-                sudo chown -R $USER:$USER /var/safenode-manager
-                sudo mkdir -p /var/safenode-manager/services /var/log/safenode
-                sudo chown -R safe:safe /var/safenode-manager/services /var/log/safenode
-                echo "CpuCount=$(echo "$(nproc --all) / 1" | bc)" >>/var/safenode-manager/system
-                echo "BatchSize=$(echo "$(nproc --all) / 2" | bc)" >>/var/safenode-manager/system
-                . /var/safenode-manager/system
-                echo "CounterStart=0" >>/var/safenode-manager/counters
-                echo "CounterUpgrade=0" >>/var/safenode-manager/counters
-                . /var/safenode-manager/counters
-                rm /var/safenode-manager/counters
-                echo "# edit this file to confrol behavior of the script" >>/var/safenode-manager/config
-                echo >>/var/safenode-manager/config
-                echo "MaxLoadAverageAllowed=$(echo "$(nproc --all) * 2" | bc)" >>/var/safenode-manager/config
-                echo "DesiredLoadAverage=$(echo "$(nproc --all) * 1" | bc)" >>/var/safenode-manager/config
-                echo >>/var/safenode-manager/config
-                echo "CpuLessThan=90" >>/var/safenode-manager/config
-                echo "MemLessThan=90" >>/var/safenode-manager/config
-                echo "HDLessThan=90" >>/var/safenode-manager/config
-                echo >>/var/safenode-manager/config
-                echo "# counters start at this number and upon action happening" >>/var/safenode-manager/config
-                echo "# increment down once every time script runs when zero action is allowed again" >>/var/safenode-manager/config
-                echo "DelayStart=2" >>/var/safenode-manager/config
-                echo "DelayUpgrade=5" >>/var/safenode-manager/config
-                echo "DelayRemove=60" >>/var/safenode-manager/config
-                . /var/safenode-manager/config
+                sudo mkdir -p /var/anm
+                sudo chown -R $USER:$USER /var/anm
+                sudo mkdir -p /var/anm/services /var/log/safenode
+                sudo chown -R safe:safe /var/anm/services /var/log/safenode
+                echo "CpuCount=$(echo "$(nproc --all) / 1" | bc)" >>/var/anm/system
+                echo "BatchSize=$(echo "$(nproc --all) / 2" | bc)" >>/var/anm/system
+                . /var/anm/system
+                echo "CounterStart=0" >>/var/anm/counters
+                echo "CounterUpgrade=0" >>/var/anm/counters
+                . /var/anm/counters
+                rm /var/anm/counters
+                echo "# edit this file to confrol behavior of the script" >>/var/anm/config
+                echo >>/var/anm/config
+                echo "MaxLoadAverageAllowed=$(echo "$(nproc --all) * 2" | bc)" >>/var/anm/config
+                echo "DesiredLoadAverage=$(echo "$(nproc --all) * 1" | bc)" >>/var/anm/config
+                echo >>/var/anm/config
+                echo "CpuLessThan=90" >>/var/anm/config
+                echo "MemLessThan=90" >>/var/anm/config
+                echo "HDLessThan=90" >>/var/anm/config
+                echo >>/var/anm/config
+                echo "# counters start at this number and upon action happening" >>/var/anm/config
+                echo "# increment down once every time script runs when zero action is allowed again" >>/var/anm/config
+                echo "DelayStart=2" >>/var/anm/config
+                echo "DelayUpgrade=5" >>/var/anm/config
+                echo "DelayRemove=60" >>/var/anm/config
+                . /var/anm/config
         fi
 }
 
@@ -89,9 +89,9 @@ StartNode() {
         sleep 5
         status="$(sudo systemctl status $node_name.service --no-page)"
         PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
+        node_details_store[$node_number]="$node_name,$PeerId,$(/var/anm/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
         echo "$node_name Started"
-        sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
+        sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/anm/counters
         echo "reset node start timer" && echo
 }
 
@@ -99,18 +99,18 @@ AddNode() {
         node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
         node_name=safenode$node_number
         echo "Adding $node_name"
-        sudo mkdir -p /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
-        echo "mkdir -p /var/safenode-manager/services/$node_name"
-        sudo cp $NodePath /var/safenode-manager/services/$node_name
-        echo "cp $NodePath /var/safenode-manager/services/$node_name"
-        sudo chown -R safe:safe /var/safenode-manager/services/$node_name /var/log/safenode/$node_name /var/safenode-manager/services/$node_name/safenode
+        sudo mkdir -p /var/anm/services/$node_name /var/log/safenode/$node_name
+        echo "mkdir -p /var/anm/services/$node_name"
+        sudo cp $NodePath /var/anm/services/$node_name
+        echo "cp $NodePath /var/anm/services/$node_name"
+        sudo chown -R safe:safe /var/anm/services/$node_name /var/log/safenode/$node_name /var/anm/services/$node_name/safenode
         echo "ownership changed to user safe"
         sudo tee /etc/systemd/system/"$node_name".service 2>&1 >/dev/null <<EOF
 [Unit]
 Description=$node_name
 [Service]
 User=safe
-ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --log-output-dest /var/log/safenode/$node_name --port 12$node_number --enable-metrics-server --metrics-server-port 13$node_number --owner $DiscordUsername --max_log_files 5 --max_archived_log_files 5
+ExecStart=/var/anm/services/$node_name/safenode --root-dir /var/anm/services/$node_name --log-output-dest /var/log/safenode/$node_name --port 12$node_number --enable-metrics-server --metrics-server-port 13$node_number --owner $DiscordUsername --max_log_files 5 --max_archived_log_files 5
 Restart=on-failure
 EOF
         echo "servce file created at /etc/systemd/system/$node_name.service"
@@ -126,8 +126,8 @@ TearDown() {
         echo "rm /etc/systemd/system/safenode*"
         sudo systemctl daemon-reload
         echo "systemctl daemon-reload"
-        sudo rm -rf /var/safenode-manager
-        echo "rm -rf /var/safenode-manager"
+        sudo rm -rf /var/anm
+        echo "rm -rf /var/anm"
         sudo rm -rf /var/log/safenode
         echo "rm -rf /var/log/safenode" && echo
         unset 'node_details_store[*]'
@@ -146,8 +146,8 @@ RemoveNode() {
         echo "Removing $node_name" && echo
         sudo systemctl stop --now $node_name
         echo "Stopping $node_name"
-        sudo rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
-        echo "rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name"
+        sudo rm -rf /var/anm/services/$node_name /var/log/safenode/$node_name
+        echo "rm -rf /var/anm/services/$node_name /var/log/safenode/$node_name"
         sudo rm /etc/systemd/system/$node_name.service
         echo "rm /etc/systemd/system/$node_name.service"
         sudo systemctl daemon-reload
@@ -167,14 +167,14 @@ StopNode() {
         node_number=$(seq -f "%03g" $NextNodeSorR $NextNodeSorR)
         node_name=safenode$node_number
         echo "Stopping $node_name"
-        node_details_store[$node_number]="$node_name,,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),STOPPED"
+        node_details_store[$node_number]="$node_name,,$(/var/anm/services/$node_name/safenode -V | awk '{print $3}'),STOPPED"
         echo "updated array $node_name"
         sudo systemctl stop $node_name
         echo "systemctl stop $node_name"
         sudo ufw delete allow 12$node_number/udp
         echo "closed firewall port 12$node_number/udp"
         echo "$node_name Stopped" && echo
-        echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/safenode-manager/counters
+        echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/anm/counters
 }
 
 UpgradeNode() {
@@ -191,16 +191,16 @@ UpgradeNode() {
         echo "upgradeing $node_name"
         sudo systemctl stop $node_name
         echo "systemctl stop $node_name"
-        sudo cp $NodePath /var/safenode-manager/services/$node_name
-        echo "cp $NodePath /var/safenode-manager/services/$node_name"
+        sudo cp $NodePath /var/anm/services/$node_name
+        echo "cp $NodePath /var/anm/services/$node_name"
         sudo systemctl start $node_name
         echo "systemctl start $node_name"
         sleep 5
         status="$(sudo systemctl status $node_name.service --no-page)"
         PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
+        node_details_store[$node_number]="$node_name,$PeerId,$(/var/anm/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
         echo "updated array"
-        sed -i 's/CounterUpgrade=.*/CounterUpgrade='$DelayUpgrade'/g' /var/safenode-manager/counters
+        sed -i 's/CounterUpgrade=.*/CounterUpgrade='$DelayUpgrade'/g' /var/anm/counters
         echo "reset node upgrade timer" && echo
 }
 
@@ -208,9 +208,9 @@ StoppedUpgrade() {
         node_number=$(seq -f "%03g" $1 $1)
         node_name=safenode$node_number
         echo "upgradeing $node_name"
-        sudo cp $NodePath /var/safenode-manager/services/$node_name
-        echo "cp $NodePath /var/safenode-manager/services/$node_name"
-        node_details_store[$node_number]="$node_name,,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),STOPPED"
+        sudo cp $NodePath /var/anm/services/$node_name
+        echo "cp $NodePath /var/anm/services/$node_name"
+        node_details_store[$node_number]="$node_name,,$(/var/anm/services/$node_name/safenode -V | awk '{print $3}'),STOPPED"
         echo "updated array" && echo
 }
 
@@ -219,7 +219,7 @@ CalculateValues() {
                 echo "${node_details_store[$num]}"
         done)
 
-        TotalNodes=$(ls /var/safenode-manager/services | wc -l)
+        TotalNodes=$(ls /var/anm/services | wc -l)
         RunningNodes=$(echo "$ArrayAsString" | grep -c "RUNNING")
         StoppedNodes=$(echo "$ArrayAsString" | grep -c "STOPPED")
         if (($(echo "$StoppedNodes > 0" | bc))); then
@@ -285,7 +285,7 @@ PrintDetails() {
         echo "Cpu $AllowCpu Mem $AllowMem HD $AllowHD LoadAllow $LoadAllow LoadNotAllow $LoadNotAllow"
         echo "DelayStart $DelayStart DelayUpgrade $DelayUpgrade DelayRemove $DelayRemove"
         echo "CounterStart $CounterStart CounterUpgrade $CounterUpgrade" && echo
-        echo "$(</var/safenode-manager/counters)" && echo
+        echo "$(</var/anm/counters)" && echo
 }
 
 UpGrade() {
@@ -323,15 +323,15 @@ IncrementCounters() {
         if (($(echo "$CounterUpgrade > 0 " | bc))); then
                 CounterUpgrade=$(echo "$CounterUpgrade - 1" | bc)
         fi
-        echo "CounterStart=$CounterStart" >>/var/safenode-manager/counters
-        echo "CounterUpgrade=$CounterUpgrade" >>/var/safenode-manager/counters
+        echo "CounterStart=$CounterStart" >>/var/anm/counters
+        echo "CounterUpgrade=$CounterUpgrade" >>/var/anm/counters
         for ((i = 1; i <= $StoppedNodes; i++)); do
                 nfr=$(echo "$RunningNodes + $i" | bc)
                 nfrcn="RemoveCounter$nfr"
                 nfrc="${!nfrcn}"
                 if (($(echo "$nfrc > 0 " | bc))); then
                         nfrc=$(echo "$nfrc - 1" | bc)
-                        echo "$nfrcn=$nfrc" >>/var/safenode-manager/counters
+                        echo "$nfrcn=$nfrc" >>/var/anm/counters
                 fi
         done
 }
@@ -344,7 +344,7 @@ UpGrade
 Removal
 
 ####################################################################################### logic for starting and stoping nodes
-if [[ ! -f "/var/safenode-manager/config" ]] || [[ "$Action" == "4" ]]; then
+if [[ ! -f "/var/anm/config" ]] || [[ "$Action" == "4" ]]; then
         echo "Initiate Nuke" && echo
         TearDown
 elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) || [[ "$Action" == "1" ]]; then
@@ -368,5 +368,5 @@ for num in $(echo "${!node_details_store[@]}" | tr ' ' '\n' | sort -n); do
 done
 
 #save node details aray
-declare -p node_details_store >/var/safenode-manager/NodeDetails
+declare -p node_details_store >/var/anm/NodeDetails
 echo
