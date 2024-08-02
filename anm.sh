@@ -5,7 +5,7 @@
 #Action=1
 
 #sudo rm -f /usr/bin/anm.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm.sh && sudo chmod u+x /usr/bin/anm.sh
-#echo "*/1 * * * * $USER /usr/bin/mkdir -p /var/safenode-manager && /bin/bash /usr/bin/anm.sh > /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
+#echo "* * * * * * $USER /usr/bin/mkdir -p /var/safenode-manager && /bin/bash /usr/bin/anm.sh > /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
 
 
 #print date and time
