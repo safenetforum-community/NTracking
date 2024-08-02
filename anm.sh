@@ -350,7 +350,7 @@ if [[ ! -f "/var/safenode-manager/config" ]] || [[ "$Action" == "4" ]]; then
 elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) || [[ "$Action" == "1" ]]; then
         echo "start node" && echo
         StartNode
-elif (($(echo "$AllowCpu == 0" | bc))) || (($(echo "$AllowMem == 0" | bc))) || (($(echo "$AllowHD == 0" | bc))) || (($(echo "$LoadNotAllow == 0" | bc))) || [[ "$Action" == "2" ]]; then
+elif (($(echo "$AllowCpu == 0" | bc))) || (($(echo "$AllowMem == 0" | bc))) || (($(echo "$AllowHD == 0" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]]; then
         if (($(echo "$AllowHD == 0" | bc))); then
                 RemoveNode $TotalNodes
                 echo "Node $TotalNodes Removed due to hard drive space" && echo
