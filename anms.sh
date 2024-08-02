@@ -84,7 +84,7 @@ StartNode() {
                 echo "node starting not allowed during upgrade" && echo
                 return 0
         fi
-        if (($(echo "$TotalNodes == $NodeCap" | bc))); then
+        if (($(echo "$RunningNodes == $NodeCap" | bc))); then
                 echo "node starting not allowed due to node cap" && echo
                 return 0
         fi
@@ -262,8 +262,7 @@ CalculateValues() {
         AllowCpu=$(echo "$UsedCpuPercent < $CpuLessThan" | bc)
         AllowMem=$(echo "$FreeMemPercent < $MemLessThan" | bc)
         AllowHD=$(echo "$UsedHdPercent < $HDLessThan" | bc)
-        aln=$(echo "$RunningNodes - 1" | bc)
-        AllowNodeCap=$(echo "$aln <= $NodeCap" | bc)
+        AllowNodeCap=$(echo "$RunningNodes < $NodeCap" | bc)
 
 }
 
