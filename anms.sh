@@ -9,7 +9,8 @@
 
 
 #to do
-# change folders back to old naming
+# change folders back to old naming x
+# node cap
 # add auto update
 # delete log file at midnight
 # make install and start up script
@@ -65,6 +66,8 @@ CheckSetUp() {
                 echo "DelayStart=2" >>/var/safenode-manager/config
                 echo "DelayUpgrade=5" >>/var/safenode-manager/config
                 echo "DelayRemove=60" >>/var/safenode-manager/config
+                echo >>/var/safenode-manager/config
+                echo "NodeCap=500" >>/var/safenode-manager/config
                 . /var/safenode-manager/config
         fi
 }
@@ -253,42 +256,22 @@ CalculateValues() {
         FreeMemPercent=$(free | grep Mem | awk '{ printf("%.4f\n", $7/$2 * 100.0) }')
         FreeMemPercent=$(echo "100 - $FreeMemPercent" | bc)
         UsedHdPercent=$(df -hP /var | awk '{print $5}' | tail -1 | sed 's/%$//g')
-
         AllowCpu=$(echo "$UsedCpuPercent < $CpuLessThan" | bc)
         AllowMem=$(echo "$FreeMemPercent < $MemLessThan" | bc)
         AllowHD=$(echo "$UsedHdPercent < $HDLessThan" | bc)
+        AllowNodeCap=$(echo "$TotalNodes <= $NodeCap" | bc)
 
 }
 
 PrintDetails() {
-        echo "Used CPU percent $UsedCpuPercent%"
-        echo "Used MEM percent $FreeMemPercent%"
-        echo "Used HD percent $UsedHdPercent%" && echo
-
-        echo "LoadAverage 1 $LoadAverage1"
-        echo "LoadAverage 5 $LoadAverage5"
-        echo "LoadAverage 15 $LoadAverage15" && echo
-
-        echo "TotalNodes $TotalNodes"
-        echo "RunningNodes $RunningNodes"
-        echo "StoppedNodes $StoppedNodes" && echo
-
-        echo "AddNewNode $AddNewNode"
-        echo "NextNodeToStartOrAdd $NextNodeToSorA"
-        echo "NextNodeStopOrRemove $NextNodeSorR" && echo
-
-        echo "CpuCount $CpuCount"
-        echo "BatchSize $BatchSize"
-        echo "MaxLoadAverageAllowed $MaxLoadAverageAllowed"
-        echo "DesiredLoadAverage $DesiredLoadAverage" && echo
-
-        echo "Latest Ver $LatestNodeVer"
-        echo "NodesLatestVersion $NodesLatestV"
-        echo "NodesToUpgrade $NodesToUpgrade"
-        echo "NextToUpgrade  $NextToUpgrade"
+        echo "Used CPU percent $UsedCpuPercent% Used MEM percent $FreeMemPercent% Used HD percent $UsedHdPercent%" && echo
+        echo "LoadAverage 1 $LoadAverage1 LoadAverage 5 $LoadAverage5 LoadAverage 15 $LoadAverage15" && echo
+        echo "TotalNodes $TotalNodes RunningNodes $RunningNodes StoppedNodes $StoppedNodes" && echo
+        echo "AddNewNode $AddNewNode NextNodeToStartOrAdd $NextNodeToSorA NextNodeStopOrRemove $NextNodeSorR" && echo
+        echo "CpuCount $CpuCount BatchSize $BatchSize MaxLoadAverageAllowed $MaxLoadAverageAllowed DesiredLoadAverage $DesiredLoadAverage NodeCap $NodeCap" && echo
+        echo "Latest Ver $LatestNodeVer NodesLatestVersion $NodesLatestV NodesToUpgrade $NodesToUpgrade NextToUpgrade  $NextToUpgrade"
         echo "Upgrade $Upgrade Remove $Remove" && echo
-
-        echo "Cpu $AllowCpu Mem $AllowMem HD $AllowHD LoadAllow $LoadAllow LoadNotAllow $LoadNotAllow"
+        echo "Cpu $AllowCpu Mem $AllowMem HD $AllowHD LoadAllow $LoadAllow LoadNotAllow $LoadNotAllow AllowNodeCap $AllowNodeCap"
         echo "DelayStart $DelayStart DelayUpgrade $DelayUpgrade DelayRemove $DelayRemove"
         echo "CounterStart $CounterStart CounterUpgrade $CounterUpgrade" && echo
         echo "$(</var/safenode-manager/counters)" && echo
@@ -353,7 +336,7 @@ Removal
 if [[ ! -f "/var/safenode-manager/config" ]] || [[ "$Action" == "4" ]]; then
         echo "Initiate Nuke" && echo
         TearDown
-elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) || [[ "$Action" == "1" ]]; then
+elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) && (($(echo $AllowNodeCap))) || [[ "$Action" == "1" ]]; then
         echo "start node" && echo
         StartNode
 elif (($(echo "$AllowCpu == 0" | bc))) || (($(echo "$AllowMem == 0" | bc))) || (($(echo "$AllowHD == 0" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]]; then
