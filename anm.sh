@@ -56,9 +56,9 @@ CheckSetUp() {
                 echo >>/var/safenode-manager/config
                 echo "# counters start at this number and upon action happening" >>/var/safenode-manager/config
                 echo "# increment down once every time script runs when zero action is allowed again" >>/var/safenode-manager/config
-                echo "DelayStart=3" >>/var/safenode-manager/config
-                echo "DelayUpgrade=4" >>/var/safenode-manager/config
-                echo "DelayRemove=5" >>/var/safenode-manager/config
+                echo "DelayStart=2" >>/var/safenode-manager/config
+                echo "DelayUpgrade=5" >>/var/safenode-manager/config
+                echo "DelayRemove=60" >>/var/safenode-manager/config
                 . /var/safenode-manager/config
         fi
 }
