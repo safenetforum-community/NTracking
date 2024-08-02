@@ -7,7 +7,6 @@
 #sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 #echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
 
-
 #to do
 # change folders back to old naming x
 # node cap
@@ -83,6 +82,10 @@ StartNode() {
         fi
         if (($(echo "$Upgrade != 0" | bc))); then
                 echo "node starting not allowed during upgrade" && echo
+                return 0
+        fi
+        if (($(echo "$TotalNodes == $NodeCap" | bc))); then
+                echo "node starting not allowed due to node cap" && echo
                 return 0
         fi
         if (($(echo "$StoppedNodes == 0" | bc))); then
@@ -339,7 +342,7 @@ if [[ ! -f "/var/safenode-manager/config" ]] || [[ "$Action" == "4" ]]; then
 elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) && (($(echo $AllowNodeCap))) || [[ "$Action" == "1" ]]; then
         echo "start node" && echo
         StartNode
-elif (($(echo "$AllowCpu == 0" | bc))) || (($(echo "$AllowMem == 0" | bc))) || (($(echo "$AllowHD == 0" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]]; then
+elif (($(echo "$AllowCpu == 0" | bc))) || (($(echo "$AllowMem == 0" | bc))) || (($(echo "$AllowHD == 0" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]] || (($(echo "$AllowNodeCap == 0" | bc))); then
         if (($(echo "$AllowHD == 0" | bc))); then
                 RemoveNode $TotalNodes
                 echo "Node $TotalNodes Removed due to hard drive space" && echo
