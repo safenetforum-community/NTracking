@@ -4,7 +4,7 @@
 # 1 startnodes 2 stopnodes 3 no node change 4 teardown
 #Action=1
 
-#sudo rm -f /usr/bin/anm.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anms.sh && sudo chmod u+x /usr/bin/anm.sh
+#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 #echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
 
 
@@ -98,7 +98,7 @@ StartNode() {
         sleep 5
         status="$(sudo systemctl status $node_name.service --no-page)"
         PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/safenode$1/safenode -V | awk '{print $3}'),RUNNING"
+        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/safenode$NextNodeToSorA/safenode -V | awk '{print $3}'),RUNNING"
         echo "$node_name Started"
         sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
         echo "reset node start timer" && echo
@@ -108,18 +108,18 @@ AddNode() {
         node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
         node_name=safenode$node_number
         echo "Adding $node_name"
-        sudo mkdir -p /var/safenode-manager/services/safenode$1 /var/log/safenode/safenode$1
-        echo "mkdir -p /var/safenode-manager/services/safenode$1"
-        sudo cp $NodePath /var/safenode-manager/services/safenode$1
-        echo "cp $NodePath /var/safenode-manager/services/safenode$1"
-        sudo chown -R safe:safe /var/safenode-manager/services/safenode$1 /var/log/safenode/safenode$1 /var/safenode-manager/services/safenode$1/safenode
+        sudo mkdir -p /var/safenode-manager/services/safenode$NextNodeToSorA /var/log/safenode/safenode$NextNodeToSorA
+        echo "mkdir -p /var/safenode-manager/services/safenode$NextNodeToSorA"
+        sudo cp $NodePath /var/safenode-manager/services/safenode$NextNodeToSorA
+        echo "cp $NodePath /var/safenode-manager/services/safenode$NextNodeToSorA"
+        sudo chown -R safe:safe /var/safenode-manager/services/safenode$NextNodeToSorA /var/log/safenode/safenode$NextNodeToSorA /var/safenode-manager/services/safenode$NextNodeToSorA/safenode
         echo "ownership changed to user safe"
         sudo tee /etc/systemd/system/"$node_name".service 2>&1 >/dev/null <<EOF
 [Unit]
 Description=$node_name
 [Service]
 User=safe
-ExecStart=/var/safenode-manager/services/safenode$1/safenode --root-dir /var/safenode-manager/services/safenode$1 --log-output-dest /var/log/safenode/safenode$1 --port 12$node_number --enable-metrics-server --metrics-server-port 13$node_number --owner $DiscordUsername --max_log_files 5 --max_archived_log_files 5
+ExecStart=/var/safenode-manager/services/safenode$NextNodeToSorA/safenode --root-dir /var/safenode-manager/services/safenode$NextNodeToSorA --log-output-dest /var/log/safenode/safenode$NextNodeToSorA --port 12$node_number --enable-metrics-server --metrics-server-port 13$node_number --owner $DiscordUsername --max_log_files 5 --max_archived_log_files 5
 Restart=on-failure
 EOF
         echo "servce file created at /etc/systemd/system/$node_name.service"
@@ -176,7 +176,7 @@ StopNode() {
         node_number=$(seq -f "%03g" $NextNodeSorR $NextNodeSorR)
         node_name=safenode$node_number
         echo "Stopping $node_name"
-        node_details_store[$node_number]="$node_name,,$(/var/safenode-manager/services/safenode$1/safenode -V | awk '{print $3}'),STOPPED"
+        node_details_store[$node_number]="$node_name,,$(/var/safenode-manager/services/safenode$NextNodeSorR/safenode -V | awk '{print $3}'),STOPPED"
         echo "updated array $node_name"
         sudo systemctl stop $node_name
         echo "systemctl stop $node_name"
@@ -264,8 +264,8 @@ CalculateValues() {
 }
 
 PrintDetails() {
-        echo "Used CPU percent $UsedCpuPercent% Used MEM percent $FreeMemPercent% Used HD percent $UsedHdPercent%" && echo
-        echo "LoadAverage 1 $LoadAverage1 LoadAverage 5 $LoadAverage5 LoadAverage 15 $LoadAverage15" && echo
+        echo "Used CPU percent $UsedCpuPercent% Used MEM $FreeMemPercent% Used HD percent $UsedHdPercent%" && echo
+        echo "LoadAverage1 $LoadAverage1 LoadAverage5 $LoadAverage5 LoadAverage15 $LoadAverage15" && echo
         echo "TotalNodes $TotalNodes RunningNodes $RunningNodes StoppedNodes $StoppedNodes" && echo
         echo "AddNewNode $AddNewNode NextNodeToStartOrAdd $NextNodeToSorA NextNodeStopOrRemove $NextNodeSorR" && echo
         echo "CpuCount $CpuCount BatchSize $BatchSize MaxLoadAverageAllowed $MaxLoadAverageAllowed DesiredLoadAverage $DesiredLoadAverage NodeCap $NodeCap" && echo
@@ -359,3 +359,5 @@ done
 #save node details aray
 declare -p node_details_store >/var/safenode-manager/NodeDetails
 echo
+echo
+echo #########################################################################################################################
