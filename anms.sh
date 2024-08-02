@@ -262,7 +262,8 @@ CalculateValues() {
         AllowCpu=$(echo "$UsedCpuPercent < $CpuLessThan" | bc)
         AllowMem=$(echo "$FreeMemPercent < $MemLessThan" | bc)
         AllowHD=$(echo "$UsedHdPercent < $HDLessThan" | bc)
-        AllowNodeCap=$(echo "$RunningNodes <= $NodeCap" | bc)
+        aln=$(echo "$RunningNodes - 1" | bc)
+        AllowNodeCap=$(echo "$aln <= $NodeCap" | bc)
 
 }
 
