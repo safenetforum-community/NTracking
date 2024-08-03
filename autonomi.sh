@@ -281,14 +281,6 @@ echo
 
 fi > $HOME/.local/share/safe/client/scrape.log & disown
 
-# tail the log file
-
-echo
-echo "to view progress"
-echo
-echo "tail -f $HOME/.local/share/safe/client/scrape.log"
-echo
-
 ######################################################################################################################### Upgrade Nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
