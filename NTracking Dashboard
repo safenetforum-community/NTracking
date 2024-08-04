@@ -1938,7 +1938,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -1h, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -3268,8 +3268,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3406,8 +3405,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3570,8 +3568,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3739,8 +3736,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4454,7 +4450,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -4485,6 +4481,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 112,
+  "version": 113,
   "weekStart": ""
 }
