@@ -51,12 +51,12 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
-            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
+            PeerId="$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')"
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
             statusctl="$(sudo systemctl status safenode$i.service --no-page)"
-            PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
+            PeerId="$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)"
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
 
@@ -75,11 +75,11 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
-            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
+            PeerId="$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')"
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
-            PeerId="\"NotReachableStoppedNode\""
+            PeerId="NotReachableStoppedNode"
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
         fi
