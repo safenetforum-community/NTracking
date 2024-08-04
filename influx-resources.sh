@@ -86,7 +86,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
-            echo "safe node manager again 4"
+            echo "safe node manager again 5"
             PeerId="\"NotReachableStoppedNode\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
