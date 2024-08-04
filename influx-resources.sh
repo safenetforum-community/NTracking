@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo 1.0
-
 MetricsPortFirst=13001
 
 # Environment setup
@@ -51,8 +49,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
-#remove block s
-        if [[ -f "/var/safenode-manager/NodeDetailss" ]]; then
+
+        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
@@ -75,15 +73,13 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=0
         gets=0
         puts=0
-#remove block s
-        if [[ -f "/var/safenode-manager/NodeDetailss" ]]; then
+
+        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
-            echo "anm again 3.5"
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
-            echo "safe node manager again 5"
             PeerId="\"NotReachableStoppedNode\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
@@ -109,15 +105,15 @@ latency=$(ping -c 4 8.8.8.8 | tail -1| awk '{print $4}' | cut -d '/' -f 2)
 # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
 # https://www.coingecko.com/api/documentation
 ##############################################################################################
-#coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
-#exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<< $coingecko)
-#market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
-#exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
-#market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
+coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
+exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<< $coingecko)
+market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
+exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
+market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
 
 # calculate earnings in usd & gbp
-#earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
-#earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
+earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
+earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
@@ -125,9 +121,9 @@ total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 
 # sleep till all nodes have systems have finished prosessing
 
-#while (( $(("$time_min" + "5")) > $(date +"%M"))); do
-#sleep 10
-#done
+while (( $(("$time_min" + "5")) > $(date +"%M"))); do
+sleep 10
+done
 
 
 # Output
