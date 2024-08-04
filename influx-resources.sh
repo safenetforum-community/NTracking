@@ -52,6 +52,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
+            echo "anm"
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
