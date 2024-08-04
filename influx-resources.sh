@@ -36,8 +36,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
     node_name=safenode$node_number
         node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
 
-#remove block s
-        if [[ -n "$node_detailss" ]]; then
+        if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
         status="TRUE"
         mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
