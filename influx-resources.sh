@@ -50,14 +50,16 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
         
-        #check version once per hour
-        if (($(echo "$time_min == 0" | bc ))) ; then
-        ver=",version=\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
-        #status="$(sudo systemctl status $node_name.service --no-page)"
-        #PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-        
+        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
+            # for anm
+            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
+            NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
+        else
+            # for safe node manager service
+            statusctl="$(sudo systemctl status safenode$i.service --no-page)"
+            PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
+            NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
-
 
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
