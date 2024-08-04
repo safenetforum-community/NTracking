@@ -74,9 +74,15 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=0
         gets=0
         puts=0
-        #check version once per hour
-        if (($(echo "$time_min == 0" | bc ))) ; then
-        ver=",version=\"0.0.0\""
+
+        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
+            # for anm
+            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
+            NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
+        else
+            # for safe node manager service
+            PeerId="\"NotReachableStoppedNode\""
+            NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
         fi
 
