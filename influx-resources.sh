@@ -59,7 +59,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
-            echo "safe node manager again 2"
+            echo "safe node manager again 3"
             #put back i
             statusctl="$(sudo systemctl status safenode$node_number.service --no-page)"
             PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
