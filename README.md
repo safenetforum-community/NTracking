@@ -76,4 +76,21 @@ https://github.com/safenetforum-community/NTracking/blob/main/NTracking%20Dashbo
 3. paste it into the import dashboard window and save
 4. refresh Grafana and load the dashboard
 
-# after NTracking is set up start some nodes with safe node manager and track there progress in Grafana.
+# after NTracking is set up start some nodes and track there progress in Grafana.
+
+# NTracking upgrades
+
+If you have NTracking set up and working to upgrade to latest version
+update the script and the cron job with
+
+for resource gathering script
+```
+sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh
+```
+
+for cron job
+```
+echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
+```
+
+then delete the current dashboard in grafana and re add the one from the git hub if the script changes the dashboard will change with it.
