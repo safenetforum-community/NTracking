@@ -51,8 +51,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
-
-        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
+#remove block s
+        if [[ -f "/var/safenode-manager/NodeDetailss" ]]; then
             # for anm
             echo "anm again 1"
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
@@ -60,7 +60,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         else
             # for safe node manager service
             echo "safe node manager again 2"
-            statusctl="$(sudo systemctl status safenode$i.service --no-page)"
+            #put back i
+            statusctl="$(sudo systemctl status safenode$node_number.service --no-page)"
             PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
