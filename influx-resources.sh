@@ -80,7 +80,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
-            echo "anm again 3.3"
+            echo "anm again 3.4"
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
