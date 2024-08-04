@@ -85,7 +85,7 @@ update the script and the cron job with
 
 for resource gathering script
 ```
-sudo rm /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh
+sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && chmod u+x /usr/bin/influx-resources.sh
 ```
 
 for cron job
@@ -94,3 +94,6 @@ echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /u
 ```
 
 then delete the current dashboard in grafana and re add the one from the git hub if the script changes the dashboard will change with it.
+
+also its advisable to log into influx and delete the bucket called telegraf to clear out old data incase there is breaking changes 
+after deleting telegraf create a new bucket called telegraf for the new data to be stored in.
