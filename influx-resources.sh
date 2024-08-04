@@ -2,7 +2,7 @@
 
 MetricsPortFirst=13001
 
-# Environment setup
+# Environment  setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
 
