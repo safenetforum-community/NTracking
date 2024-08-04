@@ -36,8 +36,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
     node_name=safenode$node_number
         node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
 
-
-        if [[ -n "$node_details" ]]; then
+#remove block s
+        if [[ -n "$node_detailss" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
         status="TRUE"
         mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
@@ -50,16 +50,14 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
 
-        #rmove block
-        if [[ -f "/var/safenode-manager/NodeDetailsss" ]]; then
+        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # for anm
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
             echo "for safe node manager"
-            ##put i back
-            statusctl="$(sudo systemctl status safenode$node_number.service --no-page)"
+            statusctl="$(sudo systemctl status safenode$i.service --no-page)"
             PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
@@ -83,6 +81,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
             # for safe node manager service
+            echo "anm again"
             PeerId="\"NotReachableStoppedNode\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
