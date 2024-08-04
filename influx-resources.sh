@@ -78,7 +78,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
 #remove block s
         if [[ -f "/var/safenode-manager/NodeDetailss" ]]; then
             # for anm
-            echo "anm again 3.4"
+            echo "anm again 3.5"
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
