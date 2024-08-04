@@ -10,7 +10,7 @@ base_dir="/var/safenode-manager/services"
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
 time_min=$(date +"%M")
 
-# Counters
+# Counter's
 total_rewards_balance=0
 total_nodes_running=0
 total_nodes_killed=0
