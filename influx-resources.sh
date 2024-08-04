@@ -19,7 +19,7 @@ total_network_size=0
 # Arrays
 declare -A dir_pid
 declare -A node_numbers
-declare -A node_details_store
+declare -A node_details_str
 
 # count node foldrs
 NumberOfNodes=$(ls $base_dir | wc -l)
@@ -75,7 +75,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         fi
 
         # Format for InfluxDB
-        node_details_store[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i$ver $influx_time"
+        node_details_str[$i]="nodes,id=$node_name status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i$ver $influx_time"
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
@@ -94,15 +94,15 @@ latency=$(ping -c 4 8.8.8.8 | tail -1| awk '{print $4}' | cut -d '/' -f 2)
 # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
 # https://www.coingecko.com/api/documentation
 ##############################################################################################
-coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
-exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<< $coingecko)
-market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
-exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
-market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
+#coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
+#exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<< $coingecko)
+#market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
+#exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
+#market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
 
 # calculate earnings in usd & gbp
-earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
-earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
+#earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
+#earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
@@ -110,16 +110,16 @@ total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 
 # sleep till all nodes have systems have finished prosessing
 
-while (( $(("$time_min" + "5")) > $(date +"%M"))); do
-sleep 10
-done
+#while (( $(("$time_min" + "5")) > $(date +"%M"))); do
+#sleep 10
+#done
 
 
 # Output
 
 # Sort
-for num in $(echo "${!node_details_store[@]}" | tr ' ' '\n' | sort -n); do
-    echo "${node_details_store[$num]}"
+for num in $(echo "${!node_details_str[@]}" | tr ' ' '\n' | sort -n); do
+    echo "${node_details_str[$num]}"
 done
 
 echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
