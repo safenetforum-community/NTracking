@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo 1.0
 
 MetricsPortFirst=13001
 
