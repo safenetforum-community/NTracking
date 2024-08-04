@@ -21,6 +21,9 @@ declare -A dir_pid
 declare -A node_numbers
 declare -A node_details_str
 
+declare -A node_details_store
+. /var/safenode-manager/NodeDetails >/dev/null 2>&1
+
 # count node foldrs
 NumberOfNodes=$(ls $base_dir | wc -l)
 
