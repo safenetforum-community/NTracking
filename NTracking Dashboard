@@ -1957,7 +1957,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
+        "w": 2,
         "x": 13,
         "y": 47
       },
@@ -2012,6 +2012,66 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 15,
+        "y": 47
+      },
+      "id": 65119,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "import \"math\"\r\n\r\nFirst = from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> first()\r\n  |> map(fn: (r) => ({r with _value: r._value * 1000000000.0}))\r\n\r\nLast = from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> last()\r\n  |> map(fn: (r) => ({r with _value: r._value * 1000000000.0}))\r\n\r\nunion(tables: [First, Last])\r\n|> difference()\r\n\r\n\r\n\r\n\r\n ",
+          "refId": "A"
+        }
+      ],
+      "title": "D-PF",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -2028,7 +2088,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 16,
+        "x": 17,
         "y": 47
       },
       "id": 65117,
@@ -2098,7 +2158,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 18,
+        "x": 19,
         "y": 47
       },
       "id": 65103,
@@ -2162,7 +2222,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 20,
+        "x": 21,
         "y": 47
       },
       "id": 65106,
@@ -2225,8 +2285,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 22,
+        "w": 1,
+        "x": 23,
         "y": 47
       },
       "id": 65091,
@@ -3391,8 +3451,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3529,8 +3588,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3693,8 +3751,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3862,8 +3919,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4577,7 +4633,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -4608,6 +4664,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 114,
+  "version": 127,
   "weekStart": ""
 }
