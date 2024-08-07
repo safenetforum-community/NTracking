@@ -49,17 +49,11 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
 
-        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
-            # for anm
-            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
-            NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
-        else
             # for safe node manager service
             statusctl="$(sudo systemctl status safenode$i.service --no-page)"
             PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
-        fi
-
+        
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
         status="FALSE"
@@ -73,16 +67,11 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         gets=0
         puts=0
 
-        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
-            # for anm
-            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
-            NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
-        else
             # for safe node manager service
             PeerId="\"NotReachableStoppedNode\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
-        fi
-        fi
+         
+         fi
 
         # Format for InfluxDB
         node_details_str[$i]="nodes,id=$node_name PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i $influx_time"
