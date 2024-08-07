@@ -50,9 +50,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
 
             # for safe node manager service
-            statusctl="$(sudo systemctl status safenode$i.service --no-page)"
-            PeerId="\"$(echo "$statusctl" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)\""
-            NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
+            NodeVersion="\"$($base_dir/safenode$i/safenode -V | awk '{print $3}')\""
         
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
@@ -68,8 +66,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         puts=0
 
             # for safe node manager service
-            PeerId="\"NotReachableStoppedNode\""
-            NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
+            NodeVersion="\"$($base_dir/safenode$i/safenode -V | awk '{print $3}')\""
          
          fi
 
