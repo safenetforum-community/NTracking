@@ -1568,7 +1568,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
+        "w": 2,
         "x": 2,
         "y": 47
       },
@@ -1674,8 +1674,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
-        "x": 5,
+        "w": 2,
+        "x": 4,
         "y": 47
       },
       "id": 65083,
@@ -1780,8 +1780,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
-        "x": 8,
+        "w": 2,
+        "x": 6,
         "y": 47
       },
       "id": 65079,
@@ -1847,6 +1847,116 @@
         }
       ],
       "title": "Root FS Used",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 4,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#299c46",
+                "value": null
+              },
+              {
+                "color": "dark-yellow",
+                "value": 1
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 2
+              },
+              {
+                "color": "#d44a3a",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 8,
+        "y": 47
+      },
+      "id": 65120,
+      "maxDataPoints": 100,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "10.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "cpu = from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"system\")\n  |> filter(fn: (r) => r[\"_field\"] == \"n_cpus\")\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> last()\n  |> fill(column: \"_value\", usePrevious: true)\n  |> keep(columns: [\"_value\", \"_time\"])\n\n  load15 = from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"system\")\n  |> filter(fn: (r) => r[\"_field\"] == \"load15\")\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> last()\n  |> fill(column: \"_value\", usePrevious: true)\n  |> keep(columns: [\"_value\", \"_time\"])\n\njoinn = join(tables: {cpu: cpu, load15: load15}, on: [\"_time\"])\n    |> fill(column: \"_value_cpu\", usePrevious: true)\n   |> fill(column: \"_value_load15\",usePrevious: true)\n\n   |> map(fn: (r) => ({\"_time\": r._time, \"happynode\": (r._value_load15 / float(v: r._value_cpu))}))\n   |> yield()\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Happy node indicator",
       "type": "gauge"
     },
     {
@@ -2057,11 +2167,11 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "import \"math\"\r\n\r\nFirst = from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> first()\r\n\r\n\r\nLast = from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> last()\r\n\r\n\r\nunion(tables: [First, Last])\r\n|> difference()\r\n |> map(fn: (r) => ({r with _value: r._value * 1000000000.0}))\r\n\r\n\r\n\r\n ",
+          "query": "First = from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> first()\r\n\r\n\r\nLast = from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> last()\r\n\r\n\r\nunion(tables: [First, Last])\r\n|> difference()\r\n |> map(fn: (r) => ({r with _value: r._value * 1000000000.0}))\r\n\r\n\r\n\r\n ",
           "refId": "A"
         }
       ],
-      "title": "D-PF",
+      "title": "Host D-PF",
       "type": "stat"
     },
     {
@@ -2253,7 +2363,7 @@
           "refId": "A"
         }
       ],
-      "title": "Node's Killed",
+      "title": "Nodes Stopped",
       "type": "stat"
     },
     {
@@ -3451,8 +3561,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3589,8 +3698,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3753,8 +3861,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3922,8 +4029,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4121,8 +4227,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4320,8 +4425,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4473,7 +4577,6 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
   "schemaVersion": 39,
   "tags": [
     "telegraf",
@@ -4670,6 +4773,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 128,
+  "version": 145,
   "weekStart": ""
 }
