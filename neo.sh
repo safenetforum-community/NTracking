@@ -6,6 +6,8 @@ MetricsPortFirst=13001
 export PATH=$PATH:$HOME/.local/bin
 base_dir="$HOME/.local/share/safe/node"
 
+NodePath=$(which safenode)
+
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
 time_min=$(date +"%M")
@@ -50,7 +52,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
 
             # for safe node manager service
-            NodeVersion="\"$($base_dir/safenode$i/safenode -V | awk '{print $3}')\""
+            NodeVersion="\"$($NodePath -V | awk '{print $3}')\""
         
         else
         total_nodes_killed=$(($total_nodes_killed + 1))
@@ -66,7 +68,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         puts=0
 
             # for safe node manager service
-            NodeVersion="\"$($base_dir/safenode$i/safenode -V | awk '{print $3}')\""
+            NodeVersion="\"$($NodePath -V | awk '{print $3}')\""
          
          fi
 
@@ -106,9 +108,9 @@ total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 
 # sleep till all nodes have systems have finished prosessing
 
-while (( $(("$time_min" + "5")) > $(date +"%M"))); do
-sleep 10
-done
+#while (( $(("$time_min" + "5")) > $(date +"%M"))); do
+#sleep 10
+#done
 
 
 # Output
