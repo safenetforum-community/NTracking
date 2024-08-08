@@ -73,10 +73,10 @@ after connecting Grafana and InfluxDB select the option to import Dashboard
 
 1. copy the Dashboard json from 
 https://github.com/safenetforum-community/NTracking/blob/main/NTracking%20Dashboard
-3. paste it into the import dashboard window and save
+3. paste it into the import via dashboard JSON window and save
 4. refresh Grafana and load the dashboard
 
-# after NTracking is set up start some nodes and track there progress in Grafana.
+# after NTracking is set up start some nodes and track their progress in Grafana.
 
 # NTracking upgrades
 
@@ -85,7 +85,7 @@ update the script and the cron job with
 
 for resource gathering script
 ```
-sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && chmod u+x /usr/bin/influx-resources.sh
+sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 ```
 
 for cron job
