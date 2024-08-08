@@ -44,7 +44,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
         network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
-        connected_peers=$(echo "$node_details" | grep sn_networking_connected_peers | awk 'NR==3 {print $2}')
+        connected_peers=$(echo "$node_details" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
