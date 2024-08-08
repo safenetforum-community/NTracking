@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MetricsPortFirst=13001
+MetricsPortFirst=44001
 
 # Environment  setup
 export PATH=$PATH:$HOME/.local/bin
