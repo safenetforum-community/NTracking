@@ -4,7 +4,7 @@ MetricsPortFirst=13001
 
 # Environment  setup
 export PATH=$PATH:$HOME/.local/bin
-base_dir="/var/safenode-manager/services"
+base_dir="$HOME/.local/share/safe/node"
 
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
