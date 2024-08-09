@@ -85,7 +85,7 @@ update the script and the cron job with
 
 for resource gathering script
 ```
-sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && chmod u+x /usr/bin/influx-resources.sh
+sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 ```
 
 for cron job
