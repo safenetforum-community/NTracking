@@ -7,6 +7,8 @@ INFLUXDB_GRAFANA_PASSWORD="jidjedewTSuIw4EmqhoOo"
 INFLUXDB_PORT=8086
 INFLUXDB_TOKEN="HYdrv1bCZhsvMhYOq6_wg4NGV2OI9HZch_gh57nquSdAhbjhLMUIeYnCCAoybgJrJlLXRHUnDnz2v-xR0hDt3Q=="
 
+# change to home directory
+cd
 
 export NEWT_COLORS='
 window=,white
