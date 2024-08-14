@@ -22,7 +22,8 @@ Do not run as root user if you need to create a normal user with sudo rights and
 ```
 adduser <username>
 usermod -aG sudo <username>
-su - u <username>
+su <username>
+cd (make sure and do the cd to change to correct home folder !!!)
 ```
 
 # to Run
