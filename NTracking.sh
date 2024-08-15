@@ -25,7 +25,7 @@ SELECTION=$(whiptail --title "NTracking Setup" --radiolist \
 "2" "Setup Influxdb2 & Grafana" OFF \
 "3" "Install Telegraf" OFF \
 "4" "Exit" ON \
-"5" "Basic VPS setup " OFF \
+"5" "Basic VPS setup ssh on port 22  " OFF \
 "6" "Stop & Uninstall NTracking          " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
@@ -612,6 +612,64 @@ exit 0
 
 ############################################################################################################################################## basic vps setup
 elif [[ "$SELECTION" == "5" ]]; then
+
+echo >> $HOME/.bashrc
+echo export PATH=$PATH:$HOME/.cargo/bin/ >> $HOME/.bashrc
+
+#set utc time zone
+sudo timedatectl set-timezone UTC
+
+# install build stuff
+sudo apt install build-essential -y
+sudo apt install make -y
+
+#install safe up
+curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
+
+#install rust
+curl https://sh.rustup.rs -sSf | sh
+sudo apt install cargo
+
+#set up sudo access without password
+sudo rm /etc/sudoers.d/*
+sudo echo -e -n "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/10-users
+
+#setup firewall
+sudo apt install ufw -y
+sudo ufw disable
+sudo ufw reset
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow 22/tcp comment 'SSH'
+
+sudo rm /etc/iptables/*.*
+
+
+#install fail2ban
+sudo apt install fail2ban -y
+sleep 1
+sudo rm /etc/fail2ban/jail.d/defaults-debian.conf
+sudo tee /etc/fail2ban/jail.d/sshd.conf 2>&1 > /dev/null <<-EOF
+    [sshd]
+    enabled = true
+    port = ssh
+    filter = sshd
+    logpath = /var/log/auth.log
+    maxretry = 3
+    findtime = 300
+    bantime = 3600
+    ignoreip = 127.0.0.1
+    banaction = ufw
+EOF
+
+sudo systemctl enable --now fail2ban
+
+################################################################# install safe & set up ntracking
+cargo install vdash
+safeup client
+
+sudo ufw enable
+sudo reboot
 
 ############################################################################################################################################### Stop & Uninstall TIG Stack
 elif [[ "$SELECTION" == "6" ]]; then
