@@ -470,7 +470,7 @@ networks:
 EOF
 
 #open firewall port fot data ingress
-#sudo ufw allow "$INFLUXDB_PORT"/tcp comment 'influxdb2'
+sudo ufw allow "$INFLUXDB_PORT"/tcp comment 'influxdDB'
 
 #start docker contaner it will start in forground so you can see any errors just close terminal when satisfied
 # it will restart automaticaly on boot
