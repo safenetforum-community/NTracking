@@ -25,7 +25,8 @@ SELECTION=$(whiptail --title "NTracking Setup" --radiolist \
 "2" "Setup Influxdb2 & Grafana" OFF \
 "3" "Install Telegraf" OFF \
 "4" "Exit" ON \
-"5" "Stop & Uninstall NTracking          " OFF 3>&1 1>&2 2>&3)
+"5" "Basic VPS setup " OFF \
+"6" "Stop & Uninstall NTracking          " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
 exit 0
@@ -609,8 +610,11 @@ elif [[ "$SELECTION" == "4" ]]; then
 
 exit 0
 
-############################################################################################################################################### Stop & Uninstall TIG Stack
+############################################################################################################################################## basic vps setup
 elif [[ "$SELECTION" == "5" ]]; then
+
+############################################################################################################################################### Stop & Uninstall TIG Stack
+elif [[ "$SELECTION" == "6" ]]; then
 
 #close firewall port for data ingress if open
 #InfluxDB2
