@@ -59,6 +59,7 @@ for dir in "$base_dir"/*; do
                                 safe wallet balance
 
                 fi
+                sleep 20
     fi
 done
 
