@@ -2,8 +2,6 @@
 
 #run with bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/scrape.sh)
 
-#ReceiveingAddress="909d2487061b425c328781b910cdc943b57218a26a3c4b13608364949294680293718080e6452cabc67b4c583b3366ad"
-
 # Environment setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
@@ -73,14 +71,4 @@ echo "#            New wallet balance $client_balance                          #
 echo "#                                                                    #"
 echo "######################################################################"
 echo ""
-echo ""
-echo ""
-echo ""
-#deposit=$(safe wallet send $client_balance $ReceiveingAddress | awk 'NR==10{print $1}')
-echo
-echo
-echo
-#echo "safe wallet receive $deposit"
-echo
-echo
-echo
+
