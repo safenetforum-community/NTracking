@@ -8,6 +8,8 @@
 export PATH=$PATH:$HOME/.local/bin
 base_dir="/var/safenode-manager/services"
 
+safe wallet create --no-replace --no-password
+
 safe wallet address
 
 wallet_address=$(safe wallet address | awk 'NR==3{print $1}')
