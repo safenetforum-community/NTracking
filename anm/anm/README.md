@@ -47,3 +47,8 @@ to
 ![image](https://github.com/user-attachments/assets/a85e9fa3-a46a-403c-985f-58b15a0d0919)
 
 can be seen here that system load started increasing at 07:00 for all machines runing anm.
+
+![image](https://github.com/user-attachments/assets/3c50bcb5-af23-41e6-9ca6-e119dd9967e6)
+
+and here is total node count showing the number of running nodes decreasing to keep the load in the defined range.
+
