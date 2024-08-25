@@ -101,9 +101,17 @@ once per hour means only a few nodes will be scraped at a time so as to keep the
 before trying to move coins out from the host check the status of the script to make sure it is not running !!!
 
 ```
-tail -f /var/safenode-mnager/scrape.log
+tail -f /var/safenode-manager/scrape.log
 ```
 
+# Stoping nodes
+
+just select stop nodes option from the script and on next run it will
+
+1. stop all nodes
+2. delete all scripts and cron jobs
+3. close all fire wall ports used
+4. reboot the system
 
 # if it all goes wong
 
