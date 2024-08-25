@@ -56,6 +56,23 @@ and here is total node count showing the number of running nodes decreasing to k
 
 1. must be a user account NOT ROOT!!!
 
+```
+adduser <username>
+usermod -aG sudo <username>
+su <username>
+cd (make sure and do the cd to change to correct home folder !!!)
+```
+
 2. user account must be able to do sudo without password.
 
-3. safeup must be installed. 
+```
+#set up sudo access without password
+sudo rm /etc/sudoers.d/*
+sudo echo -e -n 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-users
+```
+3. safeup must be installed.
+
+```
+#install safe up
+curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
+```
