@@ -10,7 +10,7 @@ the script will be installed by selecting start nodes option
 this will install the anms.sh script in /usr/bin and set the script to run on a 1 min cron schedule
 on first starting nodes it will ask for
 
-Discord username.
-Logging.
-Port range default is set at 55 which means first node will start on port 55001 and iterate up from there.
-NodeCap this is so people from home can set a hard limit of nodes so as to not overload there routers.
+1. Discord username
+2. Logging
+3. Port range default is set at 55 which means first node will start on port 55001 and iterate up from there.
+4. NodeCap this is so people from home can set a hard limit of nodes so as to not overload there routers.
