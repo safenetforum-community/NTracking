@@ -116,6 +116,8 @@ sudo systemctl daemon-reload
 sudo rm -rf /var/log/safenode
 sudo rm -rf /var/safenode-manager
 sudo rm -f /usr/bin/anms.sh
+sudo rm -f /etc/cron.d/scrape
+sudo rm -f /usr/bin/scrape.sh
 ```
 
 2. sort fire wall out if rules are left over
