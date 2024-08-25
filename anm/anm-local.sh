@@ -3,7 +3,7 @@
 #25/08/2024
 
 #run with
-# bash <(curl -s bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
+# bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
 
 ClientVersion="--version 0.94.0"
 NodeVersion="--version 0.110.0"
