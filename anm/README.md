@@ -76,9 +76,37 @@ sudo echo -e -n 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-use
 #install safe up
 curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
 ```
+4. All nodeports closed in fire wall script will open and close ports as needed.
 
 # to run anm
 
 ```
 bash <(curl -s http://safe-logs.ddns.net/scrip/anm-local.sh)
+```
+
+# if it all goes wong
+
+1. manualy stop and clear out everything
+```
+sudo rm /etc/cron.d/anm
+sudo systemctl stop safenode*
+sudo rm /etc/systemd/system/safenode*
+sudo systemctl daemon-reload
+sudo rm -rf /var/log/safenode
+sudo rm -rf /var/safenode-manager
+sudo rm -f /usr/bin/anms.sh
+```
+
+2. sort fire wall out if rules are left over
+
+adjust for your ssh port if not using port 22 and keep 8086 open on machine running NTracking and also keep open for any other services running on the system.
+
+```
+sudo ufw disable
+echo "y" | sudo ufw reset
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow 22/tcp comment 'SSH'
+sudo ufw allow 8086/tcp comment 'influxdb'
+echo "y" | sudo ufw enable
 ```
