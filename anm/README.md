@@ -99,7 +99,10 @@ reasoning for doing once an hour is that stoping the node to get the wallet and 
 once per hour means only a few nodes will be scraped at a time so as to keep the system happy.
 
 before trying to move coins out from the host check the status of the script to make sure it is not running !!!
-```tail -f /var/safenode-mnager/scrape.log```
+
+```
+tail -f /var/safenode-mnager/scrape.log
+```
 
 
 # if it all goes wong
