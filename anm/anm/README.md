@@ -6,7 +6,8 @@ this script will control the ammount of nodes running on a system running ubuntu
 
 the script will be installed by selecting start nodes option
 
-![image](https://github.com/user-attachments/assets/ea479b06-f7de-422c-a3aa-b83548c6ed4f)
+![image](https://github.com/user-attachments/assets/6d7da7d0-750e-46a8-aef7-8bc0d2bfcd08)
+
 
 this will install the anms.sh script in /usr/bin and set the script to run on a 1 min cron schedule
 on first starting nodes it will ask for
