@@ -48,8 +48,8 @@ elif [[ "$SELECTION" == "2" ]]; then
         "How much to load the system                      " 20 70 10 \
         "1" "Low     -Default-          " OFF \
         "2" "Medium  -Recomended-       " ON \
-        "3" "High                       " OFF \
-        "4" "Extreme -Use Caution       " OFF 3>&1 1>&2 2>&3)
+        "3" "High    -Use Caution-     " OFF \
+        "4" "Extreme -Extra Caution-       " OFF 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
