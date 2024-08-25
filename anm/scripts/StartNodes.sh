@@ -12,7 +12,7 @@ safeup client $ClientVersion
 safeup node  $NodeVersion
 
 # install / update script
-sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin  http://safe-logs.ddns.net/scrip/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
 
 # install NTracking
