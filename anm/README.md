@@ -109,6 +109,7 @@ tail -f /var/safenode-manager/scrape.log
 just select stop nodes option from the script and on next run it will
 
 1. stop all nodes
+2. delete all node files
 2. delete all scripts and cron jobs
 3. close all fire wall ports used
 4. reboot the system
