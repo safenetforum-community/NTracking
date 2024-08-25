@@ -40,4 +40,4 @@ edit any of these settings manualy to control anm if you wish settings diferent 
 if you wish fully automatic upgrades of nodes set 
 ```NodeVersion="--version 0.110.0"```
 to
-```NodeVersion=""```
+```NodeVersion=""``` and the upgrade will start at the upgrade hour and minnute.
