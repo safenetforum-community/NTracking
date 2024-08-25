@@ -52,3 +52,10 @@ can be seen here that system load started increasing at 07:00 for all machines r
 
 and here is total node count showing the number of running nodes decreasing to keep the load in the defined range.
 
+# prereq
+
+1. must be a user account NOT ROOT!!!
+
+2. user account must be able to do sudo without password.
+
+3. safeup must be installed. 
