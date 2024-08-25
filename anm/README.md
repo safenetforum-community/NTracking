@@ -142,3 +142,8 @@ sudo ufw allow 22/tcp comment 'SSH'
 sudo ufw allow 8086/tcp comment 'influxdb'
 echo "y" | sudo ufw enable
 ```
+then give system a reboot just for good luck also it will reset all load levels to zero
+
+```
+sudo reboot
+```
