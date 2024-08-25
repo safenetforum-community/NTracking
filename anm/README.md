@@ -91,8 +91,8 @@ bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTrackin
 
 # scraping 
 
-if Discord username was left blank then a scraping script will be installed at ```/usr/bin/scrape.sh```
-this will run at 5 past the hour and scrape all node wallets with nanos into the client walle tin the default location.
+if Discord username is left blank then a scraping script will be installed at ```/usr/bin/scrape.sh```
+this will run at 5 past the hour and scrape all node wallets with nanos into the client wallet in the default location.
 the scrip can take some time to run as it sleeps bettwen each wallet balance call so as to spread the load out as this can be cpu intensive.
 
 reasoning for doing once an hour is that stoping the node to get the wallet and restarting is very resource hungry and if all the nodes need scraped at once it will cause a melt down.
