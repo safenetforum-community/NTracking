@@ -5,7 +5,7 @@ export PATH=$PATH:$HOME/.local/bin
 source ~/.config/safe/env
 base_dir="/var/safenode-manager/services"
 
-# sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin  http://safe-logs.ddns.net/scrip/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
+# sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin  https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
 # echo "5 * * * * $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape
 
 # block script from running while its already running
