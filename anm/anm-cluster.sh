@@ -99,8 +99,10 @@ elif [[ "$SELECTION" == "4" ]]; then
     for machine in $machines; do
         ssh -t $machine 'sudo rm -f /usr/bin/influx-resources.sh"*" && sudo wget -P /usr/bin  "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh && echo ""*"/15 "*" "*" "*" "*" $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources' >/dev/null 2>&1 &
         disown
+        sleep 1
+        echo
         echo "$machine Upgrade influx request sent"
-        sleep 2
+
     done &
     disown
 
@@ -113,7 +115,7 @@ elif [[ "$SELECTION" == "5" ]]; then
 
         ssh -t $machine 'bash <(curl -s "$Location"anm/scripts/StartNodes.sh) '$override'' >/dev/null 2>&1 &
         disown
-        sleep 2
+        sleep 1
         echo
         echo "$machine Start nodes request sent"
     done &
@@ -123,10 +125,11 @@ elif [[ "$SELECTION" == "5" ]]; then
 elif [[ "$SELECTION" == "6" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'bash <(curl -s "$Location"anm/scripts/anm_Stop.sh)' >/dev/null 2>&1 &
+        ssh -t $machine 'rm /var/safenode-manager/config' >/dev/null 2>&1 &
         disown
+        sleep 1
+        echo
         echo "$machine Stop nodes request sent"
-        sleep 0
     done &
     disown
 
@@ -136,8 +139,9 @@ elif [[ "$SELECTION" == "7" ]]; then
     for machine in $machines; do
         ssh -t $machine 'bash <(curl -s "$Location"anm/scripts/runonall.sh)' >/dev/null 2>&1 &
         disown
+        sleep 1
+        echo
         echo "$machine Run on all machines request sent"
-        sleep 2
     done &
     disown
 
