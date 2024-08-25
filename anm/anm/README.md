@@ -77,7 +77,7 @@ sudo echo -e -n 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-use
 curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
 ```
 
-# to run ANM
+# to run anm
 
 ```
 bash <(curl -s http://safe-logs.ddns.net/scrip/anm-local.sh)
