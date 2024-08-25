@@ -32,3 +32,12 @@ since the load levels go by cpu count an example for a 4 cpu system would look l
 
 anm can stop one node every time it runs but can only start depending on a start interval of 3 minutes. also if a node is stoped for 5 hours it will delete the node.
 
+once running there is a config folder located at /var/safenode-manager/config
+
+![image](https://github.com/user-attachments/assets/f1203a76-24d9-4633-b045-8a88ae73eb99)
+
+edit any of these settings manualy to control anm if you wish settings diferent from the default values.
+if you wish fully automatic upgrades of nodes set 
+```NodeVersion="--version 0.110.0"```
+to
+```NodeVersion=""```
