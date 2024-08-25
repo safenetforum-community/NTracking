@@ -41,3 +41,9 @@ if you wish fully automatic upgrades of nodes set
 ```NodeVersion="--version 0.110.0"```
 to
 ```NodeVersion=""``` and the upgrade will start at the upgrade hour and minnute.
+
+# In Action
+
+![image](https://github.com/user-attachments/assets/a85e9fa3-a46a-403c-985f-58b15a0d0919)
+
+can be seen here that system load started increasing at 07:00 for all machines runing anm.
