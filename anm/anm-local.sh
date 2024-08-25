@@ -140,6 +140,7 @@ elif [[ "$SELECTION" == "5" ]]; then
         echo "autoscraping to client wallet is now enabled"
         echo "scraping starts at 5 min past the hour"
         echo "to view progress of scraping tail -f /var/safenode-manager/scrape.log"
+        echo "sleep 10 please wait "
         echo
         sleep 10
     else

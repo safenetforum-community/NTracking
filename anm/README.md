@@ -84,6 +84,24 @@ curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | su
 bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
 ```
 
+# monitoring
+
+1. Ntracking prefered way to monitor 
+2. to manaulay view the log file ```tail -f /var/safenode-manager/log``` this print out once per minnute when ams runs
+
+# scraping 
+
+if Discord username was left blank then a scraping script will be installed at ```/usr/bin/scrape.sh```
+this will run at 5 past the hour and scrape all node wallets with nanos into the client walle tin the default location.
+the scrip can take some time to run as it sleeps bettwen each wallet balance call so as to spread the load out as this can be cpu intensive.
+
+reasoning for doing once an hour is that stoping the node to get the wallet and restarting is very resource hungry and if all the nodes need scraped at once it will cause a melt down.
+once per hour means only a few nodes will be scraped at a time so as to keep the system happy.
+
+before trying to move coins out from the host check the status of the script to make sure it is not running !!!
+```tail -f /var/safenode-mnager/scrape.log```
+
+
 # if it all goes wong
 
 1. manualy stop and clear out everything
