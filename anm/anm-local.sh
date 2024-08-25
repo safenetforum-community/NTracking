@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#25/08/2024
+
 #run with
 # bash <(curl -s http://safe-logs.ddns.net/scrip/anm-local.sh)
 
