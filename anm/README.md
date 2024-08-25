@@ -81,7 +81,7 @@ curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | su
 # to run anm
 
 ```
-bash <(curl -s http://safe-logs.ddns.net/scrip/anm-local.sh)
+bash <(curl -s https://github.com/safenetforum-community/NTracking/blob/main/anm/anm-local.sh)
 ```
 
 # if it all goes wong
