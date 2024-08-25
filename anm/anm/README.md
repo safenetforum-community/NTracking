@@ -44,7 +44,7 @@ to
 
 # In Action
 
-![image](https://github.com/user-attachments/assets/a85e9fa3-a46a-403c-985f-58b15a0d0919)
+![image](https://github.com/user-attachments/assets/eac0ccd0-a706-4b8c-8a09-7c036518766d)
 
 can be seen here that system load started increasing at 07:00 for all machines runing anm.
 
