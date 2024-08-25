@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 #run with
-# bash <(curl -s http://safe-logs.ddns.net/scrip/anm-local.sh)
+# bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
+Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
 ClientVersion="--version 0.94.0"
 NodeVersion="--version 0.110.0"
@@ -97,7 +98,7 @@ elif [[ "$SELECTION" == "3" ]]; then
 ######################################################################################################################## NTracking upgrade
 elif [[ "$SELECTION" == "4" ]]; then
 
-    sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
+    sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
     echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
 ######################################################################################################################## Start nodes
@@ -117,10 +118,10 @@ elif [[ "$SELECTION" == "5" ]]; then
     safeup node $NodeVersion
 
     # install / update anm script
-    sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin http://safe-logs.ddns.net/scrip/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+    sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
     # update NTracking
-    sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
+    sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
     echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
     # user options
@@ -133,7 +134,7 @@ elif [[ "$SELECTION" == "5" ]]; then
     if [ -z "${Discord_Username// /}" ]; then
         # Set no owner for nodes and keep the nanos
         sudo sed -i 's/--owner timbobjohnes//g' /usr/bin/anms.sh
-        sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin http://safe-logs.ddns.net/scrip/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
+        sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
         echo "5 * * * * $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape
         clear
         echo "autoscraping to client wallet is now enabled"
