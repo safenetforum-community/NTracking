@@ -21,49 +21,46 @@ create the custom file with
 
 ```nano $HOME/.local/share/anm-cluster```
 
-and paste in the custome config file contents here is an exmple.
+and paste in the custome config file contents here is an exmple which will need edited to your own machine names and specifications.
 
 ```
-# set machines in cluster ssh nick name
+# machines in cluster accessable by ssh
 machines="cantabo dell p1 s00 s01 s02 s03 h00 h01 h02 p1"
 
 # customise setings for each system on start up
+
 CustomSetings() {
 
+    YourDiscordID="DiscordID"
+
+    # set global discord username override
+    override='&& echo "DiscordUsername=\"--owner '$YourDiscordID'\"" >/var/safenode-manager/override '
+
+    # set custom overrides for each machine
     if [[ "$machine" == "s00" ]]; then
         # set override for max 20 nodes on the master s00
-        override='&& echo "NodeCap=20" >/var/safenode-manager/override'
+        override=''$override'&& echo "NodeCap=20" >>/var/safenode-manager/override '
     elif [[ "$machine" == "cantabo" ]]; then
         # set override for max 20 nodes, increase start nodes interval to 10 minutes and increase upgrade interval to 20 minutes on machine cantabo
-        override='&& echo "NodeCap=20" >/var/safenode-manager/override && echo "DelayStart=10" >>/var/safenode-manager/override && echo "DelayUpgrade=20" >>/var/safenode-manager/override'
+        override=''$override'&& echo "NodeCap=20" >>/var/safenode-manager/override && echo "DelayStart=10" >>/var/safenode-manager/override && echo "DelayUpgrade=20" >>/var/safenode-manager/override '
     elif [[ "$machine" == "dell" ]]; then
         # set override for max 10 nodes, increase start nodes interval to 10 minutes and increase upgrade interval to 20 minutes on machine dell
-        override='&& echo "NodeCap=10" >/var/safenode-manager/override && echo "DelayStart=10" >>/var/safenode-manager/override && echo "DelayUpgrade=20" >>/var/safenode-manager/override'
+        override=''$override'&& echo "NodeCap=10" >>/var/safenode-manager/override && echo "DelayStart=10" >>/var/safenode-manager/override && echo "DelayUpgrade=20" >>/var/safenode-manager/override '
     elif [[ "$machine" == "p1" ]]; then
-        # set custome discord username on machine p1
-        override='&& echo "DiscordUsername=\"--owner yourdiscordID\"" >/var/safenode-manager/override'
+        # set a different discord username on machine p1
+        override=''$override'&& echo "DiscordUsername=\"--owner AnotherDiscordID\"" >>/var/safenode-manager/override '
     elif [[ "$machine" == "h00" ]]; then
         # set no discord username and enable scraping script on machine h00
-        override='&& echo "DiscordUsername=\"\"" >/var/safenode-manager/override && sudo rm -f /usr/bin/scrape.sh"*" && sudo wget -P /usr/bin http://safe-logs.ddns.net/scrip/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh && echo "5 "*" "*" "*" "*" $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape'
-    elif [[ "$machine" == "s01" ]]; then
-        # set custome discord username on machine s01
-        override='&& echo "DiscordUsername=\"--owner yourdiscordID\"" >/var/safenode-manager/override'
-    elif [[ "$machine" == "s02" ]]; then
-        # set custome discord username on machine s02
-        override='&& echo "DiscordUsername=\"--owner yourdiscordID\"" >/var/safenode-manager/override'
-    elif [[ "$machine" == "s03" ]]; then
-        # set custome discord username on machine s03
-        override='&& echo "DiscordUsername=\"--owner yourdiscordID\"" >/var/safenode-manager/override'
+        override=''$override'&& echo "DiscordUsername=\"\"" >>/var/safenode-manager/override && sudo rm -f /usr/bin/scrape.sh"*" && sudo wget -P /usr/bin '"$Location"'anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh && echo "5 "*" "*" "*" "*" $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape '
     fi
 
     # set custom machine load
     if [[ "$machine" == "s"* ]]; then
-        override=''$override' && echo "DelayStart=5" >>/var/safenode-manager/override  && echo "DelayUpgrade=20" >>/var/safenode-manager/override'
+        # set all machines that have names that begin with s to have a 5 minute node start interval and 20 minute upgrade interval
+        override=''$override' && echo "DelayStart=5" >>/var/safenode-manager/override  && echo "DelayUpgrade=20" >>/var/safenode-manager/override '
     elif [[ "$machine" == "h"* ]]; then
-        override=''$override' && sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.0" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/safenode-manager/config'
-    elif [[ "$machine" == "p1" ]]; then
-        override=''$override' && sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.0" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/safenode-manager/config'
+        # set all machines that have names that begin with h to start on load level medium
+        override=''$override' && sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.0" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/safenode-manager/config '
     fi
 }
-
 ```
