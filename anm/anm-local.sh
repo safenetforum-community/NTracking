@@ -17,7 +17,7 @@ button=black,white
 '
 
 ############################################## select test net action
-SELECTION=$(whiptail --title "aatonnomicc local node manager" --radiolist \
+SELECTION=$(whiptail --title "aatonnomicc node manager v 1.0" --radiolist \
     "                 ANM Local options                              " 20 70 10 \
     "1" "Exit" ON \
     "2" "Change load level" OFF \
