@@ -49,8 +49,8 @@ CheckSetUp() {
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.5" | bc)" >>/var/safenode-manager/config
         echo "DesiredLoadAverage=$(echo "$(nproc) * 1.5" | bc)" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "CpuLessThan=95" >>/var/safenode-manager/config
-        echo "MemLessThan=95" >>/var/safenode-manager/config
+        echo "CpuLessThan=90" >>/var/safenode-manager/config
+        echo "MemLessThan=90" >>/var/safenode-manager/config
         echo "HDLessThan=95" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "# counters start at this number and upon action happening" >>/var/safenode-manager/config
@@ -289,6 +289,9 @@ CalculateValues() {
     AllowCpu=$(echo "$UsedCpuPercent < $CpuLessThan" | bc)
     AllowMem=$(echo "$FreeMemPercent < $MemLessThan" | bc)
     AllowHD=$(echo "$UsedHdPercent < $HDLessThan" | bc)
+    RemCpu=$(echo "$UsedCpuPercent < 98 " | bc)
+    RemMem=$(echo "$FreeMemPercent < 98 " | bc)
+    RemHD=$(echo "$UsedHdPercent < 98 " | bc)
     AllowNodeCap=$(echo "$RunningNodes <= $NodeCap" | bc)
     #variable delay start test
     #if (($(echo "$CpuCount >= 24 " | bc))); then
@@ -308,7 +311,8 @@ PrintDetails() {
     echo "CpuCount $CpuCount MaxLoadAverageAllowed $MaxLoadAverageAllowed DesiredLoadAverage $DesiredLoadAverage NodeCap $NodeCap" && echo
     echo "Latest Ver $LatestNodeVer NodesLatestVersion $NodesLatestV NodesToUpgrade $NodesToUpgrade NextToUpgrade  $NextToUpgrade"
     echo "Upgrade $Upgrade Remove $Remove" && echo
-    echo "Cpu $AllowCpu Mem $AllowMem HD $AllowHD LoadAllow $LoadAllow LoadNotAllow $LoadNotAllow AllowNodeCap $AllowNodeCap"
+    echo "AllowCpu $AllowCpu AllowMem $AllowMem AllowHD $AllowHD RemCpu $RemCpu RemMem $RemMem RemHD $RemHD"
+    echo "LoadAllow $LoadAllow LoadNotAllow $LoadNotAllow AllowNodeCap $AllowNodeCap"
     echo "DelayStart $DelayStart DelayReStart $DelayReStart DelayUpgrade $DelayUpgrade DelayRemove $DelayRemove"
     echo "CounterStart $CounterStart CounterUpgrade $CounterUpgrade" && echo
     echo "$(</var/safenode-manager/counters)" && echo
@@ -380,8 +384,8 @@ if [[ ! -f "/var/safenode-manager/config" ]] || [[ "$Action" == "4" ]]; then
 elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) && (($(echo $AllowNodeCap))) || [[ "$Action" == "1" ]]; then
     echo "start node" && echo
     StartNode
-elif (($(echo "$AllowCpu == 0" | bc))) || (($(echo "$AllowMem == 0" | bc))) || (($(echo "$AllowHD == 0" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]] || (($(echo "$AllowNodeCap == 0" | bc))); then
-    if (($(echo "$AllowHD == 0" | bc))); then
+elif (($(echo "$RemCpu == 1" | bc))) || (($(echo "$RemMem == 1" | bc))) || (($(echo "$RemHD == 1" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]] || (($(echo "$AllowNodeCap == 0" | bc))); then
+    if (($(echo "$RemHD == 1" | bc))); then
         RemoveNode $TotalNodes
         echo "Node $TotalNodes Removed due to hard drive space" && echo
     else
