@@ -10,25 +10,25 @@ export PATH=$PATH:$HOME/.local/bin
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
 export NEWT_COLORS='
-root=white,red
-window=white,gray
-border=lightgray,gray
+root=white,gray
+window=white,lightgray
+border=black,lightgray
 shadow=white,black
 button=black,green
 actbutton=black,red
-compactbutton=lightgray,black
-title=yellow,gray
-roottext=red,black
-textbox=lightgray,gray
+compactbutton=black,
+title=black,
+roottext=black,magenta
+textbox=black,lightgray
 acttextbox=gray,white
-entry=black,lightgray
-disentry=gray,black
+entry=lightgray,gray
+disentry=gray,lightgray
 checkbox=black,lightgray
 actcheckbox=black,green
-emptyscale=,lightgray
-fullscale=,brown
+emptyscale=,black
+fullscale=,red
 listbox=black,lightgray
-actlistbox=lightgray,black
+actlistbox=lightgray,gray
 actsellistbox=black,green
 '
 
@@ -63,10 +63,10 @@ elif [[ "$SELECTION" == "2" ]]; then
 
     LoadLevel=$(whiptail --title "System loading   " --radiolist \
         "How much to load the system                      " 20 70 10 \
-        "1" "Low     -Recomended-       " OFF \
-        "2" "Medium  -Default-          " ON \
-        "3" "High                       " OFF \
-        "4" "Extreme -Use Caution       " OFF 3>&1 1>&2 2>&3)
+        "1" "Low     -Default-         " OFF \
+        "2" "Medium  -Recomended-      " ON \
+        "3" "High    -Use Caution-     " OFF \
+        "4" "Extreme -Extra Caution-   " OFF 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
