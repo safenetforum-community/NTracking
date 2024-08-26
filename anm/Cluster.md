@@ -52,7 +52,7 @@ CustomSetings() {
         override=''$override'&& echo "DiscordUsername=\"--owner AnotherDiscordID\"" >>/var/safenode-manager/override '
     elif [[ "$machine" == "h00" ]]; then
         # set no discord username and enable scraping script on machine h00
-        override=''$override'&& echo "DiscordUsername=\"\"" >>/var/safenode-manager/override && sudo rm -f /usr/bin/scrape.sh"*" && sudo wget -P /usr/bin '"$Location"'anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh && echo "5 "*" "*" "*" "*" $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape '
+        override=''$override'&& echo "DiscordUsername=\"\"" >>/var/safenode-manager/override && sudo rm -f /usr/bin/scrape.sh"*" && sudo wget -P /usr/bin '$Location'anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh && echo "5 "*" "*" "*" "*" $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape '
     fi
 
     # set custom machine load
