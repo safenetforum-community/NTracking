@@ -21,7 +21,8 @@ on first starting nodes it will ask for
 default load levels are set to low which will set that no new nodes can be added over load average Number of cpu's * 1.5 and will stop nodes at Number of cpu's * 2.5.
 once the script has started one node the main script can be run again and a custome load level set.
 
-![image](https://github.com/user-attachments/assets/886df594-3916-4ad9-917b-369e0ce682c2)
+![image](https://github.com/user-attachments/assets/0d4d1fac-bed4-4504-ae96-f460da688107)
+
 
 since the load levels go by cpu count an example for a 4 cpu system would look like this
 
