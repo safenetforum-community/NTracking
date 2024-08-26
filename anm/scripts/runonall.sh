@@ -20,4 +20,4 @@
 
 #sudo rm -rf /var/safenode-manager
 
-touch $HOME/runonallsystems
+#touch $HOME/runonallsystems
