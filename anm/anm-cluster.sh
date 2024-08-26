@@ -97,7 +97,7 @@ elif [[ "$SELECTION" == "3" ]]; then
 elif [[ "$SELECTION" == "4" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'sudo rm -f /usr/bin/influx-resources.sh"*" && sudo wget -P /usr/bin  "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh && echo ""*"/15 "*" "*" "*" "*" $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources' >/dev/null 2>&1 &
+        ssh -t $machine 'sudo rm -f /usr/bin/influx-resources.sh"*" && sudo wget -P /usr/bin  '"$Location"'influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh && echo ""*"/15 "*" "*" "*" "*" $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources' >/dev/null 2>&1 &
         disown
         sleep 1
         echo
@@ -113,7 +113,7 @@ elif [[ "$SELECTION" == "5" ]]; then
         override=""
         CustomSetings
 
-        ssh -t $machine 'bash <(curl -s "$Location"anm/scripts/StartNodes.sh) '$override'' >/dev/null 2>&1 &
+        ssh -t $machine 'bash <(curl -s '"$Location"'anm/scripts/StartNodes.sh) '$override'' >/dev/null 2>&1 &
         disown
         sleep 1
         echo
@@ -137,7 +137,7 @@ elif [[ "$SELECTION" == "6" ]]; then
 elif [[ "$SELECTION" == "7" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'bash <(curl -s "$Location"anm/scripts/runonall.sh)' >/dev/null 2>&1 &
+        ssh -t $machine 'bash <(curl -s '"$Location"'anm/scripts/runonall.sh)' >/dev/null 2>&1 &
         disown
         sleep 1
         echo
