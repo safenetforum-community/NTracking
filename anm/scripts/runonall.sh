@@ -18,4 +18,6 @@
 #sudo ufw allow 4574/tcp comment 'SSH'
 #echo "y" | sudo ufw enable
 
-sudo rm -rf /var/safenode-manager
+#sudo rm -rf /var/safenode-manager
+
+touch $HOME/runonallsystems
