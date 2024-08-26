@@ -125,9 +125,8 @@ elif [[ "$SELECTION" == "5" ]]; then
 elif [[ "$SELECTION" == "6" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'rm /var/safenode-manager/config'
-        # >/dev/null 2>&1 &
-        #disown
+        ssh -t $machine 'rm /var/safenode-manager/config' >/dev/null 2>&1 &
+        disown
         sleep 1
         echo
         echo "$machine Stop nodes request sent"
