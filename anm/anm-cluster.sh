@@ -11,7 +11,7 @@ Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/mai
 
 export NEWT_COLORS='
 window=,white
-border=black,white
+border=black,red
 textbox=black,white
 button=black,white
 '
