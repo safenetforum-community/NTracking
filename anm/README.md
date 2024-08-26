@@ -69,7 +69,7 @@ cd (make sure and do the cd to change to correct home folder !!!)
 ```
 #set up sudo access without password
 sudo rm /etc/sudoers.d/*
-sudo echo -e -n 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-users
+sudo echo -e -n ''$USER' ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-users
 ```
 3. safeup must be installed.
 
