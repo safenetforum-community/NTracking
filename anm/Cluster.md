@@ -12,3 +12,4 @@ to set up select one machine as the master which you will run the script on in t
 
 first thing is first you will need to be able to log into each machine via ssh from the master machine via short config file ie ```ssh s00```
 
+some info on that is available here https://www.cyberciti.biz/faq/create-ssh-config-file-on-linux-unix/
