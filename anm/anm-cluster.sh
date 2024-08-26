@@ -10,10 +10,26 @@ export PATH=$PATH:$HOME/.local/bin
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
 export NEWT_COLORS='
-window=,white
-border=black,red
-textbox=black,white
-button=black,white
+root=white,red
+window=white,gray
+border=lightgray,gray
+shadow=white,black
+button=black,green
+actbutton=black,red
+compactbutton=lightgray,black
+title=yellow,gray
+roottext=red,black
+textbox=lightgray,gray
+acttextbox=gray,white
+entry=black,lightgray
+disentry=gray,black
+checkbox=black,lightgray
+actcheckbox=black,green
+emptyscale=,lightgray
+fullscale=,brown
+listbox=black,lightgray
+actlistbox=lightgray,black
+actsellistbox=black,green
 '
 
 # machines to run on vis ssh shortcut in ~/.ssh/config
