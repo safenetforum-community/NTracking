@@ -10,25 +10,25 @@ export PATH=$PATH:$HOME/.local/bin
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
 export NEWT_COLORS='
-root=white,gray
-window=white,lightgray
-border=black,lightgray
+root=white,red
+window=white,gray
+border=lightgray,gray
 shadow=white,black
 button=black,green
 actbutton=black,red
-compactbutton=black,
-title=black,
-roottext=black,magenta
-textbox=black,lightgray
+compactbutton=lightgray,black
+title=yellow,gray
+roottext=red,black
+textbox=lightgray,gray
 acttextbox=gray,white
-entry=lightgray,gray
-disentry=gray,lightgray
+entry=black,lightgray
+disentry=gray,black
 checkbox=black,lightgray
 actcheckbox=black,green
-emptyscale=,black
-fullscale=,red
+emptyscale=,lightgray
+fullscale=,brown
 listbox=black,lightgray
-actlistbox=lightgray,gray
+actlistbox=lightgray,black
 actsellistbox=black,green
 '
 
