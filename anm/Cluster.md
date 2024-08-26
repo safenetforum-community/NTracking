@@ -21,22 +21,23 @@ create the custom file with
 
 ```nano $HOME/.local/share/anm-cluster```
 
-and paste in the custome config file contents here is an exmple which will need edited to your own machine names and specifications.
+and paste in the custom config file contents here is an exmple which will need edited to your own machine names and specifications.
 
 ```
 # machines in cluster accessable by ssh
 machines="cantabo dell p1 s00 s01 s02 s03 h00 h01 h02 p1"
 
+# your discord ID
+YourDiscordID="DiscordID"
+
 # customise setings for each system on start up
 
 CustomSetings() {
 
-    YourDiscordID="DiscordID"
-
     # set global discord username override
     override='&& echo "DiscordUsername=\"--owner '$YourDiscordID'\"" >/var/safenode-manager/override '
 
-    # set custom overrides for each machine
+    # set custom overrides for machines
     if [[ "$machine" == "s00" ]]; then
         # set override for max 20 nodes on the master s00
         override=''$override'&& echo "NodeCap=20" >>/var/safenode-manager/override '
@@ -63,4 +64,11 @@ CustomSetings() {
         override=''$override' && sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.0" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/safenode-manager/config '
     fi
 }
+```
+
+# to run it all
+thats it done you can now control your cluster. 
+
+```
+bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-cluster.sh)
 ```
