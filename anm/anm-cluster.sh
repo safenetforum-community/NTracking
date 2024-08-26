@@ -16,7 +16,11 @@ textbox=black,white
 button=black,white
 '
 
+# machines to run on vis ssh shortcut in ~/.ssh/config
 machines="m00 m01 m02 m03 m04 m05"
+
+# load custom machine names and function
+. $HOME/.local/share/anm-cluster
 
 ############################################## select test net action
 SELECTION=$(whiptail --title "aatonnomicc cluster node manager" --radiolist \
@@ -32,9 +36,6 @@ SELECTION=$(whiptail --title "aatonnomicc cluster node manager" --radiolist \
 if [[ $? -eq 255 ]]; then
     exit 0
 fi
-
-# load custom machine names and function
-. $HOME/.local/share/anm-cluster
 
 ################################################################################################################ exit
 if [[ "$SELECTION" == "1" ]]; then
