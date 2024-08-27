@@ -68,6 +68,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         cpu_usage=0
         records=0
         network_size=0
+        shunned_count=0
         rewards_balance=0
         connected_peers=0
         store_cost=0
