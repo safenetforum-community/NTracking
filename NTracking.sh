@@ -594,7 +594,7 @@ sudo tee /etc/telegraf/telegraf.conf 2>&1 > /dev/null <<EOF
   # ignore_fs = ["tmpfs", "devtmpfs", "devfs", "iso9660", "overlay", "aufs", "squashfs"]
 
 [[inputs.net]]
-  interfaces = ["enp*", "eno*", "eth*", "ib*", "wl*"]
+  interfaces = ["enp*", "ens*", "eno*", "eth*", "ib*", "wl*"]
 
 [[inputs.tail]]
   files = ["/tmp/influx-resources/influx-resources"]
