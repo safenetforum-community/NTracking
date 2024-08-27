@@ -43,7 +43,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
         network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
-        shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==3 {print $2}')
+        shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==1 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
         connected_peers=$(echo "$node_details" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
