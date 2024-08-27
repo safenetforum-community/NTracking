@@ -2,8 +2,8 @@
 
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
-ClientVersion="--version 0.94.1"
-NodeVersion="--version 0.110.1"
+ClientVersion="--version 0.94.0"
+NodeVersion="--version 0.110.0"
 
 #disable swap
 sudo swapoff -a
