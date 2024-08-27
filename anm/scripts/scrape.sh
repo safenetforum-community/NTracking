@@ -47,8 +47,8 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         echo "moved client wallet to backup location"
         sudo mv /var/safenode-manager/services/safenode$i/wallet/ $HOME/.local/share/safe/client/
         echo "moved $node_name wallet to client location"
-        sudo chown -R "$USER":"$USER" $HOME/.local/share/safe/client/wallet
-        echo "ownership of $node_name changed to user: ubuntu"
+        sudo chown -R "$(whoami)":"$(whoami)" $HOME/.local/share/safe/client/wallet
+        echo "ownership of $node_name changed to user:"$(whoami)""
 
         node_balance=$rewards_balance
         echo "node wallet balance to transfer $node_balance"
