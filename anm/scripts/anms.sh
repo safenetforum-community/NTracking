@@ -99,7 +99,7 @@ StartNode() {
     echo "Opened firewall port $ntpr$node_number/udp"
     sudo systemctl start $node_name
     echo "systemctl start $node_name"
-    sleep 20
+    sleep 30
     status="$(sudo systemctl status $node_name.service --no-page)"
     PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/safenode$NextNodeToSorA/safenode -V | awk '{print $3}'),RUNNING"
