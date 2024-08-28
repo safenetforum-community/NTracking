@@ -122,7 +122,7 @@ total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 
 # sleep till all nodes have systems have finished prosessing
 
-while (( $(("$time_min" + "5")) > $(date +"%M"))); do
+while (( $(("$time_min" + "4")) > $(date +"%M"))); do
 sleep 10
 done
 
