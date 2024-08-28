@@ -397,8 +397,11 @@ ShunnGun() {
         WalletDir=$(date +%s)
         mkdir -p /var/safenode-manager/wallets/$WalletDir/wallet
         cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet
-        sudo rm -v -r /var/safenode-manager/services/$node_name/!(safenode)
-        sleep 10
+        sudo rm -rf /var/safenode-manager/services/$node_name/*
+        sleep 5
+        sudo cp $NodePath /var/safenode-manager/services/$node_name
+        echo "cp $NodePath /var/safenode-manager/services/$node_name"
+        sleep 5
         #restart node
         echo "Starting $node_name"
         sudo systemctl start $node_name
