@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#1
+
 time_min=$(date +"%M")
 time_hour=$(date +"%H")
 
@@ -375,7 +377,7 @@ ShunnGun() {
         echo "Shunngun not allowed during upgrade" && echo
         return 0
     fi
-    # load veraiable for from ntracking for max shunned node
+    # load veraiable from ntracking for max shunned node
     . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
     node_number=$(seq -f "%03g" $MaxShunnedNode $MaxShunnedNode)
     node_name=safenode$node_number
@@ -400,6 +402,8 @@ ShunnGun() {
     echo "$node_name Started"
     sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
     echo "reset node start timer" && echo
+    # remove veraiable from ntracking for max shunned node
+    rm /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
 }
 
 CheckSetUp
