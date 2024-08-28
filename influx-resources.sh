@@ -43,7 +43,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
         network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
-        shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==3 {print $2}')
+#        shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==1 {print $2}')
         rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
         connected_peers=$(echo "$node_details" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
@@ -68,7 +68,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         cpu_usage=0
         records=0
         network_size=0
-        shunned_count=0
+#        shunned_count=0
         rewards_balance=0
         connected_peers=0
         store_cost=0
@@ -87,7 +87,8 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
         fi
 
         # Format for InfluxDB
-        node_details_str[$i]="nodes,id=$node_name PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i $influx_time"
+        node_details_str[$i]="nodes,id=$node_name PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i $influx_time"
+        #,shunned_count="$shunned_count"i
         #sleep to slow script down to spread out cpu spike
 
         rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
