@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#2
+#4
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
@@ -397,7 +397,7 @@ ShunnGun() {
         WalletDir=$(date +%s)
         mkdir -p /var/safenode-manager/wallets/$WalletDir/wallet
         cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet
-        sudo rm -v -r /var/safenode-manager/services/$node_name/!("safenode")
+        sudo rm -v -r /var/safenode-manager/services/$node_name/!"safenode"
         sleep 10
         #restart node
         echo "Starting $node_name"
