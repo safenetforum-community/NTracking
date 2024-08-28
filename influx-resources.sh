@@ -28,15 +28,17 @@ declare -A node_details_store
 NumberOfNodes=$(ls $base_dir | wc -l)
 
 # drop node first port by 1 as i had to be 1 in the for loop for correct node names
-MetricsPortFirst=$(($MetricsPortFirst -1 ))
+MetricsPortFirst=$(($MetricsPortFirst - 1))
+
+MaxShunnedNode=0
 
 # Process nodes
-for (( i = 1; i <= $NumberOfNodes; i++ )); do
+for ((i = 1; i <= $NumberOfNodes; i++)); do
     node_number=$(seq -f "%03g" $i $i)
     node_name=safenode$node_number
-        node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
+    node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
 
-        if [[ -n "$node_details" ]]; then
+    if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
         status="TRUE"
         mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
@@ -54,6 +56,15 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
             # for anm
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
+
+            # shunn gun
+            if (($(echo "$shunned_count != 0" | bc))); then
+                mkdir -p /var/safenode-manager/wallets
+                . /var/safenode-manager/MaxShunnedNode
+                if (($(echo "$shunned_count >= $MaxShunnedNode" | bc))); then
+                echo "MaxShunnedNode=$i" > /var/safenode-manager/MaxShunnedNode
+            fi
+
         else
             # for safe node manager service
             statusctl="$(sudo systemctl status safenode$i.service --no-page)"
@@ -61,7 +72,7 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
 
-        else
+    else
         total_nodes_killed=$(($total_nodes_killed + 1))
         status="FALSE"
         mem_used=0
@@ -84,48 +95,45 @@ for (( i = 1; i <= $NumberOfNodes; i++ )); do
             PeerId="\"NotReachableStoppedNode\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
-        fi
+    fi
 
-        # Format for InfluxDB
-        node_details_str[$i]="nodes,id=$node_name PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i $influx_time"
-        #sleep to slow script down to spread out cpu spike
+    # Format for InfluxDB
+    node_details_str[$i]="nodes,id=$node_name PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i $influx_time"
+    #sleep to slow script down to spread out cpu spike
 
-        rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc )
-        total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
-        total_network_size=$(($total_network_size + $network_size))
+    rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc)
+    total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
+    total_network_size=$(($total_network_size + $network_size))
 
 done
 
-network_size=$(echo "$total_network_size / $total_nodes_running" | bc )
+network_size=$(echo "$total_network_size / $total_nodes_running" | bc)
 
 # Latency
-latency=$(ping -c 4 8.8.8.8 | tail -1| awk '{print $4}' | cut -d '/' -f 2)
-
+latency=$(ping -c 4 8.8.8.8 | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
 
 ##############################################################################################
 # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
 # https://www.coingecko.com/api/documentation
 ##############################################################################################
 coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
-exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<< $coingecko)
-market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<< $coingecko)
-exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<< $coingecko)
-market_cap_usd=$(awk -F'[:}]' '{print $6}' <<< $coingecko)
+exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<<$coingecko)
+market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<<$coingecko)
+exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
+market_cap_usd=$(awk -F'[:}]' '{print $6}' <<<$coingecko)
 
 # calculate earnings in usd & gbp
-earnings_gbp=`echo $total_rewards_balance*$exchange_rate_gbp | bc`
-earnings_usd=`echo $total_rewards_balance*$exchange_rate_usd | bc`
+earnings_gbp=$(echo $total_rewards_balance*$exchange_rate_gbp | bc)
+earnings_usd=$(echo $total_rewards_balance*$exchange_rate_usd | bc)
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 
-
 # sleep till all nodes have systems have finished prosessing
 
-while (( $(("$time_min" + "5")) > $(date +"%M"))); do
-sleep 10
+while (($(("$time_min" + "5")) > $(date +"%M"))); do
+    sleep 10
 done
-
 
 # Output
 
