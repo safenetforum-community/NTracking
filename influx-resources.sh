@@ -62,7 +62,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
 
             # shunn gun
             if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
-                . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
+                #             . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
                 if (($(echo "$shunned_count >= $ShunnedValue" | bc))); then
                     Shunngun=1
                     ShunnedNode=$i
