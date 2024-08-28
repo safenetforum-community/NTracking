@@ -393,6 +393,11 @@ ShunnGun() {
         echo "updated array $node_name"
         sudo systemctl stop $node_name
         echo "systemctl stop $node_name"
+        # save wallet and clear out files
+        WalletDir=$(date +%s)
+        mkdir -p /var/safenode-manager/wallets/$WalletDir/wallet
+        cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet
+        sudo rm -v -r /var/safenode-manager/services/$node_name/!("safenode")
         sleep 10
         #restart node
         echo "Starting $node_name"
