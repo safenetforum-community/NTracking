@@ -62,7 +62,8 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
                 mkdir -p /var/safenode-manager/wallets
                 . /var/safenode-manager/MaxShunnedNode
                 if (($(echo "$shunned_count >= $MaxShunnedNode" | bc))); then
-                echo "MaxShunnedNode=$i" > /var/safenode-manager/MaxShunnedNode
+                    echo "MaxShunnedNode=$i" >/var/safenode-manager/MaxShunnedNode
+                fi
             fi
 
         else
