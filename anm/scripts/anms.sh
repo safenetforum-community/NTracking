@@ -33,6 +33,7 @@ CheckSetUp() {
         sudo useradd -m -p ed5wsejw6S4ifjlwjfSlwj safe
         sudo mkdir -p /var/safenode-manager
         sudo chown -R $USER:$USER /var/safenode-manager
+        mkdir -p /var/safenode-manager/wallets
         sudo mkdir -p /var/safenode-manager/services /var/log/safenode
         sudo chown -R safe:safe /var/safenode-manager/services /var/log/safenode
         echo "CpuCount=$(echo "$(nproc) / 1" | bc)" >>/var/safenode-manager/system

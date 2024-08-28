@@ -30,7 +30,7 @@ NumberOfNodes=$(ls $base_dir | wc -l)
 # drop node first port by 1 as i had to be 1 in the for loop for correct node names
 MetricsPortFirst=$(($MetricsPortFirst - 1))
 
-MaxShunnedNode=0
+ShunnedValue=0
 
 # Process nodes
 for ((i = 1; i <= $NumberOfNodes; i++)); do
@@ -59,10 +59,10 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
 
             # shunn gun
             if (($(echo "$shunned_count != 0" | bc))); then
-                mkdir -p /var/safenode-manager/wallets
-                . /var/safenode-manager/MaxShunnedNode
-                if (($(echo "$shunned_count >= $MaxShunnedNode" | bc))); then
+                . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
+                if (($(echo "$shunned_count >= $ShunnedValue" | bc))); then
                     echo "MaxShunnedNode=$i" >/var/safenode-manager/MaxShunnedNode
+                    echo "ShunnedValue=$shunned_count" >/var/safenode-manager/MaxShunnedNode
                 fi
             fi
 
