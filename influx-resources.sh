@@ -30,7 +30,8 @@ NumberOfNodes=$(ls $base_dir | wc -l)
 # drop node first port by 1 as i had to be 1 in the for loop for correct node names
 MetricsPortFirst=$(($MetricsPortFirst - 1))
 
-ShunnedValue=0
+#Aceptable Shunn value
+ShunnedValue=1
 
 # Process nodes
 for ((i = 1; i <= $NumberOfNodes; i++)); do
@@ -58,7 +59,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
 
             # shunn gun
-            if (($(echo "$shunned_count != 0" | bc))); then
+            if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
                 . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
                 if (($(echo "$shunned_count >= $ShunnedValue" | bc))); then
                     Shunngun=1
