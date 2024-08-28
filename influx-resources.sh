@@ -33,7 +33,7 @@ NumberOfNodes=$(ls $base_dir | wc -l)
 MetricsPortFirst=$(($MetricsPortFirst - 1))
 
 #Aceptable Shunn value
-ShunnedValue=1
+ShunnedValue=0
 
 # Process nodes
 for ((i = 1; i <= $NumberOfNodes; i++)); do
@@ -62,12 +62,9 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
 
             # shunn gun
             if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
-                #             . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
-                if (($(echo "$shunned_count >= $ShunnedValue" | bc))); then
-                    Shunngun=1
-                    ShunnedNode=$i
-                    ShunnedValue=$shunned_count
-                fi
+                Shunngun=1
+                ShunnedNode=$i
+                ShunnedValue=$shunned_count
             fi
 
         else
