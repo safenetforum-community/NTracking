@@ -284,14 +284,14 @@ CalculateValues() {
     if (($(echo "$LoadNotAllow == 1 " | bc))) && (($(echo "$LoadAverage1 < $LoadAverage15" | bc))) && (($(echo "$LoadAverage1 < $LoadAverage15" | bc))); then LoadNotAllow=0; fi
     UsedCpuPercent=$(vmstat 1 2 | awk 'END { print 100 - $15 }')
     FreeMemPercent=$(free | grep Mem | awk '{ printf("%.4f\n", $7/$2 * 100.0) }')
-    FreeMemPercent=$(echo "100 - $FreeMemPercent" | bc)
+    UsedMemPercent=$(echo "100 - $FreeMemPercent" | bc)
     UsedHdPercent=$(df -hP /var | awk '{print $5}' | tail -1 | sed 's/%$//g')
     AllowCpu=$(echo "$UsedCpuPercent < $CpuLessThan" | bc)
-    AllowMem=$(echo "$FreeMemPercent < $MemLessThan" | bc)
+    AllowMem=$(echo "$UsedMemPercent < $MemLessThan" | bc)
     AllowHD=$(echo "$UsedHdPercent < $HDLessThan" | bc)
-    RemCpu=$(echo "$UsedCpuPercent < 98 " | bc)
-    RemMem=$(echo "$FreeMemPercent < 98 " | bc)
-    RemHD=$(echo "$UsedHdPercent < 98 " | bc)
+    RemCpu=$(echo "$UsedCpuPercent > 98 " | bc)
+    RemMem=$(echo "$UsedMemPercent > 98 " | bc)
+    RemHD=$(echo "$UsedHdPercent > 98 " | bc)
     AllowNodeCap=$(echo "$RunningNodes <= $NodeCap" | bc)
     #variable delay start test
     #if (($(echo "$CpuCount >= 24 " | bc))); then
@@ -304,7 +304,7 @@ CalculateValues() {
 
 PrintDetails() {
     echo "DiscordUsername $DiscordUsername" && echo
-    echo "Used CPU percent $UsedCpuPercent% Used MEM $FreeMemPercent% Used HD percent $UsedHdPercent%" && echo
+    echo "Used CPU percent $UsedCpuPercent% Used MEM $UsedMemPercent% Used HD percent $UsedHdPercent%" && echo
     echo "LoadAverage1 $LoadAverage1 LoadAverage5 $LoadAverage5 LoadAverage15 $LoadAverage15" && echo
     echo "TotalNodes $TotalNodes RunningNodes $RunningNodes StoppedNodes $StoppedNodes" && echo
     echo "AddNewNode $AddNewNode NextNodeToStartOrAdd $NextNodeToSorA NextNodeStopOrRemove $NextNodeSorR" && echo
