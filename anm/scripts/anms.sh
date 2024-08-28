@@ -2,6 +2,8 @@
 
 #1
 
+# sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+
 time_min=$(date +"%M")
 time_hour=$(date +"%H")
 
@@ -373,37 +375,39 @@ IncrementCounters() {
 }
 
 ShunnGun() {
-    if (($(echo "$Upgrade != 0" | bc))); then
-        echo "Shunngun not allowed during upgrade" && echo
-        return 0
+    if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
+        if (($(echo "$Upgrade != 0" | bc))); then
+            echo "Shunngun not allowed during upgrade" && echo
+            return 0
+        fi
+        # load veraiable from ntracking for max shunned node
+        . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
+        node_number=$(seq -f "%03g" $MaxShunnedNode $MaxShunnedNode)
+        node_name=safenode$node_number
+        echo && echo "Shunngun $node_name" && echo
+        #stop max shunned node
+        echo "Stopping $node_name"
+        PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
+        NVS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')
+        node_details_store[$node_number]="$node_name,$PIS,$NVS,STOPPED"
+        echo "updated array $node_name"
+        sudo systemctl stop $node_name
+        echo "systemctl stop $node_name"
+        sleep 10
+        #restart node
+        echo "Starting $node_name"
+        sudo systemctl start $node_name
+        echo "systemctl start $node_name"
+        sleep 30
+        status="$(sudo systemctl status $node_name.service --no-page)"
+        PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
+        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
+        echo "$node_name Started"
+        sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
+        echo "reset node start timer" && echo
+        # remove veraiable from ntracking for max shunned node
+        rm /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
     fi
-    # load veraiable from ntracking for max shunned node
-    . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
-    node_number=$(seq -f "%03g" $MaxShunnedNode $MaxShunnedNode)
-    node_name=safenode$node_number
-    echo && echo "Shunngun $node_name" && echo
-    #stop max shunned node
-    echo "Stopping $node_name"
-    PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
-    NVS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')
-    node_details_store[$node_number]="$node_name,$PIS,$NVS,STOPPED"
-    echo "updated array $node_name"
-    sudo systemctl stop $node_name
-    echo "systemctl stop $node_name"
-    sleep 10
-    #restart node
-    echo "Starting $node_name"
-    sudo systemctl start $node_name
-    echo "systemctl start $node_name"
-    sleep 30
-    status="$(sudo systemctl status $node_name.service --no-page)"
-    PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
-    echo "$node_name Started"
-    sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
-    echo "reset node start timer" && echo
-    # remove veraiable from ntracking for max shunned node
-    rm /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
 }
 
 CheckSetUp
