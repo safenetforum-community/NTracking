@@ -61,8 +61,9 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
             if (($(echo "$shunned_count != 0" | bc))); then
                 . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
                 if (($(echo "$shunned_count >= $ShunnedValue" | bc))); then
-                    echo "MaxShunnedNode=$i" >/var/safenode-manager/MaxShunnedNode
-                    echo "ShunnedValue=$shunned_count" >>/var/safenode-manager/MaxShunnedNode
+                    Shunngun=1
+                    ShunnedNode=$i
+                    ShunnedValue=$shunned_count
                 fi
             fi
 
@@ -96,6 +97,12 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
             PeerId="\"NotReachableStoppedNode\""
             NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
         fi
+    fi
+
+    # save Shunngun target
+    if (($(echo "$Shunngun == 1" | bc))); then
+        echo "MaxShunnedNode=$ShunnedNode" >/var/safenode-manager/MaxShunnedNode
+        echo "ShunnedValue=$ShunnedValue" >>/var/safenode-manager/MaxShunnedNode
     fi
 
     # Format for InfluxDB
