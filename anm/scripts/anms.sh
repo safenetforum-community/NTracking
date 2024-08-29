@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-#4
-
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
 time_min=$(date +"%M")
@@ -99,6 +97,11 @@ StartNode() {
     fi
     if (($(echo "$StoppedNodes == 0" | bc))); then
         AddNode
+    fi
+    if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
+        echo "node starting not allowed due to shuun gun" && echo
+        ShunnGun
+        return 0
     fi
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=safenode$node_number
