@@ -66,7 +66,7 @@ CheckSetUp() {
         echo "DelayStart=2" >>/var/safenode-manager/config
         echo "DelayReStart=10" >>/var/safenode-manager/config
         echo "DelayUpgrade=2" >>/var/safenode-manager/config
-        echo "DelayRemove=300" >>/var/safenode-manager/config
+        echo "DelayRemove=1" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "NodeCap=500" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
@@ -178,6 +178,11 @@ RemoveNode() {
     echo "Removing $node_name" && echo
     sudo systemctl stop --now $node_name
     echo "Stopping $node_name"
+    # save wallet and clear out files
+    WalletDir=$(date +%s)
+    mkdir -p /var/safenode-manager/wallets/$WalletDir/wallet
+    cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet
+    echo "cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet"
     sudo rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
     echo "rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name"
     sudo rm /etc/systemd/system/$node_name.service
