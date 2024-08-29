@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#1
+
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
 time_min=$(date +"%M")
@@ -52,9 +54,9 @@ CheckSetUp() {
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.5" | bc)" >>/var/safenode-manager/config
         echo "DesiredLoadAverage=$(echo "$(nproc) * 1.5" | bc)" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "CpuLessThan=80" >>/var/safenode-manager/config
-        echo "MemLessThan=80" >>/var/safenode-manager/config
-        echo "HDLessThan=90" >>/var/safenode-manager/config
+        echo "CpuLessThan=60" >>/var/safenode-manager/config
+        echo "MemLessThan=60" >>/var/safenode-manager/config
+        echo "HDLessThan=60" >>/var/safenode-manager/config
         echo "CpuRemove=98" >>/var/safenode-manager/config
         echo "MemRemove=95" >>/var/safenode-manager/config
         echo "HDRemove=95" >>/var/safenode-manager/config
@@ -63,7 +65,7 @@ CheckSetUp() {
         echo "# increment down once every time script runs when zero action is allowed again" >>/var/safenode-manager/config
         echo "# for systems 24 and over cores there is a seperate value calculate " >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "DelayStart=2" >>/var/safenode-manager/config
+        echo "DelayStart=3" >>/var/safenode-manager/config
         echo "DelayReStart=10" >>/var/safenode-manager/config
         echo "DelayUpgrade=2" >>/var/safenode-manager/config
         echo "DelayRemove=1" >>/var/safenode-manager/config
@@ -95,14 +97,16 @@ StartNode() {
         echo "node starting not allowed due to node cap" && echo
         return 0
     fi
-    if (($(echo "$StoppedNodes == 0" | bc))); then
-        AddNode
-    fi
     if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
         echo "node starting not allowed due to shuun gun" && echo
         ShunnGun
         return 0
     fi
+    
+    if (($(echo "$StoppedNodes == 0" | bc))); then
+        AddNode
+    fi
+
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=safenode$node_number
     echo "Starting $node_name"
@@ -166,6 +170,9 @@ TearDown() {
     sudo rm -f /usr/bin/scrape.sh
     sudo rm -f $HOME/scrape
     sudo rm -rf /var/safenode-manager
+    # save all wallets for later scraping
+    cp -r /var/safenode-manager/wallets $HOME/.local/share/
+    sleep 5
     echo "rm -rf /var/safenode-manager"
     sudo rm -f /usr/bin/anms.sh
     echo
