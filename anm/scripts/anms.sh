@@ -178,11 +178,6 @@ RemoveNode() {
     echo "Removing $node_name" && echo
     sudo systemctl stop --now $node_name
     echo "Stopping $node_name"
-    # save wallet and clear out files
-    WalletDir=$(date +%s)
-    mkdir -p /var/safenode-manager/wallets/$WalletDir/wallet
-    cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet
-    echo "cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet"
     sudo rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
     echo "rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name"
     sudo rm /etc/systemd/system/$node_name.service
@@ -212,6 +207,14 @@ StopNode() {
     echo "systemctl stop $node_name"
     sudo ufw delete allow $ntpr$node_number/udp
     echo "closed firewall port $ntpr$node_number/udp"
+    # copy wallet to folder for later scraping
+    WalletDir=$(date +%s)
+    mkdir -p /var/safenode-manager/wallets/$WalletDir/wallet
+    cp -r /var/safenode-manager/services/$node_name/wallet/* /var/safenode-manager/wallets/$WalletDir/wallet
+    sleep 5
+    sudo rm -rf /var/safenode-manager/services/$node_name/*
+    sudo cp $NodePath /var/safenode-manager/services/$node_name
+    echo "cp $NodePath /var/safenode-manager/services/$node_name"
     echo "$node_name Stopped" && echo
     echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/safenode-manager/counters
     sed -i 's/CounterStart=.*/CounterStart='$DelayReStart'/g' /var/safenode-manager/counters
