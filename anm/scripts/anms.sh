@@ -65,9 +65,9 @@ CheckSetUp() {
         echo "# increment down once every time script runs when zero action is allowed again" >>/var/safenode-manager/config
         echo "# for systems 24 and over cores there is a seperate value calculate " >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "DelayStart=3" >>/var/safenode-manager/config
+        echo "DelayStart=5" >>/var/safenode-manager/config
         echo "DelayReStart=10" >>/var/safenode-manager/config
-        echo "DelayUpgrade=2" >>/var/safenode-manager/config
+        echo "DelayUpgrade=10" >>/var/safenode-manager/config
         echo "DelayRemove=1" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "NodeCap=500" >>/var/safenode-manager/config
