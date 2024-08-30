@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#1
+vtrack="Version 1.0"
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
@@ -399,7 +399,7 @@ CalculateValues() {
 }
 
 PrintDetails() {
-    echo "DiscordUsername $DiscordUsername" && echo
+    echo "Version $vtrack DiscordUsername $DiscordUsername" && echo
     echo "Used CPU percent $UsedCpuPercent% Used MEM $UsedMemPercent% Used HD percent $UsedHdPercent%" && echo
     echo "LoadAverage1 $LoadAverage1 LoadAverage5 $LoadAverage5 LoadAverage15 $LoadAverage15" && echo
     echo "TotalNodes $TotalNodes RunningNodes $RunningNodes StoppedNodes $StoppedNodes" && echo
