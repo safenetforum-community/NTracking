@@ -173,8 +173,10 @@ TearDown() {
     sudo rm -f /usr/bin/scrape.sh
     sudo rm -f $HOME/scrape
     sudo rm -rf /var/safenode-manager
+    sudo rm -rf /home/safe/.local/share/safe/node
     sleep 5
     sudo rm -rf /var/safenode-manager
+    sudo rm -rf /home/safe/.local/share/safe/node
     # save all wallets for later scraping
     cp -r /var/safenode-manager/wallets $HOME/.local/share/wallets
     sleep 5

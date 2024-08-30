@@ -39,4 +39,5 @@
 #sleep 5
 #sudo rm /var/cache/swap/swapfile
 
+sudo rm -rf $HOME/.local/share/safe/node
 
