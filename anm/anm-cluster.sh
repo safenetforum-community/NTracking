@@ -121,9 +121,6 @@ elif [[ "$SELECTION" == "4" ]]; then
         ssh -t $machine 'sudo rm -f /usr/bin/influx-resources.sh""*"" && sudo wget -P /usr/bin  '"$Location"'influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh && echo ""*"/10 "*" "*" "*" "*" $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources' >/dev/null 2>&1 &
         disown
         sleep 1
-        ssh -t $machine 'sudo rm -f /usr/bin/influx-resources.sh""*"" && sudo wget -P /usr/bin  '"$Location"'anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh && echo ""*" "*" "*" "*" "*" $USER /bin/bash /usr/bin/anms.sh >> /var/safenode-manager/log" | sudo tee /etc/cron.d/anm' >/dev/null 2>&1 &
-        disown
-        sleep 1
         echo
         echo "$machine Upgrade influx request sent"
     done &
