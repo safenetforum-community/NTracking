@@ -55,9 +55,9 @@ CheckSetUp() {
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.5" | bc)" >>/var/safenode-manager/config
         echo "DesiredLoadAverage=$(echo "$(nproc) * 1.5" | bc)" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "CpuLessThan=60" >>/var/safenode-manager/config
-        echo "MemLessThan=60" >>/var/safenode-manager/config
-        echo "HDLessThan=60" >>/var/safenode-manager/config
+        echo "CpuLessThan=70" >>/var/safenode-manager/config
+        echo "MemLessThan=70" >>/var/safenode-manager/config
+        echo "HDLessThan=70" >>/var/safenode-manager/config
         echo "CpuRemove=98" >>/var/safenode-manager/config
         echo "MemRemove=95" >>/var/safenode-manager/config
         echo "HDRemove=95" >>/var/safenode-manager/config
@@ -323,6 +323,7 @@ CalculateValues() {
     LastNode="RemoveCounter$TotalNodes"
     LastNode="${!LastNode}"
     if (($(echo " $StoppedNodes > 0" | bc))) && (($(echo " $LastNode == 0" | bc))); then Remove=1; fi
+    if (($(echo " $TotalNodes > $NodeCap" | bc))); then Remove=1; fi
     LoadAverage1=$(uptime | awk '{print $(NF-2)}' | awk '{print $(NF-1)}' FS=,)
     LoadAverage5=$(uptime | awk '{print $(NF-1)}' | awk '{print $(NF-1)}' FS=,)
     LoadAverage15=$(uptime | awk '{print $(NF-0)}' | awk '{print $(NF-1)}' FS=,)
