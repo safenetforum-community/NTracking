@@ -38,6 +38,7 @@ CheckSetUp() {
         sudo mkdir -p /var/safenode-manager
         sudo chown -R $USER:$USER /var/safenode-manager
         mkdir -p /var/safenode-manager/wallets
+        mkdir -p $HOME/.local/share/wallets
         sudo mkdir -p /var/safenode-manager/services /var/log/safenode
         sudo chown -R safe:safe /var/safenode-manager/services /var/log/safenode
         echo "CpuCount=$(echo "$(nproc) / 1" | bc)" >>/var/safenode-manager/system
@@ -175,7 +176,7 @@ TearDown() {
     sleep 5
     sudo rm -rf /var/safenode-manager
     # save all wallets for later scraping
-    cp -r /var/safenode-manager/wallets $HOME/.local/share/
+    cp -r /var/safenode-manager/wallets $HOME/.local/share/wallets
     sleep 5
     echo "rm -rf /var/safenode-manager"
     sudo rm -f /usr/bin/anms.sh
