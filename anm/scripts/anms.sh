@@ -52,11 +52,11 @@ CheckSetUp() {
         echo 'DiscordUsername="--owner timbobjohnes"' >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.5" | bc)" >>/var/safenode-manager/config
-        echo "DesiredLoadAverage=$(echo "$(nproc) * 1.5" | bc)" >>/var/safenode-manager/config
+        echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.5" | bc)" >>/var/safenode-manager/config
+        echo "DesiredLoadAverage=$(echo "$(nproc) * 1.0" | bc)" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "CpuLessThan=70" >>/var/safenode-manager/config
-        echo "MemLessThan=70" >>/var/safenode-manager/config
+        echo "MemLessThan=90" >>/var/safenode-manager/config
         echo "HDLessThan=70" >>/var/safenode-manager/config
         echo "CpuRemove=98" >>/var/safenode-manager/config
         echo "MemRemove=95" >>/var/safenode-manager/config
@@ -376,11 +376,11 @@ CalculateValues() {
         if (($(echo "$RunningNodes <= 200" | bc))); then
             DelayStart=1
             DelayUpgrade=3
-        elif (($(echo "$RunningNodes <= 300" | bc))); then
+        elif (($(echo "$RunningNodes <= 400" | bc))); then
             DelayStart=2
             DelayUpgrade=4
         else
-            DelayStart=5
+            DelayStart=3
             DelayUpgrade=5
         fi
     else
