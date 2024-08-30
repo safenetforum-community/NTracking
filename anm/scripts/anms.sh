@@ -472,7 +472,7 @@ ShunnGun() {
         . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
         node_number=$(seq -f "%03g" $MaxShunnedNode $MaxShunnedNode)
         node_name=safenode$node_number
-        echo ""$time_hour":"$time_min" Shunn gun $node_name" >>/var/safenode-manager/simplelog
+        echo ""$time_hour":"$time_min" Shunn gun $node_name Shunn's $ShunnedValue" >>/var/safenode-manager/simplelog
         echo && echo "Shunngun $node_name" && echo
         #stop max shunned node
         echo "Stopping $node_name"

@@ -22,16 +22,14 @@
 
 #touch $HOME/runonallsystems
 
-#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 #sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
 #make swap file
 
-sudo mkdir -v /var/cache/swap
-sudo dd if=/dev/zero of=/var/cache/swap/swapfile bs=1K count=128M
-sudo chmod 600 /var/cache/swap/swapfile
-sudo mkswap /var/cache/swap/swapfile
-sudo swapon /var/cache/swap/swapfile
+#sudo mkdir -v /var/cache/swap
+#sudo dd if=/dev/zero of=/var/cache/swap/swapfile bs=1K count=128M
+#sudo chmod 600 /var/cache/swap/swapfile && sudo mkswap /var/cache/swap/swapfile && sudo swapon /var/cache/swap/swapfile
 
 #remove 
 
