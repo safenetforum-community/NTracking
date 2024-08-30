@@ -498,3 +498,5 @@ declare -p node_details_store >/var/safenode-manager/NodeDetails
 echo
 echo
 echo #########################################################################################################################
+# clear logs
+sudo rm -rf /home/safe/.local/share/safe
