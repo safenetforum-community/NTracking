@@ -141,10 +141,10 @@ AddNode() {
 Description=$node_name
 [Service]
 User=safe
-ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $DiscordUsername
+ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $DiscordUsername --log-output-dest /var/log/safenode/$node_name --max_log_files 1 --max_archived_log_files 1
 Restart=on-failure
 EOF
-    #  --log-output-dest /var/log/safenode/$node_name --max_log_files 5 --max_archived_log_files 5
+
     echo "service file created at /etc/systemd/system/"$node_name".service"
     sudo systemctl daemon-reload
     echo "systemctl daemon-reload" && echo
@@ -498,5 +498,3 @@ declare -p node_details_store >/var/safenode-manager/NodeDetails
 echo
 echo
 echo #########################################################################################################################
-# clear logs
-sudo rm -rf /home/safe/.local/share/safe

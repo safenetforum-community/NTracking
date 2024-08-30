@@ -174,17 +174,17 @@ elif [[ "$SELECTION" == "5" ]]; then
     fi
 
     ### logging
-    Logging=$(whiptail --title "Logging" --inputbox "\nLogging yes or no" 8 40 "yes" 3>&1 1>&2 2>&3)
-    if [[ $? -eq 255 ]]; then
-        exit 0
-    fi
-    if [[ "$Logging" != "no" ]]; then
-        # yes set for logging
-        sudo sed -i 's/$node_number $DiscordUsername/$node_number $DiscordUsername --log-output-dest \/var\/log\/safenode\/safenode$NextNodeToSorA --max_log_files 5 --max_archived_log_files 5/g' /usr/bin/anms.sh
-    else
-        # continue with no loging
-        sleep 1
-    fi
+    #Logging=$(whiptail --title "Logging" --inputbox "\nLogging yes or no" 8 40 "yes" 3>&1 1>&2 2>&3)
+    #if [[ $? -eq 255 ]]; then
+    #    exit 0
+    #fi
+    #if [[ "$Logging" != "no" ]]; then
+    #    # yes set for logging
+    #    sudo sed -i 's/$node_number $DiscordUsername/$node_number $DiscordUsername --log-output-dest \/var\/log\/safenode\/safenode$NextNodeToSorA --max_log_files 5 --max_archived_log_files 5/g' /usr/bin/anms.sh
+    #else
+    #    # continue with no loging
+    #    sleep 1
+    #fi
 
     ### portrange
     PortRange=$(whiptail --title "Node portrange start" --inputbox "\nnode range in thousands" 8 40 "55" 3>&1 1>&2 2>&3)
