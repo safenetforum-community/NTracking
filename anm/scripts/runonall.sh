@@ -26,12 +26,11 @@
 
 #make swap file
 
-#sudo mkdir -v /var/cache/swap
-#cd /var/cache/swap
-#sudo dd if=/dev/zero of=swapfile bs=1K count=68M
-#sudo chmod 600 swapfile
-#sudo mkswap swapfile
-#sudo swapon swapfile
+sudo mkdir -v /var/cache/swap
+sudo dd if=/dev/zero of=/var/cache/swap/swapfile bs=1K count=68M
+sudo chmod 600 /var/cache/swap/swapfile
+sudo mkswap /var/cache/swap/swapfile
+#sudo swapon /var/cache/swap/swapfile
 
 #remove 
 

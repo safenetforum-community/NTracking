@@ -6,8 +6,11 @@ Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/mai
 ClientVersion="--version 0.94.1"
 NodeVersion="--version 0.110.1"
 
-#disable swap
-sudo swapoff -a
+# disable swap
+#sudo swapoff -a
+
+# enable swap file
+sudo swapon /var/cache/swap/swapfile
 
 # update safe
 safeup client $ClientVersion

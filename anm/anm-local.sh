@@ -136,7 +136,7 @@ elif [[ "$SELECTION" == "5" ]]; then
     fi
 
     #disable swap
-    sudo swapoff -a
+    #sudo swapoff -a
 
     #update node and client
     safeup client $ClientVersion
