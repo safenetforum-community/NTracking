@@ -71,7 +71,21 @@ CheckSetUp() {
         echo "DelayUpgrade=10" >>/var/safenode-manager/config
         echo "DelayRemove=1" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "NodeCap=500" >>/var/safenode-manager/config
+        # calculate values from cpu count
+        cpucount=$(nproc)
+        if (($(echo "$cpucount <= 2" | bc))); then
+            echo "NodeCap=25" >>/var/safenode-manager/config
+        elif (($(echo "$cpucount <= 4" | bc))); then
+            echo "NodeCap=50" >>/var/safenode-manager/config
+        elif (($(echo "$cpucount <= 8" | bc))); then
+            echo "NodeCap=100" >>/var/safenode-manager/config
+        elif (($(echo "$cpucount <= 12" | bc))); then
+            echo "NodeCap=200" >>/var/safenode-manager/config
+        elif (($(echo "$cpucount <= 24" | bc))); then
+            echo "NodeCap=400" >>/var/safenode-manager/config
+        else
+            echo "NodeCap=500" >>/var/safenode-manager/config
+        fi
         echo >>/var/safenode-manager/config
         echo "UpgradeHour=$(shuf -i 0-23 -n 1)" >>/var/safenode-manager/config
         echo "UpgradeMin=$(shuf -i 0-59 -n 1)" >>/var/safenode-manager/config
@@ -96,21 +110,19 @@ StartNode() {
     fi
     if (($(echo "$RunningNodes == $NodeCap" | bc))); then
         echo "node starting not allowed due to node cap" && echo
+        if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
+            echo "Shuun gun" && echo
+            ShunnGun
+        fi
         return 0
     fi
-    if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
-        echo "node starting not allowed due to shuun gun" && echo
-        ShunnGun
-        return 0
-    fi
-    
     if (($(echo "$StoppedNodes == 0" | bc))); then
         AddNode
     fi
 
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Starting $node_name">>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Starting $node_name" >>/var/safenode-manager/simplelog
     echo "Starting $node_name"
     sudo ufw allow $ntpr$node_number/udp comment "$node_name"
     echo "Opened firewall port $ntpr$node_number/udp"
@@ -128,7 +140,7 @@ StartNode() {
 AddNode() {
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Adding $node_name">>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Adding $node_name" >>/var/safenode-manager/simplelog
     echo "Adding $node_name"
     sudo mkdir -p /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
     echo "mkdir -p /var/safenode-manager/services/$node_name"
@@ -189,7 +201,7 @@ TearDown() {
 RemoveNode() {
     node_number=$(seq -f "%03g" $1 $1)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Remove $node_name">>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Remove $node_name" >>/var/safenode-manager/simplelog
     echo "Removing $node_name" && echo
     sudo systemctl stop --now $node_name
     echo "Stopping $node_name"
@@ -213,7 +225,7 @@ StopNode() {
     fi
     node_number=$(seq -f "%03g" $NextNodeSorR $NextNodeSorR)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Stop $node_name">>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Stop $node_name" >>/var/safenode-manager/simplelog
     echo "Stopping $node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
     NVS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')
@@ -248,7 +260,7 @@ UpgradeNode() {
     fi
     node_number=$(seq -f "%03g" $1 $1)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Upgrade $node_name running">>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Upgrade $node_name running" >>/var/safenode-manager/simplelog
     echo "upgradeing $node_name"
     sudo systemctl stop $node_name
     echo "systemctl stop $node_name"
@@ -268,7 +280,7 @@ UpgradeNode() {
 StoppedUpgrade() {
     node_number=$(seq -f "%03g" $1 $1)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Upgrade $node_name stopped">>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/safenode-manager/simplelog
     echo "upgradeing $node_name"
     sudo cp $NodePath /var/safenode-manager/services/$node_name
     echo "cp $NodePath /var/safenode-manager/services/$node_name"
@@ -336,6 +348,52 @@ CalculateValues() {
     #    DelayStart=5
     #    DelayUpgrade=$DelayStart
     #fi
+
+    # calculate node timings values from cpu count
+    cpucount=$(nproc)
+    if (($(echo "$cpucount <= 2" | bc))); then
+        DelayStart=5
+        DelayUpgrade=5
+    elif (($(echo "$cpucount <= 4" | bc))); then
+        DelayStart=5
+        DelayUpgrade=5
+    elif (($(echo "$cpucount <= 8" | bc))); then
+        DelayStart=5
+        DelayUpgrade=5
+    elif (($(echo "$cpucount <= 12" | bc))); then
+        if (($(echo "$RunningNodes <= 75" | bc))); then
+            DelayStart=1
+            DelayUpgrade=3
+        elif (($(echo "$RunningNodes <= 150" | bc))); then
+            DelayStart=2
+            DelayUpgrade=4
+        else
+            DelayStart=5
+            DelayUpgrade=5
+        fi
+    elif (($(echo "$cpucount <= 24" | bc))); then
+        if (($(echo "$RunningNodes <= 200" | bc))); then
+            DelayStart=1
+            DelayUpgrade=3
+        elif (($(echo "$RunningNodes <= 300" | bc))); then
+            DelayStart=2
+            DelayUpgrade=4
+        else
+            DelayStart=5
+            DelayUpgrade=5
+        fi
+    else
+        if (($(echo "$RunningNodes <= 200" | bc))); then
+            DelayStart=1
+            DelayUpgrade=3
+        elif (($(echo "$RunningNodes <= 300" | bc))); then
+            DelayStart=2
+            DelayUpgrade=4
+        else
+            DelayStart=5
+            DelayUpgrade=5
+        fi
+    fi
 
 }
 
@@ -413,7 +471,7 @@ ShunnGun() {
         . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
         node_number=$(seq -f "%03g" $MaxShunnedNode $MaxShunnedNode)
         node_name=safenode$node_number
-        echo ""$time_hour":"$time_min" Shunn gun $node_name stopped">>/var/safenode-manager/simplelog
+        echo ""$time_hour":"$time_min" Shunn gun $node_name stopped" >>/var/safenode-manager/simplelog
         echo && echo "Shunngun $node_name" && echo
         #stop max shunned node
         echo "Stopping $node_name"
@@ -476,7 +534,6 @@ elif (($(echo "$RemCpu == 1" | bc))) || (($(echo "$RemMem == 1" | bc))) || (($(e
     fi
 else
     echo "Node count Ok" && echo
-    ShunnGun
 fi
 #############################################################################################################################
 
