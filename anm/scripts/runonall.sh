@@ -35,8 +35,8 @@
 
 #remove 
 
-sudo swapoff -a
-sleep 5
-sudo rm /var/cache/swap/swapfile
+#sudo swapoff -a
+#sleep 5
+#sudo rm /var/cache/swap/swapfile
 
 
