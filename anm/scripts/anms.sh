@@ -236,7 +236,7 @@ StopNode() {
     sudo ufw delete allow $ntpr$node_number/udp
     echo "closed firewall port $ntpr$node_number/udp"
     # copy wallet to folder for later scraping
-    WalletDir=""$node_name"-stop-"$(date +%s)""
+    WalletDir=""$(date +%s)"-"$node_name"-Shunn"
     mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
     cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
     sleep 5
@@ -483,7 +483,7 @@ ShunnGun() {
         sudo systemctl stop $node_name
         echo "systemctl stop $node_name"
         # copy wallet to folder for later scraping
-        WalletDir=""$node_name"-Shunn-"$(date +%s)""
+        WalletDir=""$(date +%s)"-"$node_name"-Shunn"
         mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
         cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
         sudo rm -rf /var/safenode-manager/services/$node_name/*
