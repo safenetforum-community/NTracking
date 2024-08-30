@@ -41,3 +41,4 @@
 
 #sudo rm -rf $HOME/.local/share/safe/node
 
+sudo rm -rf /home/safe/.local/share/safe
