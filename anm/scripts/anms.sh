@@ -435,9 +435,6 @@ UpGrade() {
 
 Removal() {
     if (($(echo "$Remove == 1" | bc))); then
-        if (($(echo "$StoppedNodes == 0" | bc))); then
-            StopNode
-        fi
         RemoveNode $TotalNodes
     else
         echo "no removal requiered" && echo
