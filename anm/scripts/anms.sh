@@ -323,7 +323,6 @@ CalculateValues() {
     LastNode="RemoveCounter$TotalNodes"
     LastNode="${!LastNode}"
     if (($(echo " $StoppedNodes > 0" | bc))) && (($(echo " $LastNode == 0" | bc))); then Remove=1; fi
-    if (($(echo " $TotalNodes > $NodeCap" | bc))); then Remove=1; fi
     LoadAverage1=$(uptime | awk '{print $(NF-2)}' | awk '{print $(NF-1)}' FS=,)
     LoadAverage5=$(uptime | awk '{print $(NF-1)}' | awk '{print $(NF-1)}' FS=,)
     LoadAverage15=$(uptime | awk '{print $(NF-0)}' | awk '{print $(NF-1)}' FS=,)
@@ -530,8 +529,13 @@ elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (
     StartNode
 elif (($(echo "$RemCpu == 1" | bc))) || (($(echo "$RemMem == 1" | bc))) || (($(echo "$RemHD == 1" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]] || (($(echo "$AllowNodeCap == 0" | bc))); then
     if (($(echo "$RemHD == 1" | bc))); then
+        StopNode
         RemoveNode $TotalNodes
         echo "Node $TotalNodes Removed due to hard drive space" && echo
+    elif (($(echo "$AllowNodeCap == 0" | bc))); then
+        if (($(echo " $StoppedNodes == 0" | bc))); then StopNode; fi
+        RemoveNode $TotalNodes
+        echo "Node $TotalNodes Removed node cap" && echo
     else
         echo "stop node" && echo
         StopNode
