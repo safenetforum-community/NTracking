@@ -122,7 +122,7 @@ StartNode() {
 
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Starting $node_name" >>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Start $node_name" >>/var/safenode-manager/simplelog
     echo "Starting $node_name"
     sudo ufw allow $ntpr$node_number/udp comment "$node_name"
     echo "Opened firewall port $ntpr$node_number/udp"
@@ -140,7 +140,7 @@ StartNode() {
 AddNode() {
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Adding $node_name" >>/var/safenode-manager/simplelog
+    echo ""$time_hour":"$time_min" Add $node_name" >>/var/safenode-manager/simplelog
     echo "Adding $node_name"
     sudo mkdir -p /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
     echo "mkdir -p /var/safenode-manager/services/$node_name"
