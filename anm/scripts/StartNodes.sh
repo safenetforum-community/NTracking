@@ -7,10 +7,10 @@ ClientVersion="--version 0.94.1"
 NodeVersion="--version 0.110.1"
 
 # disable swap
-#sudo swapoff -a
+sudo swapoff -a
 
 # enable swap file
-sudo swapon /var/cache/swap/swapfile
+#sudo swapon /var/cache/swap/swapfile
 
 # update safe
 safeup client $ClientVersion
