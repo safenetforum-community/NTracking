@@ -22,7 +22,7 @@
 
 #touch $HOME/runonallsystems
 
-sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 #sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
 #make swap file
@@ -33,9 +33,9 @@ sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercont
 
 #remove 
 
-#sudo swapoff -a
-#sleep 5
-#sudo rm /var/cache/swap/swapfile
+sudo swapoff -a
+sleep 5
+sudo rm /var/cache/swap/swapfile
 
 #sudo rm -rf $HOME/.local/share/safe/node
 
