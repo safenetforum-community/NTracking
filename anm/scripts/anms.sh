@@ -49,7 +49,7 @@ CheckSetUp() {
         rm /var/safenode-manager/counters
         echo "# edit this file to confrol behavior of the script" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo 'DiscordUsername="--owner timbobjohnes"' >>/var/safenode-manager/config
+        echo 'DiscordUsername="--owner javages"' >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.0" | bc)" >>/var/safenode-manager/config
