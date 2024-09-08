@@ -85,6 +85,11 @@ done
 
 client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
 
+# send balance to self to avoid complex transactions.
+deposit=$(safe wallet send $client_balance $wallet_address | awk 'NR==10{print $1}')
+safe wallet receive "$deposit"
+client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
+
 echo
 echo
 echo "$(date '+%d/%m/%Y  %H:%M')"
