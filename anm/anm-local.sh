@@ -166,7 +166,7 @@ elif [[ "$SELECTION" == "5" ]]; then
         sleep 10
     else
         # Set new owner for nodes
-        sudo sed -i 's/--owner timbobjohnes/--owner '$Discord_Username'/g' /usr/bin/anms.sh
+        sudo sed -i 's/--owner javages/--owner '$Discord_Username'/g' /usr/bin/anms.sh
     fi
 
     ### logging
