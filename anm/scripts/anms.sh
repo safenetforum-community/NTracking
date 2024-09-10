@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-vtrack="Version 1.0"
+vtrack="Version 1.1"
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
@@ -49,7 +49,7 @@ CheckSetUp() {
         rm /var/safenode-manager/counters
         echo "# edit this file to confrol behavior of the script" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo 'DiscordUsername="--owner javages"' >>/var/safenode-manager/config
+        echo 'DiscordUsername="--owner timbobjohnes"' >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.0" | bc)" >>/var/safenode-manager/config

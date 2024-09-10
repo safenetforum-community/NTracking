@@ -28,7 +28,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     . /var/safenode-manager/NodeDetails >/dev/null 2>&1
     nodestatus=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $4}')
 
-    rewards_balance=$(safe wallet balance --peer-id /var/safenode-manager/services/safenode$i | awk 'NR==3{print $7}')
+    rewards_balance=$(safe wallet balance --peer-id /var/safenode-manager/services/safenode$node_number | awk 'NR==3{print $7}')
     echo
     echo "$node_name"
     echo "$rewards_balance"
@@ -45,7 +45,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         fi
         mv $HOME/.local/share/safe/client/wallet $HOME/.local/share/safe/client/wallet-backup
         echo "moved client wallet to backup location"
-        sudo mv /var/safenode-manager/services/safenode$i/wallet/ $HOME/.local/share/safe/client/
+        sudo mv /var/safenode-manager/services/safenode$node_number/wallet/ $HOME/.local/share/safe/client/
         echo "moved $node_name wallet to client location"
         sudo chown -R "$(whoami)":"$(whoami)" $HOME/.local/share/safe/client/wallet
         echo "ownership of $node_name changed to user:"$(whoami)""
@@ -62,11 +62,11 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         echo ""
 
         #move wallets back to original location
-        sudo mv $HOME/.local/share/safe/client/wallet /var/safenode-manager/services/safenode$i/
+        sudo mv $HOME/.local/share/safe/client/wallet /var/safenode-manager/services/safenode$node_number/
         echo "moved $node_name wallet to service location"
         mv $HOME/.local/share/safe/client/wallet-backup $HOME/.local/share/safe/client/wallet
         echo "moved client wallet to correct location"
-        sudo chown -R safe:safe /var/safenode-manager/services/safenode$i/wallet
+        sudo chown -R safe:safe /var/safenode-manager/services/safenode$node_number/wallet
         echo "ownership of $node_name changed to user: safe"
         #move wallets to initiate a transfer
         if [[ "$nodestatus" = "RUNNING" ]]; then
