@@ -54,7 +54,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         echo "node wallet balance to transfer $node_balance"
 
         #send rewards from node wallet to main wallet address
-        deposit=$(safe wallet send $node_balance $wallet_address | awk 'NR==22{print $0}')
+        deposit="$(safe wallet send $node_balance $wallet_address | awk 'NR==22{print $0}')"
         echo "safe wallet send $node_balance $wallet_address"
 
         echo ""
@@ -87,7 +87,7 @@ client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
 
 if (($(echo "$client_balance > 0.000000000" | bc -l))); then
 # send balance to self to avoid complex transactions.
-deposit=$(safe wallet send $client_balance $wallet_address | awk 'NR==22{print $0}')
+deposit="$(safe wallet send $client_balance $wallet_address | awk 'NR==22{print $0}')"
 safe wallet receive "$deposit"
 client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
 fi
