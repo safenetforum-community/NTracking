@@ -68,7 +68,7 @@ CheckSetUp() {
         echo >>/var/safenode-manager/config
         echo "DelayStart=5" >>/var/safenode-manager/config
         echo "DelayReStart=10" >>/var/safenode-manager/config
-        echo "DelayUpgrade=10" >>/var/safenode-manager/config
+        echo "DelayUpgrade=5" >>/var/safenode-manager/config
         echo "DelayRemove=1" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         # calculate values from cpu count
@@ -329,8 +329,8 @@ CalculateValues() {
     # load allow calc
     if (($(echo "$LoadAverage1 < $DesiredLoadAverage" | bc))) && (($(echo "$LoadAverage5 < $DesiredLoadAverage" | bc))) && (($(echo "$LoadAverage15 < $DesiredLoadAverage" | bc))); then LoadAllow=1; else LoadAllow=0; fi
     if (($(echo "$LoadAverage1 > $MaxLoadAverageAllowed" | bc))) && (($(echo "$LoadAverage5 > $MaxLoadAverageAllowed" | bc))) && (($(echo "$LoadAverage15 > $MaxLoadAverageAllowed" | bc))); then LoadNotAllow=1; else LoadNotAllow=0; fi
-    #experiment to stop node stops if in down trend
-    if (($(echo "$LoadNotAllow == 1 " | bc))) && (($(echo "$LoadAverage1 < $LoadAverage15" | bc))) && (($(echo "$LoadAverage1 < $LoadAverage15" | bc))); then LoadNotAllow=0; fi
+    #stop nodes being stoped if in down trend
+    if (($(echo "$LoadNotAllow == 1 " | bc))) && (($(echo "$LoadAverage1 < $LoadAverage15" | bc))); then LoadNotAllow=0; fi
     UsedCpuPercent=$(vmstat 1 2 | awk 'END { print 100 - $15 }')
     FreeMemPercent=$(free | grep Mem | awk '{ printf("%.4f\n", $7/$2 * 100.0) }')
     UsedMemPercent=$(echo "100 - $FreeMemPercent" | bc)
