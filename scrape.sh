@@ -35,7 +35,7 @@ for dir in "$base_dir"/*; do
                                 sudo systemctl stop "$dir_name"
                                 mv $HOME/.local/share/safe/client/wallet $HOME/.local/share/safe/client/wallet-backup
                                 sudo mv /var/safenode-manager/services/safenode$node_number/wallet/ $HOME/.local/share/safe/client/
-                                sudo chown -R "$USER":"$USER" $HOME/.local/share/safe/client/wallet
+                                sudo chown -R "$(whoami)":"$(whoami)" $HOME/.local/share/safe/client/wallet
 
                                 node_balance=$(safe wallet balance | awk 'NR==3{print $1}')
                                 echo ""
