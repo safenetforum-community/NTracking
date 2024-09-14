@@ -65,6 +65,15 @@ done
 
 client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
 
+if (($(echo "$client_balance > 0.000000000" | bc -l))); then
+# send balance to self to avoid complex transactions.
+deposit="$(safe wallet send $client_balance $wallet_address | awk '/Please share this to the recipient:/,/The recipient can then use the/' | awk 'NR==3{print $0}')"
+safe wallet receive "$deposit"
+client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
+fi
+
+client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
+
 echo ""
 echo "######################################################################"
 echo "#                                                                    #"
