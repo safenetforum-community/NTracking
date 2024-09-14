@@ -43,7 +43,7 @@ for dir in "$base_dir"/*; do
                                 echo ""
 
                                 #send rewards from node wallet to main wallet address
-                                deposit=$(safe wallet send $node_balance $wallet_address | awk 'NR==10{print $1}')
+                                deposit="$(safe wallet send $node_balance $wallet_address | awk '/Please share this to the recipient:/,/The recipient can then use the/' | awk 'NR==3{print $0}')"
                                 echo ""
                                 echo "$deposit"
                                 echo ""
