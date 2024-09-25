@@ -197,17 +197,17 @@ elif [[ "$SELECTION" == "5" ]]; then
     fi
 
     ### node cap
-    nodecapnum=$(whiptail --title "Node cap" --inputbox "\nMax nodes to start" 8 40 "500" 3>&1 1>&2 2>&3)
-    if [[ $? -eq 255 ]]; then
-        exit 0
-    fi
-    if [[ "$Logging" != "500" ]]; then
-        # set new node cap
-        sudo sed -i 's/NodeCap=500/NodeCap='$nodecapnum'/g' /usr/bin/anms.sh
-    else
-        # continue with default node cap
-        sleep 1
-    fi
+    #nodecapnum=$(whiptail --title "Node cap" --inputbox "\nMax nodes to start" 8 40 "500" 3>&1 1>&2 2>&3)
+    #if [[ $? -eq 255 ]]; then
+    #    exit 0
+    #fi
+    #if [[ "$Logging" != "500" ]]; then
+    #    # set new node cap
+    #    sudo sed -i 's/NodeCap=500/NodeCap='$nodecapnum'/g' /usr/bin/anms.sh
+    #else
+    #    # continue with default node cap
+    #    sleep 1
+    #fi
 
     # create manager directory for nodes
     sudo mkdir -p /var/safenode-manager

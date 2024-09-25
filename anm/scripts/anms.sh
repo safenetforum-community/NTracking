@@ -80,7 +80,7 @@ CheckSetUp() {
         elif (($(echo "$cpucount <= 8" | bc))); then
             echo "NodeCap=100" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 12" | bc))); then
-            echo "NodeCap=200" >>/var/safenode-manager/config
+            echo "NodeCap=250" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 24" | bc))); then
             echo "NodeCap=430" >>/var/safenode-manager/config
         else
@@ -364,7 +364,8 @@ CalculateValues() {
         if (($(echo "$RunningNodes <= 75" | bc))); then
             DelayStart=1
             DelayUpgrade=3
-        elif (($(echo "$RunningNodes <= 150" | bc))); then
+        #elif (($(echo "$RunningNodes <= 150" | bc))); then
+        elif (($(echo "$RunningNodes <= 300" | bc))); then
             DelayStart=2
             DelayUpgrade=4
         else
