@@ -364,8 +364,7 @@ CalculateValues() {
         if (($(echo "$RunningNodes <= 75" | bc))); then
             DelayStart=1
             DelayUpgrade=3
-        #elif (($(echo "$RunningNodes <= 150" | bc))); then
-        elif (($(echo "$RunningNodes <= 300" | bc))); then
+        elif (($(echo "$RunningNodes <= 150" | bc))); then
             DelayStart=2
             DelayUpgrade=4
         else
