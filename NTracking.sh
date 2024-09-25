@@ -581,6 +581,9 @@ sudo tee /etc/telegraf/telegraf.conf 2>&1 > /dev/null <<EOF
 [[inputs.system]]
   # no configuration
 
+# Read metrics about temperature
+[[inputs.temp]]
+
 # Get the number of processes and group them by status
 [[inputs.processes]]
   # no configuration

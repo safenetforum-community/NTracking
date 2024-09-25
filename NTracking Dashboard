@@ -542,7 +542,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -15m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -1668,7 +1668,7 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "celsius"
         },
         "overrides": []
       },
@@ -1676,6 +1676,112 @@
         "h": 7,
         "w": 2,
         "x": 4,
+        "y": 47
+      },
+      "id": 65122,
+      "maxDataPoints": 100,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "10.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"telegraf\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r[\"_measurement\"] == \"temp\")\n    |> filter(fn: (r) => r[\"host\"] == \"${host}\")\n    |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n    |> filter(fn: (r) => r[\"sensor\"] == \"coretemp_core_0\")\n    |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "CPU temp",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#299c46",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 70
+              },
+              {
+                "color": "#d44a3a",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 6,
         "y": 47
       },
       "id": 65083,
@@ -1781,7 +1887,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 6,
+        "x": 8,
         "y": 47
       },
       "id": 65079,
@@ -1891,7 +1997,7 @@
       "gridPos": {
         "h": 7,
         "w": 3,
-        "x": 8,
+        "x": 10,
         "y": 47
       },
       "id": 65120,
@@ -1990,7 +2096,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 11,
+        "x": 13,
         "y": 47
       },
       "id": 65092,
@@ -2068,7 +2174,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 13,
+        "x": 15,
         "y": 47
       },
       "id": 65094,
@@ -2140,7 +2246,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 15,
+        "x": 17,
         "y": 47
       },
       "id": 65119,
@@ -2198,7 +2304,7 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 17,
+        "x": 19,
         "y": 47
       },
       "id": 65117,
@@ -2231,7 +2337,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -15m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -2267,8 +2373,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 19,
+        "w": 1,
+        "x": 21,
         "y": 47
       },
       "id": 65103,
@@ -2331,8 +2437,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 21,
+        "w": 1,
+        "x": 22,
         "y": 47
       },
       "id": 65106,
@@ -3299,7 +3405,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 10,
+          "max": 4096,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3309,11 +3415,11 @@
               },
               {
                 "color": "#EAB839",
-                "value": 3
+                "value": 3600
               },
               {
                 "color": "red",
-                "value": 5
+                "value": 3800
               }
             ]
           },
@@ -3327,7 +3433,7 @@
         "x": 0,
         "y": 62
       },
-      "id": 65100,
+      "id": 65121,
       "options": {
         "displayMode": "gradient",
         "maxVizHeight": 300,
@@ -3353,11 +3459,11 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: -2h, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"shunned_count\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"records\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
-      "title": "Shunned nodes by service number",
+      "title": "Records on safe nodes by service number",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -3401,7 +3507,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 4096,
+          "max": 10,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3411,11 +3517,11 @@
               },
               {
                 "color": "#EAB839",
-                "value": 3600
+                "value": 3
               },
               {
                 "color": "red",
-                "value": 3800
+                "value": 5
               }
             ]
           },
@@ -3424,12 +3530,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 6,
         "w": 24,
         "x": 0,
         "y": 72
       },
-      "id": 65121,
+      "id": 65100,
       "options": {
         "displayMode": "gradient",
         "maxVizHeight": 300,
@@ -3455,11 +3561,11 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: -2h, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"records\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"shunned_count\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
-      "title": "Records on safe nodes by service number",
+      "title": "Shunned nodes by service number",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -3556,7 +3662,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 82
+        "y": 78
       },
       "id": 65113,
       "options": {
@@ -3680,7 +3786,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 91
+        "y": 87
       },
       "id": 54694,
       "interval": "$inter",
@@ -3842,7 +3948,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 91
+        "y": 87
       },
       "id": 12054,
       "interval": "$inter",
@@ -4006,7 +4112,7 @@
         "h": 10,
         "w": 5,
         "x": 12,
-        "y": 91
+        "y": 87
       },
       "id": 52240,
       "interval": "$inter",
@@ -4151,7 +4257,7 @@
         "h": 10,
         "w": 7,
         "x": 17,
-        "y": 91
+        "y": 87
       },
       "id": 13782,
       "interval": "$inter",
@@ -4333,8 +4439,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4350,7 +4455,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 101
+        "y": 97
       },
       "id": 56720,
       "interval": "$inter",
@@ -4532,8 +4637,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4549,7 +4653,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 101
+        "y": 97
       },
       "id": 60200,
       "interval": "$inter",
@@ -4850,7 +4954,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -4881,6 +4985,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 148,
+  "version": 156,
   "weekStart": ""
 }

@@ -35,7 +35,7 @@ for dir in "$base_dir"/*; do
                                 sudo systemctl stop "$dir_name"
                                 mv $HOME/.local/share/safe/client/wallet $HOME/.local/share/safe/client/wallet-backup
                                 sudo mv /var/safenode-manager/services/safenode$node_number/wallet/ $HOME/.local/share/safe/client/
-                                sudo chown -R "$USER":"$USER" $HOME/.local/share/safe/client/wallet
+                                sudo chown -R "$(whoami)":"$(whoami)" $HOME/.local/share/safe/client/wallet
 
                                 node_balance=$(safe wallet balance | awk 'NR==3{print $1}')
                                 echo ""
@@ -43,7 +43,7 @@ for dir in "$base_dir"/*; do
                                 echo ""
 
                                 #send rewards from node wallet to main wallet address
-                                deposit=$(safe wallet send $node_balance $wallet_address | awk 'NR==10{print $1}')
+                                deposit="$(safe wallet send $node_balance $wallet_address | awk '/Please share this to the recipient:/,/The recipient can then use the/' | awk 'NR==3{print $0}')"
                                 echo ""
                                 echo "$deposit"
                                 echo ""
@@ -62,6 +62,15 @@ for dir in "$base_dir"/*; do
                 sleep 20
     fi
 done
+
+client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
+
+if (($(echo "$client_balance > 0.000000000" | bc -l))); then
+# send balance to self to avoid complex transactions.
+deposit="$(safe wallet send $client_balance $wallet_address | awk '/Please share this to the recipient:/,/The recipient can then use the/' | awk 'NR==3{print $0}')"
+safe wallet receive "$deposit"
+client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
+fi
 
 client_balance=$(safe wallet balance | awk 'NR==3{print $1}')
 
