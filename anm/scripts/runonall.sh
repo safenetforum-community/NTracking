@@ -33,10 +33,13 @@
 
 #remove 
 
-sudo swapoff -a
-sleep 5
-sudo rm /var/cache/swap/swapfile
+#sudo swapoff -a
+#sleep 5
+#sudo rm /var/cache/swap/swapfile
 
 #sudo rm -rf $HOME/.local/share/safe/node
 
 #sudo rm -rf /home/safe/.local/share/safe
+
+
+sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=300/" /var/safenode-manager/config
