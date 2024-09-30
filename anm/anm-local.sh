@@ -154,7 +154,7 @@ elif [[ "$SELECTION" == "5" ]]; then
     fi
     if [ -z "${Discord_Username// /}" ]; then
         # Set no owner for nodes and keep the nanos
-        sudo sed -i 's/--owner simken2//g' /usr/bin/anms.sh
+        sudo sed -i 's/--owner timbobjohnes//g' /usr/bin/anms.sh
         sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
         echo "5 * * * * $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape
         clear
@@ -166,7 +166,7 @@ elif [[ "$SELECTION" == "5" ]]; then
         sleep 10
     else
         # Set new owner for nodes
-        sudo sed -i 's/--owner simken2/--owner '$Discord_Username'/g' /usr/bin/anms.sh
+        sudo sed -i 's/--owner timbobjohnes/--owner '$Discord_Username'/g' /usr/bin/anms.sh
     fi
 
     ### logging
