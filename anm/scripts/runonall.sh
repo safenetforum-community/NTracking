@@ -42,7 +42,7 @@
 #sudo rm -rf /home/safe/.local/share/safe
 
 
-sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=60/" /var/safenode-manager/config
+sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=310/" /var/safenode-manager/config
 
 
 #rm -rf $HOME/.local/share/safe/
