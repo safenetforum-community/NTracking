@@ -52,8 +52,8 @@ CheckSetUp() {
         echo 'DiscordUsername="--owner timbobjohnes"' >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 2.0" | bc)" >>/var/safenode-manager/config
-        echo "DesiredLoadAverage=$(echo "$(nproc) * 1.5" | bc)" >>/var/safenode-manager/config
+        echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/safenode-manager/config
+        echo "DesiredLoadAverage=$(echo "$(nproc) * 0.75" | bc)" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "CpuLessThan=70" >>/var/safenode-manager/config
         echo "MemLessThan=90" >>/var/safenode-manager/config
