@@ -110,12 +110,15 @@ StartNode() {
     fi
     if (($(echo "$RunningNodes == $NodeCap" | bc))); then
         echo "node starting not allowed due to node cap" && echo
-        if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
-            echo "Shuun gun" && echo
-            ShunnGun
-        fi
+        # where shunn gun used to be
         return 0
     fi
+
+    if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
+        echo "Shuun gun" && echo
+        ShunnGun
+    fi
+
     if (($(echo "$StoppedNodes == 0" | bc))); then
         AddNode
     fi
@@ -342,7 +345,7 @@ CalculateValues() {
     RemMem=$(echo "$UsedMemPercent > $MemRemove " | bc)
     RemHD=$(echo "$UsedHdPercent > $HDRemove " | bc)
     AllowNodeCap=$(echo "$RunningNodes <= $NodeCap" | bc)
-    
+
     #variable delay start test
     #if (($(echo "$CpuCount >= 24 " | bc))); then
     #    DelayStart=$(echo "scale=0; $RunningNodes / 25" | bc)
