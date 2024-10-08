@@ -108,15 +108,16 @@ StartNode() {
         echo "node starting not allowed during upgrade" && echo
         return 0
     fi
-    if (($(echo "$RunningNodes == $NodeCap" | bc))); then
-        echo "node starting not allowed due to node cap" && echo
-        # where shunn gun used to be
-        return 0
-    fi
 
     if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
         echo "Shuun gun" && echo
         ShunnGun
+        return 0
+    fi
+
+    if (($(echo "$RunningNodes == $NodeCap" | bc))); then
+        echo "node starting not allowed due to node cap" && echo
+        # where shunn gun used to be
         return 0
     fi
 
@@ -547,6 +548,8 @@ elif (($(echo "$RemCpu == 1" | bc))) || (($(echo "$RemMem == 1" | bc))) || (($(e
         StopNode
     fi
 else
+
+    ShunnGun
     echo "Node count Ok" && echo
 fi
 #############################################################################################################################
