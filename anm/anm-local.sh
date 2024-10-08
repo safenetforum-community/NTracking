@@ -3,6 +3,10 @@
 ClientVersion="--version 0.95.2"
 NodeVersion="--version 0.111.3"
 
+
+echo "not updated for new release yet"
+exit 0
+
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh 
