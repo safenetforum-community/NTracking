@@ -362,18 +362,18 @@ CalculateValues() {
         DelayUpgrade=5
     elif (($(echo "$cpucount <= 12" | bc))); then
         if (($(echo "$RunningNodes <= 75" | bc))); then
-            DelayStart=1
-            DelayUpgrade=3
+            DelayStart=5
+            DelayUpgrade=5
         elif (($(echo "$RunningNodes <= 150" | bc))); then
             #DelayStart=2
             #DelayUpgrade=4
-            DelayStart=1
-            DelayUpgrade=3
+            DelayStart=5
+            DelayUpgrade=5
         else
             #DelayStart=5
             #DelayUpgrade=5
-            DelayStart=1
-            DelayUpgrade=3
+            DelayStart=5
+            DelayUpgrade=5
         fi
     elif (($(echo "$cpucount <= 24" | bc))); then
         if (($(echo "$RunningNodes <= 200" | bc))); then
