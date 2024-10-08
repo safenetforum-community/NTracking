@@ -153,7 +153,7 @@ AddNode() {
 Description=$node_name
 [Service]
 User=safe
-ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $DiscordUsername --log-output-dest /var/log/safenode/$node_name --max_log_files 1 --max_archived_log_files 1
+ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $DiscordUsername --log-output-dest /var/log/safenode/$node_name --max-log-files 1 --max-archived-log-files 1
 Restart=on-failure
 EOF
 
