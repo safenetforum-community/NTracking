@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ClientVersion="--version 0.95.2"
-NodeVersion="--version 0.111.3"
+ClientVersion="--version 0.95.3"
+NodeVersion="--version 0.111.4"
 
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
@@ -125,8 +125,8 @@ elif [[ "$SELECTION" == "4" ]]; then
 ######################################################################################################################## Start nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
-    echo "not updated for new release yet"
-    exit 0
+    #echo "not updated for new release yet"
+    #exit 0
 
     if [[ -f "/var/safenode-manager/config" ]]; then
         clear
