@@ -117,6 +117,7 @@ StartNode() {
     if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
         echo "Shuun gun" && echo
         ShunnGun
+        return 0
     fi
 
     if (($(echo "$StoppedNodes == 0" | bc))); then
