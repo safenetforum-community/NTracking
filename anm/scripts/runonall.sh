@@ -48,7 +48,7 @@ sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercont
 
 
 sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=80/" /var/safenode-manager/config
-sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=90/" /var/safenode-manager/config
+sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=95/" /var/safenode-manager/config
 
 
 #rm -rf $HOME/.local/share/safe/
