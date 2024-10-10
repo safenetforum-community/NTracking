@@ -42,7 +42,7 @@ sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercont
 #sudo rm -rf /home/safe/.local/share/safe
 
 
-#sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=300/" /var/safenode-manager/config
+sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=250/" /var/safenode-manager/config
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/safenode-manager/config
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/safenode-manager/config
 
@@ -51,4 +51,4 @@ sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercont
 #sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=95/" /var/safenode-manager/config
 
 
-rm -rf $HOME/.local/share/safe/
+#rm -rf $HOME/.local/share/safe/
