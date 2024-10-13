@@ -74,15 +74,15 @@ CheckSetUp() {
         # calculate values from cpu count
         cpucount=$(nproc)
         if (($(echo "$cpucount <= 2" | bc))); then
-            echo "NodeCap=25" >>/var/safenode-manager/config
+            echo "NodeCap=10" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 4" | bc))); then
-            echo "NodeCap=50" >>/var/safenode-manager/config
+            echo "NodeCap=25" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 8" | bc))); then
-            echo "NodeCap=100" >>/var/safenode-manager/config
+            echo "NodeCap=50" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 12" | bc))); then
-            echo "NodeCap=250" >>/var/safenode-manager/config
+            echo "NodeCap=100" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 24" | bc))); then
-            echo "NodeCap=430" >>/var/safenode-manager/config
+            echo "NodeCap=200" >>/var/safenode-manager/config
         else
             echo "NodeCap=500" >>/var/safenode-manager/config
         fi
@@ -368,17 +368,17 @@ CalculateValues() {
         DelayUpgrade=5
     elif (($(echo "$cpucount <= 12" | bc))); then
         if (($(echo "$RunningNodes <= 75" | bc))); then
-            DelayStart=2
+            DelayStart=1
             DelayUpgrade=2
         elif (($(echo "$RunningNodes <= 150" | bc))); then
             #DelayStart=2
             #DelayUpgrade=4
-            DelayStart=2
+            DelayStart=1
             DelayUpgrade=2
         else
             #DelayStart=5
             #DelayUpgrade=5
-            DelayStart=2
+            DelayStart=1
             DelayUpgrade=2
         fi
     elif (($(echo "$cpucount <= 24" | bc))); then
