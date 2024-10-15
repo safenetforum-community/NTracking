@@ -2,7 +2,6 @@
 
 # sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
-
 MetricsPortFirst=13001
 
 # Environment  setup
@@ -41,6 +40,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     node_number=$(seq -f "%03g" $i $i)
     node_name=safenode$node_number
     node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
+    node_metadata="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metadata)"
 
     if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
@@ -55,11 +55,11 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
+        # from metadata
+        PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
+        NodeVersion="\"$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
-            # for anm
-            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
-            NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
 
             # shunn gun
             if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
@@ -67,12 +67,6 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
                 ShunnedNode=$i
                 ShunnedValue=$shunned_count
             fi
-
-        else
-            # for safe node manager service
-            node_metadata="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metadata)"
-            PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
-            NodeVersion="\"$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
         fi
 
     else
