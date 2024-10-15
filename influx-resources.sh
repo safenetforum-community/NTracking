@@ -56,8 +56,8 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         gets=$(echo "$node_metrics" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_metrics" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
         # from metadata
-        PeerId=$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)
-        NodeVersion=$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)
+        PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
+        NodeVersion="\"$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
             # shunn gun if anm present
