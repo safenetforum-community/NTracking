@@ -60,7 +60,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         NodeVersion=$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
-            # shunn gun
+            # shunn gun if anm present
             if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
                 Shunngun=1
                 ShunnedNode=$i
