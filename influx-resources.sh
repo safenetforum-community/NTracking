@@ -39,33 +39,39 @@ ShunnedValue=25
 for ((i = 1; i <= $NumberOfNodes; i++)); do
     node_number=$(seq -f "%03g" $i $i)
     node_name=safenode$node_number
-    node_metrics="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
-    node_metadata="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metadata)"
+    node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
 
-    if [[ -n "$node_metrics" ]]; then
+    if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
         status="TRUE"
-        mem_used=$(echo "$node_metrics" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
-        cpu_usage=$(echo "$node_metrics" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
-        records=$(echo "$node_metrics" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
-        network_size=$(echo "$node_metrics" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
-        shunned_count=$(echo "$node_metrics" | grep sn_networking_shunned_count_total | awk 'NR==1 {print $2}')
-        rewards_balance=$(echo "$node_metrics" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
-        connected_peers=$(echo "$node_metrics" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
-        store_cost=$(echo "$node_metrics" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
-        gets=$(echo "$node_metrics" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
-        puts=$(echo "$node_metrics" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
-        # from metadata
-        PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
-        NodeVersion="\"$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
+        mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
+        cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
+        records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
+        network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
+        shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==1 {print $2}')
+        rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
+        connected_peers=$(echo "$node_details" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
+        store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
+        gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
+        puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
 
         if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
-            # shunn gun if anm present
+            # for anm
+            PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
+            NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
+
+            # shunn gun
             if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
                 Shunngun=1
                 ShunnedNode=$i
                 ShunnedValue=$shunned_count
             fi
+
+        else
+            # for safe node manager service
+            node_metadata="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metadata)"
+            PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
+            NodeVersion="\"$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
         fi
 
     else
