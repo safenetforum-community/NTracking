@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 if (( $EUID == 0 )); then
+clear
     echo "Do not run as root"
+    echo && echo
     exit 0
 fi
 
