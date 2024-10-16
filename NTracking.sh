@@ -2,6 +2,7 @@
 
 if (( $EUID == 0 )); then
 clear
+echo && echo
     echo "Do not run as root"
     echo && echo
     exit 0
