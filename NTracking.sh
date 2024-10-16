@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# block running as root
 if (( $EUID == 0 )); then
     clear
     echo && echo
