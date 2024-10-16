@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if (( $EUID == 0 )); then
+    echo "Do not run as root"
+    exit 0
+fi
+
+
 # edit these defaults here or edit them in an interactive menu when the script is run
 INFLUXDB_GRAFANA_USER="safe"
 GRAFANA_PORT=3000
