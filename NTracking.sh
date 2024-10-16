@@ -98,6 +98,9 @@ docker remove grafana
 #remove old folders and config files if they exists
 sudo rm -rf $HOME/.local/share/tig-stack
 
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+
 #make local directorys
 
 mkdir -p $HOME/.local/share/tig-stack/influxdb/data \
