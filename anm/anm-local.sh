@@ -125,8 +125,10 @@ elif [[ "$SELECTION" == "4" ]]; then
 ######################################################################################################################## Start nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
-    #echo "not updated for new release yet"
-    #exit 0
+    clear && echo && echo
+    echo "not updated for new release yet"
+    exit 0
+    echo && echo
 
     if [[ -f "/var/safenode-manager/config" ]]; then
         clear
