@@ -33,7 +33,7 @@ NumberOfNodes=$(ls $base_dir | wc -l)
 MetricsPortFirst=$(($MetricsPortFirst - 1))
 
 #Aceptable Shunn value
-ShunnedValue=25
+ShunnedValue=15
 
 # Process nodes
 for ((i = 1; i <= $NumberOfNodes; i++)); do
