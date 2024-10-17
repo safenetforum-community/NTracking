@@ -42,7 +42,8 @@
 #sudo rm -rf /home/safe/.local/share/safe
 
 
-sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
+#sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
+
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/safenode-manager/config
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/safenode-manager/config
 
@@ -51,4 +52,4 @@ sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
 #sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=95/" /var/safenode-manager/config
 
 
-#rm -rf $HOME/.local/share/safe/
+rm -rf $HOME/.local/share/safe/
