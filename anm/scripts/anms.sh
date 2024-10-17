@@ -76,11 +76,11 @@ CheckSetUp() {
         if (($(echo "$cpucount <= 2" | bc))); then
             echo "NodeCap=10" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 4" | bc))); then
-            echo "NodeCap=25" >>/var/safenode-manager/config
+            echo "NodeCap=30" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 8" | bc))); then
-            echo "NodeCap=50" >>/var/safenode-manager/config
-        elif (($(echo "$cpucount <= 12" | bc))); then
             echo "NodeCap=70" >>/var/safenode-manager/config
+        elif (($(echo "$cpucount <= 12" | bc))); then
+            echo "NodeCap=100" >>/var/safenode-manager/config
         elif (($(echo "$cpucount <= 24" | bc))); then
             echo "NodeCap=200" >>/var/safenode-manager/config
         else
