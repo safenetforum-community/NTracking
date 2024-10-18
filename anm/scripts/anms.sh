@@ -50,6 +50,7 @@ CheckSetUp() {
         echo "# edit this file to confrol behavior of the script" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo 'DiscordUsername="--owner timbobjohnes"' >>/var/safenode-manager/config
+        echo 'RewardsAddress="--rewards-address 0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93"' >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/safenode-manager/config
@@ -158,7 +159,7 @@ AddNode() {
 Description=$node_name
 [Service]
 User=safe
-ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $DiscordUsername --log-output-dest /var/log/safenode/$node_name --max-log-files 1 --max-archived-log-files 1
+ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $DiscordUsername $RewardsAddress --log-output-dest /var/log/safenode/$node_name --max-log-files 1 --max-archived-log-files 1
 Restart=on-failure
 EOF
 

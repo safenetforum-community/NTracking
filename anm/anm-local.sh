@@ -125,10 +125,10 @@ elif [[ "$SELECTION" == "4" ]]; then
 ######################################################################################################################## Start nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
-    clear && echo && echo
-    echo "not updated for new release yet"
-    exit 0
-    echo && echo
+    #clear && echo && echo
+    #echo "not updated for new release yet"
+    #exit 0
+    #echo && echo
 
     if [[ -f "/var/safenode-manager/config" ]]; then
         clear
@@ -173,6 +173,15 @@ elif [[ "$SELECTION" == "5" ]]; then
         # Set new owner for nodes
         sudo sed -i 's/--owner timbobjohnes/--owner '$Discord_Username'/g' /usr/bin/anms.sh
     fi
+
+    ### set rewards address
+    RewardsAddress=$(whiptail --title "ETH Rewards Adress" --inputbox "\nEnter ETH Rewards Adress" 8 40 "0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93" 3>&1 1>&2 2>&3)
+    if [[ $? -eq 255 ]]; then
+        exit 0
+    fi
+
+    # Set new rewards address
+    sudo sed -i 's/--rewards-address 0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93/--rewards-address '$RewardsAddress'/g' /usr/bin/anms.sh
 
     ### logging
     #Logging=$(whiptail --title "Logging" --inputbox "\nLogging yes or no" 8 40 "yes" 3>&1 1>&2 2>&3)
