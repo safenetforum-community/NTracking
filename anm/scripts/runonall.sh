@@ -53,3 +53,4 @@
 
 
 rm -rf $HOME/.local/share/safe/
+rm -rf $HOME/.local/share/wallets

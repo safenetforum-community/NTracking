@@ -68,9 +68,9 @@ CheckSetUp() {
         echo "# for systems 24 and over cores there is a seperate value calculate " >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "DelayStart=5" >>/var/safenode-manager/config
-        echo "DelayReStart=10" >>/var/safenode-manager/config
+        echo "DelayReStart=5" >>/var/safenode-manager/config
         echo "DelayUpgrade=5" >>/var/safenode-manager/config
-        echo "DelayRemove=5" >>/var/safenode-manager/config
+        echo "DelayRemove=10" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "NodeCap=20" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
@@ -227,14 +227,16 @@ StopNode() {
     echo "systemctl stop $node_name"
     sudo ufw delete allow $ntpr$node_number/udp
     echo "closed firewall port $ntpr$node_number/udp"
-    # copy wallet to folder for later scraping
-    WalletDir=""$(date +%s)"-"$node_name"-Shunn"
-    mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
-    cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
-    sleep 5
-    sudo rm -rf /var/safenode-manager/services/$node_name/*
-    sudo cp $NodePath /var/safenode-manager/services/$node_name
-    echo "cp $NodePath /var/safenode-manager/services/$node_name"
+
+   # # copy wallet to folder for later scraping
+   # WalletDir=""$(date +%s)"-"$node_name"-Shunn"
+   # mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
+   # cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
+   # sleep 5
+   # sudo rm -rf /var/safenode-manager/services/$node_name/*
+   # sudo cp $NodePath /var/safenode-manager/services/$node_name
+   # echo "cp $NodePath /var/safenode-manager/services/$node_name"
+
     echo "$node_name Stopped" && echo
     echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/safenode-manager/counters
     sed -i 's/CounterStart=.*/CounterStart='$DelayReStart'/g' /var/safenode-manager/counters
