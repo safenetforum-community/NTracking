@@ -21,7 +21,7 @@ button=black,white
 SELECTION=$(whiptail --title "aatonnomicc node manager v 1.0" --radiolist \
     "                 ANM Local options                              " 20 70 10 \
     "1" "Exit" ON \
-    "2" "Change load level" OFF \
+    "2" "Change node Count" OFF \
     "3" "Upgrade nodes" OFF \
     "4" "NTracking Upgrade" OFF \
     "5" "Start nodes" OFF \
@@ -36,7 +36,7 @@ if [[ "$SELECTION" == "1" ]]; then
 
     exit 0
 
-################################################################################################################ change load levels
+################################################################################################################ change node count
 elif [[ "$SELECTION" == "2" ]]; then
 
     if [[ ! -f "/var/safenode-manager/config" ]]; then
@@ -45,61 +45,14 @@ elif [[ "$SELECTION" == "2" ]]; then
         exit 0
     fi
 
-    LoadLevel=$(whiptail --title "System loading   " --radiolist \
-        "How much to load the system                      " 20 70 10 \
-        "1" "Low     -Default-                     " OFF \
-        "2" "Medium  -Recomended-                  " ON \
-        "3" "High    -Use Caution-                 " OFF \
-        "4" "Extreme -Extra Caution-               " OFF 3>&1 1>&2 2>&3)
+    ### set nodecount
+    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "50" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
 
-    if [[ "$LoadLevel" == "1" ]]; then
-        #Low
-        #max load average
-        sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) * 2.5" | bc)/" /var/safenode-manager/config
-        #desierd load average
-        sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) * 1.5" | bc)/" /var/safenode-manager/config
-        # set mem cpu hd
-        sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=80/" /var/safenode-manager/config
-        sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=80/" /var/safenode-manager/config
-        sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=80/" /var/safenode-manager/config
-
-    elif [[ "$LoadLevel" == "2" ]]; then
-        #Medium
-        #max load average
-        sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) * 3.0" | bc)/" /var/safenode-manager/config
-        #desierd load average
-        sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) * 2.0" | bc)/" /var/safenode-manager/config
-        # set mem cpu hd
-        sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=80/" /var/safenode-manager/config
-        sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=80/" /var/safenode-manager/config
-        sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=80/" /var/safenode-manager/config
-
-    elif [[ "$LoadLevel" == "3" ]]; then
-        #Medium
-        #max load average
-        sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) * 3.5" | bc)/" /var/safenode-manager/config
-        #desierd load average
-        sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) * 2.5" | bc)/" /var/safenode-manager/config
-        # set mem cpu hd
-        sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=90/" /var/safenode-manager/config
-        sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
-        sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=90/" /var/safenode-manager/config
-
-    else
-        #Extream
-        #max load average
-        sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) * 4.0" | bc)/" /var/safenode-manager/config
-        #desierd load average
-        sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) * 3.0" | bc)/" /var/safenode-manager/config
-        # set mem cpu hd
-        sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=95/" /var/safenode-manager/config
-        sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=95/" /var/safenode-manager/config
-        sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=95/" /var/safenode-manager/config
-
-    fi
+    # Set new nodecount
+    sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=$NodeCount/" /var/safenode-manager/config
 
 ######################################################################################################################## upgrade nodes
 elif [[ "$SELECTION" == "3" ]]; then
@@ -153,13 +106,13 @@ elif [[ "$SELECTION" == "5" ]]; then
     # user options
 
     ### discord username
-    Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "timbobjohnes" 3>&1 1>&2 2>&3)
+    Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "DiscordUserName" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
     if [ -z "${Discord_Username// /}" ]; then
         # Set no owner for nodes and keep the nanos
-        sudo sed -i 's/--owner timbobjohnes//g' /usr/bin/anms.sh
+        sudo sed -i 's/--owner DiscordUserName//g' /usr/bin/anms.sh
         sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
         echo "5 * * * * $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape
         clear
@@ -171,7 +124,7 @@ elif [[ "$SELECTION" == "5" ]]; then
         sleep 10
     else
         # Set new owner for nodes
-        sudo sed -i 's/--owner timbobjohnes/--owner '$Discord_Username'/g' /usr/bin/anms.sh
+        sudo sed -i 's/--owner DiscordUserName/--owner '$Discord_Username'/g' /usr/bin/anms.sh
     fi
 
     ### set rewards address
@@ -182,6 +135,15 @@ elif [[ "$SELECTION" == "5" ]]; then
 
     # Set new rewards address
     sudo sed -i 's/--rewards-address 0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93/--rewards-address '$RewardsAddress'/g' /usr/bin/anms.sh
+
+    ### set nodecount
+    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "50" 3>&1 1>&2 2>&3)
+    if [[ $? -eq 255 ]]; then
+        exit 0
+    fi
+
+    # Set new nodecount
+    sudo sed -i 's/NodeCap=20/NodeCap='$NodeCount'/g' /usr/bin/anms.sh
 
     ### logging
     #Logging=$(whiptail --title "Logging" --inputbox "\nLogging yes or no" 8 40 "yes" 3>&1 1>&2 2>&3)

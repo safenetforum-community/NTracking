@@ -72,21 +72,7 @@ CheckSetUp() {
         echo "DelayUpgrade=5" >>/var/safenode-manager/config
         echo "DelayRemove=5" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        # calculate values from cpu count
-        cpucount=$(nproc)
-        if (($(echo "$cpucount <= 2" | bc))); then
-            echo "NodeCap=10" >>/var/safenode-manager/config
-        elif (($(echo "$cpucount <= 4" | bc))); then
-            echo "NodeCap=30" >>/var/safenode-manager/config
-        elif (($(echo "$cpucount <= 8" | bc))); then
-            echo "NodeCap=70" >>/var/safenode-manager/config
-        elif (($(echo "$cpucount <= 12" | bc))); then
-            echo "NodeCap=100" >>/var/safenode-manager/config
-        elif (($(echo "$cpucount <= 24" | bc))); then
-            echo "NodeCap=200" >>/var/safenode-manager/config
-        else
-            echo "NodeCap=500" >>/var/safenode-manager/config
-        fi
+        echo "NodeCap=20" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "UpgradeHour=$(shuf -i 0-23 -n 1)" >>/var/safenode-manager/config
         echo "UpgradeMin=$(shuf -i 0-59 -n 1)" >>/var/safenode-manager/config
