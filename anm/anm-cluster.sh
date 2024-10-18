@@ -42,11 +42,11 @@ machines="m00 m01 m02 m03 m04 m05"
 SELECTION=$(whiptail --title "aatonnomicc cluster controler v 1.0 " --radiolist \
     "                 ANM Cluster options                              " 20 70 10 \
     "1" "Exit                                          " ON \
-    "2" "Change node count                            " OFF \
+    "2" "Change node count                             " OFF \
     "3" "Upgrade nodes                                 " OFF \
     "4" "NTracking upgrade                             " OFF \
-    "5" "Start all nodes                               " OFF \
-    "6" "Stop all nodes                                " OFF \
+    "5" "Start nodes                                   " OFF \
+    "6" "Stop nodes                                    " OFF \
     "7" "Run on systems                                " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
