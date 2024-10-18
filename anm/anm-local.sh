@@ -145,7 +145,7 @@ elif [[ "$SELECTION" == "6" ]]; then
         exit 0
     fi
     # Set new rewards address
-    sudo sed -i 's/--rewards-address 0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93/--rewards-address '$RewardsAddress'/g' /usr/bin/anms.sh
+    sudo sed -i 's/--rewards-address EtheriumAddress/--rewards-address '$RewardsAddress'/g' /usr/bin/anms.sh
 
     ### set nodecount
     NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)

@@ -50,7 +50,7 @@ CheckSetUp() {
         echo "# edit this file to confrol behavior of the script" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo 'DiscordUsername="--owner DiscordUserName"' >>/var/safenode-manager/config
-        echo 'RewardsAddress="--rewards-address 0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93"' >>/var/safenode-manager/config
+        echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/safenode-manager/config
