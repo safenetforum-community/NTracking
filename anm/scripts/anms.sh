@@ -342,56 +342,6 @@ CalculateValues() {
         DelayUpgrade=$DelayStart
     fi
 
-    calculate node timings values from cpu count
-    cpucount=$(nproc)
-    if (($(echo "$cpucount <= 2" | bc))); then
-        DelayStart=5
-        DelayUpgrade=5
-    elif (($(echo "$cpucount <= 4" | bc))); then
-        DelayStart=5
-        DelayUpgrade=5
-    elif (($(echo "$cpucount <= 8" | bc))); then
-        DelayStart=5
-        DelayUpgrade=5
-    elif (($(echo "$cpucount <= 12" | bc))); then
-        if (($(echo "$RunningNodes <= 75" | bc))); then
-            DelayStart=2
-            DelayUpgrade=2
-        elif (($(echo "$RunningNodes <= 150" | bc))); then
-            #DelayStart=2
-            #DelayUpgrade=4
-            DelayStart=2
-            DelayUpgrade=2
-        else
-            #DelayStart=5
-            #DelayUpgrade=5
-            DelayStart=2
-            DelayUpgrade=2
-        fi
-    elif (($(echo "$cpucount <= 24" | bc))); then
-        if (($(echo "$RunningNodes <= 200" | bc))); then
-            DelayStart=2
-            DelayUpgrade=3
-        elif (($(echo "$RunningNodes <= 400" | bc))); then
-            DelayStart=3
-            DelayUpgrade=5
-        else
-            DelayStart=3
-            DelayUpgrade=5
-        fi
-    else
-        if (($(echo "$RunningNodes <= 200" | bc))); then
-            DelayStart=1
-            DelayUpgrade=3
-        elif (($(echo "$RunningNodes <= 300" | bc))); then
-            DelayStart=2
-            DelayUpgrade=4
-        else
-            DelayStart=5
-            DelayUpgrade=5
-        fi
-    fi
-
 }
 
 PrintDetails() {

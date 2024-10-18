@@ -46,7 +46,7 @@ elif [[ "$SELECTION" == "2" ]]; then
     fi
 
     ### set nodecount
-    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "50" 3>&1 1>&2 2>&3)
+    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
@@ -132,18 +132,32 @@ elif [[ "$SELECTION" == "5" ]]; then
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
-
     # Set new rewards address
     sudo sed -i 's/--rewards-address 0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93/--rewards-address '$RewardsAddress'/g' /usr/bin/anms.sh
 
     ### set nodecount
-    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "50" 3>&1 1>&2 2>&3)
+    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
-
     # Set new nodecount
     sudo sed -i 's/NodeCap=20/NodeCap='$NodeCount'/g' /usr/bin/anms.sh
+
+    ### set start interval
+    NodeStart=$(whiptail --title "Set start interval" --inputbox "\nEnter start interval" 8 40 "5" 3>&1 1>&2 2>&3)
+    if [[ $? -eq 255 ]]; then
+        exit 0
+    fi
+    # Set start interval
+    sudo sed -i 's/DelayStart=5/DelayStart='$NodeStart'/g' /usr/bin/anms.sh
+
+    ### set node upgrade interval
+    NodeUpgrade=$(whiptail --title "Set node upgrade interval" --inputbox "\nEnter node upgrade interval" 8 40 "5" 3>&1 1>&2 2>&3)
+    if [[ $? -eq 255 ]]; then
+        exit 0
+    fi
+    # Set new set upgrade interval
+    sudo sed -i 's/DelayUpgrade=5/DelayUpgrade='$NodeUpgrade'/g' /usr/bin/anms.sh
 
     ### logging
     #Logging=$(whiptail --title "Logging" --inputbox "\nLogging yes or no" 8 40 "yes" 3>&1 1>&2 2>&3)
