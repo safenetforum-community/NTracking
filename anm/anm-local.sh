@@ -21,11 +21,12 @@ button=black,white
 SELECTION=$(whiptail --title "aatonnomicc node manager v 1.0" --radiolist \
     "                 ANM Local options                              " 20 70 10 \
     "1" "Exit" ON \
-    "2" "Change node Count" OFF \
-    "3" "Upgrade nodes" OFF \
-    "4" "NTracking Upgrade" OFF \
-    "5" "Start nodes" OFF \
-    "6" "Stop nodes                          " OFF 3>&1 1>&2 2>&3)
+    "2" "View log" OFF \
+    "3" "Change node Count" OFF \
+    "4" "Upgrade nodes" OFF \
+    "5" "NTracking Upgrade" OFF \
+    "6" "Start nodes" OFF \
+    "7" "Stop nodes                          " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -36,8 +37,19 @@ if [[ "$SELECTION" == "1" ]]; then
 
     exit 0
 
-################################################################################################################ change node count
+################################################################################################################ view log
 elif [[ "$SELECTION" == "2" ]]; then
+
+    if [[ ! -f "/var/safenode-manager/config" ]]; then
+        clear
+        echo && echo "Start some nodes first" && echo
+        exit 0
+    fi
+
+    tail -f /var/safenode-manager/log
+
+################################################################################################################ change node count
+elif [[ "$SELECTION" == "3" ]]; then
 
     if [[ ! -f "/var/safenode-manager/config" ]]; then
         clear
@@ -55,7 +67,7 @@ elif [[ "$SELECTION" == "2" ]]; then
     sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=$NodeCount/" /var/safenode-manager/config
 
 ######################################################################################################################## upgrade nodes
-elif [[ "$SELECTION" == "3" ]]; then
+elif [[ "$SELECTION" == "4" ]]; then
 
     if [[ ! -f "/var/safenode-manager/config" ]]; then
         clear
@@ -70,13 +82,13 @@ elif [[ "$SELECTION" == "3" ]]; then
     safeup client $ClientVersion
 
 ######################################################################################################################## NTracking upgrade
-elif [[ "$SELECTION" == "4" ]]; then
+elif [[ "$SELECTION" == "5" ]]; then
 
     sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
     echo "*/10 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
 ######################################################################################################################## Start nodes
-elif [[ "$SELECTION" == "5" ]]; then
+elif [[ "$SELECTION" == "6" ]]; then
 
     #clear && echo && echo
     #echo "not updated for new release yet"
@@ -144,7 +156,7 @@ elif [[ "$SELECTION" == "5" ]]; then
     sudo sed -i 's/NodeCap=20/NodeCap='$NodeCount'/g' /usr/bin/anms.sh
 
     ### set start interval
-    NodeStart=$(whiptail --title "Set start interval" --inputbox "\nEnter start interval" 8 40 "5" 3>&1 1>&2 2>&3)
+    NodeStart=$(whiptail --title "Node start interval" --inputbox "\nNode start interval" 8 40 "5" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
@@ -152,7 +164,7 @@ elif [[ "$SELECTION" == "5" ]]; then
     sudo sed -i 's/DelayStart=5/DelayStart='$NodeStart'/g' /usr/bin/anms.sh
 
     ### set node upgrade interval
-    NodeUpgrade=$(whiptail --title "Set node upgrade interval" --inputbox "\nEnter node upgrade interval" 8 40 "5" 3>&1 1>&2 2>&3)
+    NodeUpgrade=$(whiptail --title "Node upgrade interval" --inputbox "\nNode upgrade interval" 8 40 "5" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
@@ -216,7 +228,7 @@ elif [[ "$SELECTION" == "5" ]]; then
     tail -f /var/safenode-manager/log
 
 ######################################################################################################################## Stop nodes
-elif [[ "$SELECTION" == "6" ]]; then
+elif [[ "$SELECTION" == "7" ]]; then
 
     rm /var/safenode-manager/config
     clear
