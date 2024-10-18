@@ -46,7 +46,7 @@ elif [[ "$SELECTION" == "2" ]]; then
         exit 0
     fi
 
-    tail -f /var/safenode-manager/log
+    clear && tail -f /var/safenode-manager/log
 
 ################################################################################################################ change node count
 elif [[ "$SELECTION" == "3" ]]; then
