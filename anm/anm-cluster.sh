@@ -39,7 +39,7 @@ machines="m00 m01 m02 m03 m04 m05"
 . $HOME/.local/share/anm-cluster
 
 ############################################## select test net action
-SELECTION=$(whiptail --title "aatonnomicc cluster controler v 1.0 " --radiolist \
+SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist \
     "                 ANM Cluster options                              " 20 70 10 \
     "1" "Exit                                          " ON \
     "2" "Change node count                             " OFF \
