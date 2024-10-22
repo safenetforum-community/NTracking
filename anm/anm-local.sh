@@ -117,6 +117,20 @@ elif [[ "$SELECTION" == "6" ]]; then
 
     # user options
 
+    ### portrange
+    PortRange=$(whiptail --title "Node portrange start" --inputbox "\nnode range in thousands" 8 40 "55" 3>&1 1>&2 2>&3)
+    if [[ $? -eq 255 ]]; then
+        exit 0
+    fi
+
+    if [[ "$PortRange" == "13" ]]; then
+        # change port range
+        clear && echo "port range 13 thousand not allowed NTracking metrics ports" && exit 0
+    elif [[ "$PortRange" != "55" ]]; then
+        # change port range
+        sudo sed -i 's/ntpr=55/ntpr='$PortRange'/g' /usr/bin/anms.sh
+    fi
+
     ### discord username
     Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "DiscordUserName" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
@@ -157,46 +171,6 @@ elif [[ "$SELECTION" == "6" ]]; then
     fi
     # Set new set upgrade interval
     sudo sed -i 's/DelayUpgrade=5/DelayUpgrade='$NodeUpgrade'/g' /usr/bin/anms.sh
-
-    ### logging
-    #Logging=$(whiptail --title "Logging" --inputbox "\nLogging yes or no" 8 40 "yes" 3>&1 1>&2 2>&3)
-    #if [[ $? -eq 255 ]]; then
-    #    exit 0
-    #fi
-    #if [[ "$Logging" != "no" ]]; then
-    #    # yes set for logging
-    #    sudo sed -i 's/$node_number $DiscordUsername/$node_number $DiscordUsername --log-output-dest \/var\/log\/safenode\/safenode$NextNodeToSorA --max_log_files 5 --max_archived_log_files 5/g' /usr/bin/anms.sh
-    #else
-    #    # continue with no loging
-    #    sleep 1
-    #fi
-
-    ### portrange
-    PortRange=$(whiptail --title "Node portrange start" --inputbox "\nnode range in thousands" 8 40 "55" 3>&1 1>&2 2>&3)
-    if [[ $? -eq 255 ]]; then
-        exit 0
-    fi
-
-    if [[ "$PortRange" == "13" ]]; then
-        # change port range
-        clear && echo "port range 13 thousand not allowed NTracking metrics ports" && exit 0
-    elif [[ "$PortRange" != "55" ]]; then
-        # change port range
-        sudo sed -i 's/ntpr=55/ntpr='$PortRange'/g' /usr/bin/anms.sh
-    fi
-
-    ### node cap
-    #nodecapnum=$(whiptail --title "Node cap" --inputbox "\nMax nodes to start" 8 40 "500" 3>&1 1>&2 2>&3)
-    #if [[ $? -eq 255 ]]; then
-    #    exit 0
-    #fi
-    #if [[ "$Logging" != "500" ]]; then
-    #    # set new node cap
-    #    sudo sed -i 's/NodeCap=500/NodeCap='$nodecapnum'/g' /usr/bin/anms.sh
-    #else
-    #    # continue with default node cap
-    #    sleep 1
-    #fi
 
     # create manager directory for nodes
     sudo mkdir -p /var/safenode-manager
