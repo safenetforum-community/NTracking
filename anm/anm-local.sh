@@ -122,22 +122,9 @@ elif [[ "$SELECTION" == "6" ]]; then
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
-    if [ -z "${Discord_Username// /}" ]; then
-        # Set no owner for nodes and keep the nanos
-        sudo sed -i 's/--owner DiscordUserName//g' /usr/bin/anms.sh
-        sudo rm -f /usr/bin/scrape.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/scrape.sh && sudo chmod u+x /usr/bin/scrape.sh
-        echo "5 * * * * $USER /bin/bash /usr/bin/scrape.sh > /var/safenode-manager/scrape.log" | sudo tee /etc/cron.d/scrape
-        clear
-        echo "autoscraping to client wallet is now enabled"
-        echo "scraping starts at 5 min past the hour"
-        echo "to view progress of scraping tail -f /var/safenode-manager/scrape.log"
-        echo "sleep 10 please wait "
-        echo
-        sleep 10
-    else
-        # Set new owner for nodes
-        sudo sed -i 's/--owner DiscordUserName/--owner '$Discord_Username'/g' /usr/bin/anms.sh
-    fi
+
+    # Set new owner for nodes
+    sudo sed -i 's/--owner DiscordUserName/--owner '$Discord_Username'/g' /usr/bin/anms.sh
 
     ### set rewards address
     RewardsAddress=$(whiptail --title "ETH Rewards Adress" --inputbox "\nEnter ETH Rewards Adress" 8 40 "0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93" 3>&1 1>&2 2>&3)
