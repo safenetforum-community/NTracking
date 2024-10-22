@@ -146,7 +146,7 @@ Description=$node_name
 [Service]
 User=safe
 ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $RewardsAddress --log-output-dest /var/log/safenode/$node_name --max-log-files 1 --max-archived-log-files 1 evm-arbitrum-sepolia
-Restart=on-failure
+Restart=always
 EOF
 
     echo "service file created at /etc/systemd/system/"$node_name".service"
