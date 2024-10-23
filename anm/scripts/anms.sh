@@ -19,7 +19,7 @@ export PATH=$PATH:$HOME/.local/bin
 source ~/.config/safe/env
 
 NodePath=$(which safenode)
-LatestNodeVer=$($NodePath -V | awk '{print $3}')
+LatestNodeVer=$($NodePath --version | awk 'NR==1 {print $3}' | cut -c2-)
 
 # declare or load array from file
 declare -A node_details_store
@@ -123,7 +123,7 @@ StartNode() {
     sleep 30
     status="$(sudo systemctl status $node_name.service --no-page)"
     PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
+    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "$node_name Started"
     sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
     echo "reset node start timer" && echo
@@ -265,7 +265,7 @@ UpgradeNode() {
     sleep 5
     status="$(sudo systemctl status $node_name.service --no-page)"
     PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
+    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "updated array"
     sed -i 's/CounterUpgrade=.*/CounterUpgrade='$DelayUpgrade'/g' /var/safenode-manager/counters
     echo "reset node upgrade timer" && echo
@@ -279,7 +279,7 @@ StoppedUpgrade() {
     sudo cp $NodePath /var/safenode-manager/services/$node_name
     echo "cp $NodePath /var/safenode-manager/services/$node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
-    node_details_store[$node_number]="$node_name,$PIS,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),STOPPED"
+    node_details_store[$node_number]="$node_name,$PIS,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),STOPPED"
     echo "updated array" && echo
 }
 
@@ -446,7 +446,7 @@ ShunnGun() {
         sleep 30
         status="$(sudo systemctl status $node_name.service --no-page)"
         PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode -V | awk '{print $3}'),RUNNING"
+        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
         echo "$node_name Started"
         sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
         echo "reset node start timer" && echo
