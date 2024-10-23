@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ClientVersion="--version 0.95.3"
+ClientVersion="--version 0.2.0"
 NodeVersion="--version 0.112.0"
 
 #run with
@@ -103,6 +103,9 @@ elif [[ "$SELECTION" == "6" ]]; then
 
     #disable swap
     sudo swapoff -a
+
+    # install safeup
+    curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
 
     #update node and client
     safeup client $ClientVersion
