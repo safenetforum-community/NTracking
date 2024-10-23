@@ -54,3 +54,12 @@
 
 rm -rf $HOME/.local/share/safe/
 rm -rf $HOME/.local/share/wallets
+
+safePath=$(which safe)
+sudo rm $safePath
+
+safePath=$(which safe)
+sudo rm $safePath
+
+safePath=$(which safe)
+sudo rm $safePath
