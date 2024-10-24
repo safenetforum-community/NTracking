@@ -51,7 +51,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
         shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==1 {print $2}')
         bad_peers=$(echo "$node_details" | grep sn_networking_bad_peers_count_total | awk 'NR==1 {print $2}')
-        rewards_balance=$(echo "$node_details" | grep sn_node_total_forwarded_rewards | awk 'NR==3 {print $2}')
+        rewards_balance=$(echo "$node_details" | grep sn_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
         connected_peers=$(echo "$node_details" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
