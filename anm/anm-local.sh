@@ -113,7 +113,7 @@ elif [[ "$SELECTION" == "7" ]]; then
     sudo swapoff -a
 
     # install safeup
-    curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
+    curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
 
     #update node and client
     safeup client $ClientVersion

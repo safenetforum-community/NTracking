@@ -52,8 +52,11 @@
 #sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=95/" /var/safenode-manager/config
 
 
-rm -rf $HOME/.local/share/safe/
-rm -rf $HOME/.local/share/wallets
+#rm -rf $HOME/.local/share/safe/
+#rm -rf $HOME/.local/share/wallets
+
+#safePath=$(which safe)
+#sudo rm $safePath
 
 safePath=$(which safe)
 sudo rm $safePath
@@ -61,5 +64,4 @@ sudo rm $safePath
 safePath=$(which safe)
 sudo rm $safePath
 
-safePath=$(which safe)
-sudo rm $safePath
+curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
