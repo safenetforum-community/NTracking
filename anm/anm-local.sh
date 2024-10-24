@@ -51,7 +51,7 @@ elif [[ "$SELECTION" == "2" ]]; then
 
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "3" ]]; then
-vdash --glob-path "/var/log/safenode/safenode*/safenode.log"
+    vdash --glob-path "/var/log/safenode/safenode*/safenode.log"
 
 ################################################################################################################ change node count
 elif [[ "$SELECTION" == "4" ]]; then
@@ -62,8 +62,11 @@ elif [[ "$SELECTION" == "4" ]]; then
         exit 0
     fi
 
+    # load values from config
+    . /var/safenode-manager/config
+
     ### set nodecount
-    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)
+    NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "$NodeCap" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
         exit 0
     fi
