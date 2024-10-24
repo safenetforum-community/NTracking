@@ -22,11 +22,12 @@ SELECTION=$(whiptail --title "aatonnomicc node manager v 2.0" --radiolist \
     "                 ANM Local options                              " 20 70 10 \
     "1" "Exit" ON \
     "2" "View log" OFF \
-    "3" "Change node Count" OFF \
-    "4" "Upgrade nodes" OFF \
-    "5" "NTracking Upgrade" OFF \
-    "6" "Start nodes" OFF \
-    "7" "Stop nodes                          " OFF 3>&1 1>&2 2>&3)
+    "3" "Start Vdash" OFF \
+    "4" "Change node Count" OFF \
+    "5" "Upgrade nodes" OFF \
+    "6" "NTracking Upgrade" OFF \
+    "7" "Start nodes" OFF \
+    "8" "Stop nodes                          " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -48,8 +49,12 @@ elif [[ "$SELECTION" == "2" ]]; then
 
     clear && tail -f /var/safenode-manager/log
 
-################################################################################################################ change node count
+######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "3" ]]; then
+vdash --glob-path "/var/log/safenode/safenode*/safenode.log"
+
+################################################################################################################ change node count
+elif [[ "$SELECTION" == "4" ]]; then
 
     if [[ ! -f "/var/safenode-manager/config" ]]; then
         clear
@@ -67,7 +72,7 @@ elif [[ "$SELECTION" == "3" ]]; then
     sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=$NodeCount/" /var/safenode-manager/config
 
 ######################################################################################################################## upgrade nodes
-elif [[ "$SELECTION" == "4" ]]; then
+elif [[ "$SELECTION" == "5" ]]; then
 
     if [[ ! -f "/var/safenode-manager/config" ]]; then
         clear
@@ -82,13 +87,13 @@ elif [[ "$SELECTION" == "4" ]]; then
     safeup client $ClientVersion
 
 ######################################################################################################################## NTracking upgrade
-elif [[ "$SELECTION" == "5" ]]; then
+elif [[ "$SELECTION" == "6" ]]; then
 
     sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
     echo "*/10 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
 ######################################################################################################################## Start nodes
-elif [[ "$SELECTION" == "6" ]]; then
+elif [[ "$SELECTION" == "7" ]]; then
 
     #clear && echo && echo
     #echo "not updated for new release yet"
@@ -192,7 +197,7 @@ elif [[ "$SELECTION" == "6" ]]; then
     tail -f /var/safenode-manager/log
 
 ######################################################################################################################## Stop nodes
-elif [[ "$SELECTION" == "7" ]]; then
+elif [[ "$SELECTION" == "8" ]]; then
 
     rm /var/safenode-manager/config
     clear
