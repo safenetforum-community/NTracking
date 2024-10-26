@@ -129,7 +129,7 @@ network_size=$(echo "$total_network_size / $total_nodes_running" | bc)
 latency=$(ping -c 4 8.8.8.8 | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
 
 if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
-
+geko_time=1
 ##############################################################################################
 # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
 # https://www.coingecko.com/api/documentation
@@ -163,7 +163,9 @@ done
 
 echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
 echo "nodes_totals total_disk="$total_disk"i $influx_time"
-echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
-echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
 echo "nodes_network size="$network_size"i $influx_time"
 echo "nodes latency=$latency $influx_time"
+if [[ $geko_time == 1 ]]; then
+echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
+echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
+fi
