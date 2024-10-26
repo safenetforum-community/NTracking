@@ -4801,7 +4801,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -15m, stop: v.timeRangeStop)\r\n|> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"h01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\" or r[\"_field\"] == \"store_cost\" or r[\"_field\"] == \"status\" or r[\"_field\"] == \"shunned_count\" or r[\"_field\"] == \"rewards\" or r[\"_field\"] == \"records\" or r[\"_field\"] == \"puts\" or r[\"_field\"] == \"networ_size\" or r[\"_field\"] == \"mem\" or r[\"_field\"] == \"gets\" or r[\"_field\"] == \"cpu\" or r[\"_field\"] == \"connected_peers\" or r[\"_field\"] == \"bad_peers\" or r[\"_field\"] == \"PeerId\" or r[\"_field\"] == \"live_time\" or r[\"_field\"] == \"rel_records\")\r\n  |> drop(columns: [\"_start\", \"_stop\", \"host\", \"result\", \"table\", \"_path\", \"_measurement\", \"path\", \"latency\"])\r\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\r\n  |> group()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -15m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\" or r[\"_field\"] == \"store_cost\" or r[\"_field\"] == \"status\" or r[\"_field\"] == \"shunned_count\" or r[\"_field\"] == \"rewards\" or r[\"_field\"] == \"records\" or r[\"_field\"] == \"puts\" or r[\"_field\"] == \"networ_size\" or r[\"_field\"] == \"mem\" or r[\"_field\"] == \"gets\" or r[\"_field\"] == \"cpu\" or r[\"_field\"] == \"connected_peers\" or r[\"_field\"] == \"bad_peers\" or r[\"_field\"] == \"PeerId\" or r[\"_field\"] == \"live_time\" or r[\"_field\"] == \"rel_records\")\r\n  |> drop(columns: [\"_start\", \"_stop\", \"host\", \"result\", \"table\", \"_path\", \"_measurement\", \"path\", \"latency\"])\r\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\r\n  |> group()",
           "refId": "A"
         }
       ],
@@ -5025,7 +5025,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -5056,6 +5056,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 37,
+  "version": 38,
   "weekStart": ""
 }
