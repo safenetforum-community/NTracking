@@ -986,7 +986,6 @@
               "mode": "off"
             }
           },
-          "decimals": 9,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1035,7 +1034,7 @@
           "refId": "A"
         }
       ],
-      "title": "Host earnings in SNT",
+      "title": "Host earnings in Atto's",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -4764,6 +4763,18 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Up time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
           }
         ]
       },
@@ -5057,6 +5068,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 42,
+  "version": 44,
   "weekStart": ""
 }
