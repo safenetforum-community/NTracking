@@ -4775,6 +4775,18 @@
                 "value": "s"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PeerID"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
           }
         ]
       },
@@ -5070,6 +5082,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 48,
+  "version": 49,
   "weekStart": ""
 }
