@@ -56,6 +56,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
+        up_time=$(echo "$node_details" | grep sn_node_uptime | awk 'NR==3 {print $2}')
         live_time=$(echo "$node_details" | grep sn_networking_live_time | awk 'NR==3 {print $2}')
         rel_records=$(echo "$node_details" | grep sn_networking_relevant_records | awk 'NR==3 {print $2}')
         
@@ -113,7 +114,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     fi
 
     # Format for InfluxDB
-    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,live_time="$live_time"i,rel_records="$rel_records"i $influx_time"
+    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,live_time="$live_time"i,up_time="$up_time"i,rel_records="$rel_records"i $influx_time"
     #sleep to slow script down to spread out cpu spike
 
     #rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc)
