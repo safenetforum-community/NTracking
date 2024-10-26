@@ -44,7 +44,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
 
     if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
-        status="Running"
+        status="\"Running\""
         mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
         cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
         records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
@@ -80,7 +80,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
 
     else
         total_nodes_killed=$(($total_nodes_killed + 1))
-        status="Stopped"
+        status="\"Stopped\""
         mem_used=0
         cpu_usage=0
         records=0
@@ -113,7 +113,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     fi
 
     # Format for InfluxDB
-    node_details_str[$i]="nodes,id=$node_name PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,live_time="$live_time"i,rel_records="$rel_records"i $influx_time"
+    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards=$rewards_balance,store_cost="$store_cost"i,cpu="$cpu_usage"i,mem="$mem_used"i,puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,live_time="$live_time"i,rel_records="$rel_records"i $influx_time"
     #sleep to slow script down to spread out cpu spike
 
     #rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc)
