@@ -1,6 +1,6 @@
 # NTracking Dashboard
 
-![image](https://github.com/safenetforum-community/NTracking/assets/25412853/3eb93d09-a2aa-431a-a442-247b41acba33)
+![Grafana](https://github.com/user-attachments/assets/6127bc55-51e3-4c73-bd84-f35b53d33161)
 
 
 # usage
