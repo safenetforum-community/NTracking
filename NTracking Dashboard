@@ -114,12 +114,14 @@
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 3,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -127,7 +129,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "sishort"
         },
         "overrides": []
       },
@@ -162,11 +164,11 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> map(fn: (r) => ({r with _value: r._value / 1000000000000000000.0}))\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Total Rewards in Atto's",
+      "title": "Total Rewards in ANT",
       "transformations": [
         {
           "id": "calculateField",
@@ -196,7 +198,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -274,7 +277,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -351,7 +355,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -428,7 +433,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -570,7 +576,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -647,7 +654,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -726,7 +734,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -1121,10 +1130,134 @@
         "overrides": []
       },
       "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 65125,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "  from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_totals\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"rewards\")\r\n  |> filter(fn: (r) => r.host == \"h01\" or r.host == \"h02\" or r.host == \"h03\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Host race in Atto's",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*(\\{[^}]*\\}).*",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*(host=\"[A-Za-z0-9-]+\").*",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*(\".*\").*",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "\"([A-Za-z0-9]+)\"",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 48
       },
       "id": 65116,
       "options": {
@@ -1248,7 +1381,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 48
       },
       "id": 65118,
       "options": {
@@ -1317,7 +1450,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 56
       },
       "id": 65058,
       "panels": [],
@@ -1365,7 +1498,7 @@
         "h": 3,
         "w": 1,
         "x": 0,
-        "y": 47
+        "y": 57
       },
       "id": 65078,
       "maxDataPoints": 100,
@@ -1471,7 +1604,7 @@
         "h": 3,
         "w": 1,
         "x": 1,
-        "y": 47
+        "y": 57
       },
       "id": 65085,
       "maxDataPoints": 100,
@@ -1579,7 +1712,7 @@
         "h": 7,
         "w": 2,
         "x": 2,
-        "y": 47
+        "y": 57
       },
       "id": 65082,
       "maxDataPoints": 100,
@@ -1685,7 +1818,7 @@
         "h": 7,
         "w": 2,
         "x": 4,
-        "y": 47
+        "y": 57
       },
       "id": 65122,
       "maxDataPoints": 100,
@@ -1791,7 +1924,7 @@
         "h": 7,
         "w": 2,
         "x": 6,
-        "y": 47
+        "y": 57
       },
       "id": 65083,
       "maxDataPoints": 100,
@@ -1897,7 +2030,7 @@
         "h": 7,
         "w": 2,
         "x": 8,
-        "y": 47
+        "y": 57
       },
       "id": 65079,
       "maxDataPoints": 100,
@@ -2007,7 +2140,7 @@
         "h": 7,
         "w": 3,
         "x": 10,
-        "y": 47
+        "y": 57
       },
       "id": 65120,
       "maxDataPoints": 100,
@@ -2106,7 +2239,7 @@
         "h": 7,
         "w": 2,
         "x": 13,
-        "y": 47
+        "y": 57
       },
       "id": 65092,
       "options": {
@@ -2184,7 +2317,7 @@
         "h": 7,
         "w": 2,
         "x": 15,
-        "y": 47
+        "y": 57
       },
       "id": 65094,
       "options": {
@@ -2257,7 +2390,7 @@
         "h": 7,
         "w": 2,
         "x": 17,
-        "y": 47
+        "y": 57
       },
       "id": 65119,
       "options": {
@@ -2316,7 +2449,7 @@
         "h": 7,
         "w": 2,
         "x": 19,
-        "y": 47
+        "y": 57
       },
       "id": 65117,
       "options": {
@@ -2386,7 +2519,7 @@
         "h": 7,
         "w": 1,
         "x": 21,
-        "y": 47
+        "y": 57
       },
       "id": 65103,
       "options": {
@@ -2451,7 +2584,7 @@
         "h": 7,
         "w": 1,
         "x": 22,
-        "y": 47
+        "y": 57
       },
       "id": 65106,
       "options": {
@@ -2516,7 +2649,7 @@
         "h": 7,
         "w": 1,
         "x": 23,
-        "y": 47
+        "y": 57
       },
       "id": 65091,
       "options": {
@@ -2582,7 +2715,7 @@
         "h": 4,
         "w": 1,
         "x": 0,
-        "y": 50
+        "y": 60
       },
       "id": 65081,
       "maxDataPoints": 100,
@@ -2688,7 +2821,7 @@
         "h": 4,
         "w": 1,
         "x": 1,
-        "y": 50
+        "y": 60
       },
       "id": 65086,
       "maxDataPoints": 100,
@@ -2796,7 +2929,7 @@
         "h": 8,
         "w": 2,
         "x": 0,
-        "y": 54
+        "y": 64
       },
       "id": 65087,
       "maxDataPoints": 100,
@@ -2900,7 +3033,7 @@
         "h": 8,
         "w": 3,
         "x": 2,
-        "y": 54
+        "y": 64
       },
       "id": 65080,
       "maxDataPoints": 100,
@@ -3006,7 +3139,7 @@
         "h": 8,
         "w": 3,
         "x": 5,
-        "y": 54
+        "y": 64
       },
       "id": 65084,
       "maxDataPoints": 100,
@@ -3140,7 +3273,7 @@
         "h": 8,
         "w": 3,
         "x": 8,
-        "y": 54
+        "y": 64
       },
       "id": 28239,
       "interval": "$inter",
@@ -3279,7 +3412,7 @@
         "h": 8,
         "w": 13,
         "x": 11,
-        "y": 54
+        "y": 64
       },
       "id": 42026,
       "interval": "$inter",
@@ -3481,7 +3614,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 62
+        "y": 72
       },
       "id": 54694,
       "interval": "$inter",
@@ -3644,7 +3777,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 62
+        "y": 72
       },
       "id": 12054,
       "interval": "$inter",
@@ -3809,7 +3942,7 @@
         "h": 10,
         "w": 5,
         "x": 12,
-        "y": 62
+        "y": 72
       },
       "id": 52240,
       "interval": "$inter",
@@ -3955,7 +4088,7 @@
         "h": 10,
         "w": 7,
         "x": 17,
-        "y": 62
+        "y": 72
       },
       "id": 13782,
       "interval": "$inter",
@@ -4155,7 +4288,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 72
+        "y": 82
       },
       "id": 56720,
       "interval": "$inter",
@@ -4355,7 +4488,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 72
+        "y": 82
       },
       "id": 60200,
       "interval": "$inter",
@@ -4555,7 +4688,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 90
       },
       "id": 65113,
       "options": {
@@ -4786,7 +4919,7 @@
         "h": 25,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 99
       },
       "id": 65124,
       "options": {
@@ -5043,7 +5176,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -5074,6 +5207,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 50,
+  "version": 58,
   "weekStart": ""
 }
