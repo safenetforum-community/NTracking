@@ -67,9 +67,9 @@ elif [[ "$SELECTION" == "2" ]]; then
         exit 0
     fi
 
-    #NodeCountChange='sleep 120 && sed -i "s/^\\(NodeCap=\\).*/\\NodeCap='$NodeCount'/" /var/safenode-manager/config '
+    NodeCountChange='sleep 120 && sed -i "s/^\\(NodeCap=\\).*/\\NodeCap='$NodeCount'/" /var/safenode-manager/config '
     #NodeCountChange='sleep 120 && sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove='$NodeCount'/" /var/safenode-manager/config '
-    NodeCountChange='sleep 120 && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed='$NodeCount'/" /var/safenode-manager/config '
+    #NodeCountChange='sleep 120 && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed='$NodeCount'/" /var/safenode-manager/config '
 
     for machine in $machines; do
         ssh -t $machine ''$NodeCountChange'' >/dev/null 2>&1 &
