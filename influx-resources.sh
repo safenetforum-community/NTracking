@@ -146,6 +146,12 @@ earnings_gbp=$(echo $total_rewards_balance*$exchange_rate_gbp/100000000000000000
 earnings_usd=$(echo $total_rewards_balance*$exchange_rate_usd/1000000000000000000 | bc)
 fi
 
+# get wallet balacnes direct from arbitrum wallet
+attos=$(wget -qO- https://sepolia.arbiscan.io/token/0xbe1802c27c324a28aebcd7eec7d734246c807194?a=yourwalletaddress 2>&1 | grep -oP "[0-9]+.[0-9]+ (ANT)" | awk '{print $1}')
+    if [[ -n "$attos" ]]; then
+    echo "nodes_totals total_attos="$attos" $influx_time"
+    fi
+
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 
