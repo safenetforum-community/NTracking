@@ -59,8 +59,6 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         up_time=$(echo "$node_details" | grep sn_node_uptime | awk 'NR==3 {print $2}')
         live_time=$(echo "$node_details" | grep sn_networking_live_time | awk 'NR==3 {print $2}')
         rel_records=$(echo "$node_details" | grep sn_networking_relevant_records | awk 'NR==3 {print $2}')
-        
-
 
         if [[ -z "$puts" ]]; then
             puts=0
@@ -130,27 +128,27 @@ network_size=$(echo "$total_network_size / $total_nodes_running" | bc)
 latency=$(ping -c 4 8.8.8.8 | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
 
 if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
-geko_time=1
-##############################################################################################
-# coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
-# https://www.coingecko.com/api/documentation
-##############################################################################################
-coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
-exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<<$coingecko)
-market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<<$coingecko)
-exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
-market_cap_usd=$(awk -F'[:}]' '{print $6}' <<<$coingecko)
+    geko_time=1
+    ##############################################################################################
+    # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
+    # https://www.coingecko.com/api/documentation
+    ##############################################################################################
+    coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
+    exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<<$coingecko)
+    market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<<$coingecko)
+    exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
+    market_cap_usd=$(awk -F'[:}]' '{print $6}' <<<$coingecko)
 
-# calculate earnings in usd & gbp
-earnings_gbp=$(echo $total_rewards_balance*$exchange_rate_gbp/1000000000000000000 | bc)
-earnings_usd=$(echo $total_rewards_balance*$exchange_rate_usd/1000000000000000000 | bc)
+    # calculate earnings in usd & gbp
+    earnings_gbp=$(echo $total_rewards_balance*$exchange_rate_gbp/1000000000000000000 | bc)
+    earnings_usd=$(echo $total_rewards_balance*$exchange_rate_usd/1000000000000000000 | bc)
 fi
 
 # get wallet balacnes direct from arbitrum wallet
 attos=$(wget -qO- https://sepolia.arbiscan.io/token/0xbe1802c27c324a28aebcd7eec7d734246c807194?a=yourwalletaddress 2>&1 | grep -oP "[0-9]+.[0-9]+ (ANT)" | awk '{print $1}')
-    if [[ -n "$attos" ]]; then
-    echo "nodes_totals total_attos="$attos" $influx_time"
-    fi
+if [[ -n "$attos" ]]; then
+    walletbalance="nodes_totals total_attos="$attos" $influx_time"
+fi
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
@@ -172,7 +170,8 @@ echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_ru
 echo "nodes_totals total_disk="$total_disk"i $influx_time"
 echo "nodes_network size="$network_size"i $influx_time"
 echo "nodes latency=$latency $influx_time"
+echo "$walletbalance"
 if [[ $geko_time == 1 ]]; then
-echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
-echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
+    echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
+    echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
 fi
