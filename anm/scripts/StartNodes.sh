@@ -6,7 +6,7 @@ ClientVersion="--version 0.1.3"
 NodeVersion="--version 0.112.2"
 
 #export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/
 
 # disable swap
 sudo swapoff -a
