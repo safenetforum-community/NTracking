@@ -5,7 +5,7 @@
 MetricsPortFirst=13001
 
 # Environment  setup
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/cargo
 base_dir="/var/safenode-manager/services"
 
 # Current time for influx database entries
