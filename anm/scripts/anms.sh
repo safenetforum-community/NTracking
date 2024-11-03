@@ -37,8 +37,6 @@ CheckSetUp() {
         sudo useradd -m -p ed5wsejw6S4ifjlwjfSlwj safe
         sudo mkdir -p /var/safenode-manager
         sudo chown -R $USER:$USER /var/safenode-manager
-        mkdir -p /var/safenode-manager/wallets
-        mkdir -p $HOME/.local/share/wallets
         sudo mkdir -p /var/safenode-manager/services /var/log/safenode
         sudo chown -R safe:safe /var/safenode-manager/services /var/log/safenode
         echo "CpuCount=$(echo "$(nproc) / 1" | bc)" >>/var/safenode-manager/system
@@ -228,16 +226,6 @@ StopNode() {
     echo "systemctl stop $node_name"
     sudo ufw delete allow $ntpr$node_number/udp
     echo "closed firewall port $ntpr$node_number/udp"
-
-    # # copy wallet to folder for later scraping
-    # WalletDir=""$(date +%s)"-"$node_name"-Shunn"
-    # mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
-    # cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
-    # sleep 5
-    # sudo rm -rf /var/safenode-manager/services/$node_name/*
-    # sudo cp $NodePath /var/safenode-manager/services/$node_name
-    # echo "cp $NodePath /var/safenode-manager/services/$node_name"
-
     echo "$node_name Stopped" && echo
     echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/safenode-manager/counters
     sed -i 's/CounterStart=.*/CounterStart='$DelayReStart'/g' /var/safenode-manager/counters
