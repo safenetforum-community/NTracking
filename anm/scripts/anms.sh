@@ -229,14 +229,14 @@ StopNode() {
     sudo ufw delete allow $ntpr$node_number/udp
     echo "closed firewall port $ntpr$node_number/udp"
 
-   # # copy wallet to folder for later scraping
-   # WalletDir=""$(date +%s)"-"$node_name"-Shunn"
-   # mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
-   # cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
-   # sleep 5
-   # sudo rm -rf /var/safenode-manager/services/$node_name/*
-   # sudo cp $NodePath /var/safenode-manager/services/$node_name
-   # echo "cp $NodePath /var/safenode-manager/services/$node_name"
+    # # copy wallet to folder for later scraping
+    # WalletDir=""$(date +%s)"-"$node_name"-Shunn"
+    # mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
+    # cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
+    # sleep 5
+    # sudo rm -rf /var/safenode-manager/services/$node_name/*
+    # sudo cp $NodePath /var/safenode-manager/services/$node_name
+    # echo "cp $NodePath /var/safenode-manager/services/$node_name"
 
     echo "$node_name Stopped" && echo
     echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/safenode-manager/counters
@@ -501,10 +501,16 @@ done
 echo
 
 if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $UpgradeMin" | bc))) && (($(echo "$Upgrade == 0" | bc))); then
-    safeup node $NodeVersion && echo
-    echo "upgradeing safe node binary with safeup node $NodeVersion" && echo
     rm /var/safenode-manager/log
     rm /var/safenode-manager/simplelog
+
+    if [[ -f "$HOME/.local/share/anm-control" ]]; then
+        echo "anm control detected" && echo
+        . $HOME/.local/share/anm-control
+    else
+        safeup node $NodeVersion && echo
+        echo "upgradeing safe node binary with safeup node $NodeVersion" && echo
+    fi
 fi
 
 #save node details aray

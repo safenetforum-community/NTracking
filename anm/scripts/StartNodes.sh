@@ -12,11 +12,16 @@ sudo swapoff -a
 #sudo swapon /var/cache/swap/swapfile
 
 # install safeup
-curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
+#curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
 
 # update safe
-safeup client $ClientVersion
-safeup node $NodeVersion
+
+if [[ -f "$HOME/.local/share/anm-control" ]]; then
+    . $HOME/.local/share/anm-control
+else
+    safeup client $ClientVersion
+    safeup node $NodeVersion
+fi
 
 # install / update script
 sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
