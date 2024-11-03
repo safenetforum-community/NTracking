@@ -111,8 +111,9 @@ elif [[ "$SELECTION" == "5" ]]; then
         override=""
         CustomSetings
 
-        ssh -t $machine 'bash <(curl -s '"$Location"'anm/scripts/StartNodes.sh) '$override'' >/dev/null 2>&1 &
-        disown
+        ssh -t $machine 'bash <(curl -s '"$Location"'anm/scripts/StartNodes.sh) '$override''
+        # >/dev/null 2>&1 &
+        #disown
         sleep 1
         echo
         echo "$machine Start nodes request sent"

@@ -5,7 +5,8 @@ Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/mai
 ClientVersion="--version 0.1.3"
 NodeVersion="--version 0.112.2"
 
-export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/cargo
+#export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/
+export PATH=$PATH:$HOME/.local/bin
 
 # disable swap
 sudo swapoff -a
