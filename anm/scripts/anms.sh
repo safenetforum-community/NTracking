@@ -374,7 +374,7 @@ UpGrade() {
 Removal() {
     if (($(echo "$Remove == 1" | bc))); then
         RemoveNode $TotalNodes
-        TotalNodes=$(ls /var/safenode-manager/services | wc -l)
+        CalculateValues
     else
         echo "no removal requiered" && echo
     fi
