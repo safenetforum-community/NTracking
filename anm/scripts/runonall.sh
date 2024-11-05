@@ -58,10 +58,4 @@
 #safePath=$(which safe)
 #sudo rm $safePath
 
-safePath=$(which safe)
-sudo rm $safePath
-
-safePath=$(which safe)
-sudo rm $safePath
-
-curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
+sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/safenode-manager/config
