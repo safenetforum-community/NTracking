@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # edit this to your public wallet address only requiered on one system running nodes
-WalletAdress=YourWalletAddress
+WalletAddress=YourWalletAddress
 
 # sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
@@ -148,7 +148,7 @@ if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
 fi
 
 # get wallet balacnes direct from arbitrum wallet
-attos=$(wget -qO- https://sepolia.arbiscan.io/token/0xbe1802c27c324a28aebcd7eec7d734246c807194?a=$YourWalletAddress 2>&1 | grep -oP "[0-9]+.[0-9]+ (ANT)" | awk '{print $1}')
+attos=$(wget -qO- https://sepolia.arbiscan.io/token/0xbe1802c27c324a28aebcd7eec7d734246c807194?a=$WalletAddress 2>&1 | grep -oP "[0-9]+.[0-9]+ (ANT)" | awk '{print $1}')
 if [[ -n "$attos" ]]; then
     walletbalance="nodes_totals total_attos="$attos" $influx_time"
 fi
