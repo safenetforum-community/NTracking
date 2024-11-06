@@ -450,8 +450,7 @@ CheckSetUp
 . /var/safenode-manager/override
 CalculateValues
 IncrementCounters
-# temp username selection
-. $HOME/username
+. $HOME/.local/share/anm-wallet
 PrintDetails
 UpGrade
 Removal

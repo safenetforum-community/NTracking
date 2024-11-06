@@ -147,13 +147,13 @@ elif [[ "$SELECTION" == "7" ]]; then
     fi
 
     ### discord username
-    Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "DiscordUserName" 3>&1 1>&2 2>&3)
-    if [[ $? -eq 255 ]]; then
-        exit 0
-    fi
-
-    # Set new owner for nodes
-    sudo sed -i 's/--owner DiscordUserName/--owner '$Discord_Username'/g' /usr/bin/anms.sh
+    # Discord_Username=$(whiptail --title "Discord Username" --inputbox "\nEnter Discord Username" 8 40 "DiscordUserName" 3>&1 1>&2 2>&3)
+    # if [[ $? -eq 255 ]]; then
+    #      exit 0
+    #   fi
+    #
+    # # Set new owner for nodes
+    # sudo sed -i 's/--owner DiscordUserName/--owner '$Discord_Username'/g' /usr/bin/anms.sh
 
     ### set rewards address
     RewardsAddress=$(whiptail --title "ETH Rewards Adress" --inputbox "\nEnter ETH Rewards Adress" 8 40 "0x5c69a31F0c03ffc64aC203F6B67Cf9cC7ca93A93" 3>&1 1>&2 2>&3)
