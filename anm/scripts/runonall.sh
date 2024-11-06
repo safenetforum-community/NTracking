@@ -42,7 +42,7 @@
 #sudo rm -rf /home/safe/.local/share/safe
 
 
-sed -i "s/^\\(PGRADEHOUR=\\).*/\\UpgradeHour=18/" /var/safenode-manager/config
+
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/safenode-manager/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
 
@@ -61,3 +61,5 @@ sed -i "s/^\\(PGRADEHOUR=\\).*/\\UpgradeHour=18/" /var/safenode-manager/config
 #sudo rm $safePath
 
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/safenode-manager/config
+
+sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/safenode-manager/config
