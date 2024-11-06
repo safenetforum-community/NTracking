@@ -41,7 +41,7 @@ sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.gi
 
 #sudo rm -rf /home/safe/.local/share/safe
 
-sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/safenode-manager/config
+#sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/safenode-manager/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
 
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/safenode-manager/config
