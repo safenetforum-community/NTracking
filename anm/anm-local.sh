@@ -116,8 +116,11 @@ elif [[ "$SELECTION" == "7" ]]; then
     #curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
 
     #update node and client
+
     if [[ -f "$HOME/.local/share/anm-control" ]]; then
-        . $HOME/.local/share/anm-control
+        #. $HOME/.local/share/anm-control
+        safeup client $ClientVersion
+        safeup node $NodeVersion
     else
         safeup client $ClientVersion
         safeup node $NodeVersion

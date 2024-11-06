@@ -500,8 +500,10 @@ if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $Upgr
     rm /var/safenode-manager/simplelog
 
     if [[ -f "$HOME/.local/share/anm-control" ]]; then
-        echo "anm control detected" && echo
-        . $HOME/.local/share/anm-control
+        #echo "anm control detected" && echo
+        #. $HOME/.local/share/anm-control
+        safeup node $NodeVersion && echo
+        echo "upgradeing safe node binary with safeup node $NodeVersion" && echo
     else
         safeup node $NodeVersion && echo
         echo "upgradeing safe node binary with safeup node $NodeVersion" && echo
