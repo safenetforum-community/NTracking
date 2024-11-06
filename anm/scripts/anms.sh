@@ -251,7 +251,7 @@ UpgradeNode() {
     echo "cp $NodePath /var/safenode-manager/services/$node_name"
     sudo systemctl start $node_name
     echo "systemctl start $node_name"
-    sleep 5
+    sleep 30
     status="$(sudo systemctl status $node_name.service --no-page)"
     PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
