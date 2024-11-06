@@ -22,8 +22,8 @@
 
 #touch $HOME/runonallsystems
 
-sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
-sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
+#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+#sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
 #make swap file
 
@@ -41,6 +41,8 @@ sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.gi
 
 #sudo rm -rf /home/safe/.local/share/safe
 
+
+sed -i "s/^\\(PGRADEHOUR=\\).*/\\UpgradeHour=18/" /var/safenode-manager/config
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/safenode-manager/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
 
