@@ -252,8 +252,10 @@ UpgradeNode() {
     sudo systemctl start $node_name
     echo "systemctl start $node_name"
     sleep 30
-    status="$(sudo systemctl status $node_name.service --no-page)"
-    PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
+    #status="$(sudo systemctl status $node_name.service --no-page)"
+    #PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
+    node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+    PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "updated array"
     sed -i 's/CounterUpgrade=.*/CounterUpgrade='$DelayUpgrade'/g' /var/safenode-manager/counters
