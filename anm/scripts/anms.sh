@@ -488,6 +488,9 @@ done
 
 echo
 
+#save node details aray
+declare -p node_details_store >/var/safenode-manager/NodeDetails
+
 if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $UpgradeMin" | bc))) && (($(echo "$Upgrade == 0" | bc))); then
     rm /var/safenode-manager/log
     rm /var/safenode-manager/simplelog
@@ -501,8 +504,6 @@ if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $Upgr
     fi
 fi
 
-#save node details aray
-declare -p node_details_store >/var/safenode-manager/NodeDetails
 echo
 echo
 echo #########################################################################################################################
