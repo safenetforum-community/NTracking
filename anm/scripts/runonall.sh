@@ -64,10 +64,11 @@
 
 #sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/safenode-manager/config
 
-sudo apt update
+#sudo apt update
+#$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
+#sudo apt install musl musl-dev musl-tools -y
 
-$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
-sudo apt install musl musl-dev musl-tools -y
+sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config
 
 
 
