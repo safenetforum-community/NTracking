@@ -64,5 +64,8 @@
 
 #sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/safenode-manager/config
 
+sudo apt update
+
 $HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
-sudo apt install musl musl-dev 
+sudo apt install musl musl-dev
+sudo apt install musl-tools
