@@ -67,7 +67,7 @@
 sudo apt update
 
 $HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
-sudo apt install musl musl-dev -y
-sudo apt install musl-tools -y
+sudo apt install musl musl-dev musl-tools -y
+
 
 
