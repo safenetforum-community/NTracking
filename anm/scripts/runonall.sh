@@ -68,7 +68,7 @@
 #$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
 #sudo apt install musl musl-dev musl-tools -y
 
-sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config
+sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/safenode-manager/config
 
 
 
