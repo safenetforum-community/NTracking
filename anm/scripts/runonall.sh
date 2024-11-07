@@ -62,4 +62,7 @@
 
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/safenode-manager/config
 
-sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/safenode-manager/config
+#sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/safenode-manager/config
+
+rustup target install x86_64-unknown-linux-musl
+sudo apt install musl musl-dev 
