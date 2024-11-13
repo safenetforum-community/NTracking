@@ -163,7 +163,7 @@ elif [[ "$SELECTION" == "8" ]]; then
 ######################################################################################################################## deploy anm control
 elif [[ "$SELECTION" == "9" ]]; then
 
-    if [[ -f "$HOME/.local/share/anm-control" ]]; then
+    if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
         for machine in $machines; do
             rsync -avz --update $HOME/.local/share/anm-control.sh $machine:$HOME/.local/share/anm-control.sh >/dev/null 2>&1 &
             disown
