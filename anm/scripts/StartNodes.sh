@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+ 
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
 ClientVersion="--version 0.1.5"
