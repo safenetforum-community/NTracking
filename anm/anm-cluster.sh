@@ -150,8 +150,8 @@ elif [[ "$SELECTION" == "8" ]]; then
 
     if [[ -f "$HOME/.local/share/anm-control" ]]; then
         for machine in $machines; do
-        ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && . $HOME/.local/share/anm-control.sh && ' >/dev/null 2>&1 &
-        disown
+            ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && . $HOME/.local/share/anm-control.sh && ' >/dev/null 2>&1 &
+            disown
             echo "$machine anm-control upgrade nodes request sent"
             sleep 2
         done &
@@ -159,8 +159,6 @@ elif [[ "$SELECTION" == "8" ]]; then
     else
         echo "no anm-control detected"
     fi
-
-fi
 
 ######################################################################################################################## deploy anm control
 elif [[ "$SELECTION" == "9" ]]; then
