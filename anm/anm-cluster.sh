@@ -48,7 +48,8 @@ SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist 
     "5" "Start nodes                                   " OFF \
     "6" "Stop nodes                                    " OFF \
     "7" "Run on systems                                " OFF \
-    "8" "Anm-control deploy                            " OFF 3>&1 1>&2 2>&3)
+    "8" "Upgrade nodes                                 " OFF \
+    "9" "Anm-control deploy                            " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -144,12 +145,29 @@ elif [[ "$SELECTION" == "7" ]]; then
     done &
     disown
 
-######################################################################################################################## deploy anm control
+######################################################################################################################## upgrade nodes
 elif [[ "$SELECTION" == "8" ]]; then
 
     if [[ -f "$HOME/.local/share/anm-control" ]]; then
         for machine in $machines; do
-            rsync -avz --update $HOME/.local/share/anm-control $machine:$HOME/.local/share/anm-control >/dev/null 2>&1 &
+        ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && . $HOME/.local/share/anm-control.sh && ' >/dev/null 2>&1 &
+        disown
+            echo "$machine anm-control upgrade nodes request sent"
+            sleep 2
+        done &
+        disown
+    else
+        echo "no anm-control detected"
+    fi
+
+fi
+
+######################################################################################################################## deploy anm control
+elif [[ "$SELECTION" == "9" ]]; then
+
+    if [[ -f "$HOME/.local/share/anm-control" ]]; then
+        for machine in $machines; do
+            rsync -avz --update $HOME/.local/share/anm-control.sh $machine:$HOME/.local/share/anm-control.sh >/dev/null 2>&1 &
             disown
             echo "$machine anm-control deploy request sent"
             sleep 2
