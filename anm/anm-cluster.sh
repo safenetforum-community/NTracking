@@ -149,7 +149,7 @@ elif [[ "$SELECTION" == "7" ]]; then
 elif [[ "$SELECTION" == "8" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && . $HOME/.local/share/anm-control.sh ' >/dev/null 2>&1 &
+        ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && bash < $HOME/.local/share/anm-control.sh ' >/dev/null 2>&1 &
         disown
         echo "$machine anm-control upgrade nodes request sent"
         sleep 2
