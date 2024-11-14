@@ -249,6 +249,9 @@ UpgradeNode() {
     echo "upgradeing $node_name"
     sudo systemctl stop $node_name
     echo "systemctl stop $node_name"
+    # remove old node data on upgrade
+    sudo rm -rf /var/safenode-manager/services/$node_name/*
+    echo "rm -rf /var/safenode-manager/services/$node_name/*"
     sudo cp $NodePath /var/safenode-manager/services/$node_name
     echo "cp $NodePath /var/safenode-manager/services/$node_name"
     sudo systemctl start $node_name
@@ -269,6 +272,9 @@ StoppedUpgrade() {
     node_name=safenode$node_number
     echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/safenode-manager/simplelog
     echo "upgradeing $node_name"
+        # remove old node data on upgrade
+    sudo rm -rf /var/safenode-manager/services/$node_name/*
+    echo "rm -rf /var/safenode-manager/services/$node_name/*"
     sudo cp $NodePath /var/safenode-manager/services/$node_name
     echo "cp $NodePath /var/safenode-manager/services/$node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
