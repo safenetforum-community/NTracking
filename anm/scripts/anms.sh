@@ -272,7 +272,7 @@ StoppedUpgrade() {
     node_name=safenode$node_number
     echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/safenode-manager/simplelog
     echo "upgradeing $node_name"
-        # remove old node data on upgrade
+    # remove old node data on upgrade
     sudo rm -rf /var/safenode-manager/services/$node_name/*
     echo "rm -rf /var/safenode-manager/services/$node_name/*"
     sudo cp $NodePath /var/safenode-manager/services/$node_name
@@ -362,6 +362,12 @@ PrintDetails() {
 }
 
 UpGrade() {
+    # block upgrade if system under heavy load
+    if (($(echo "$LoadAllow != 1" | bc))); then
+        echo ""$time_hour":"$time_min" Upgrade blocked heavy load" >>/var/safenode-manager/simplelog
+        return 0
+    fi
+
     if (($(echo "$Upgrade == 1" | bc))); then
         if (($(echo "$NextToUpgrade <= $RunningNodes" | bc))); then
             echo "upgrade running safenode$NextToUpgrade" && echo
