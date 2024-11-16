@@ -54,9 +54,9 @@ CheckSetUp() {
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/safenode-manager/config
         echo "DesiredLoadAverage=$(echo "$(nproc) * 0.6" | bc)" >>/var/safenode-manager/config
         echo >>/var/safenode-manager/config
-        echo "CpuLessThan=40" >>/var/safenode-manager/config
-        echo "MemLessThan=80" >>/var/safenode-manager/config
-        echo "HDLessThan=60" >>/var/safenode-manager/config
+        echo "CpuLessThan=50" >>/var/safenode-manager/config
+        echo "MemLessThan=70" >>/var/safenode-manager/config
+        echo "HDLessThan=70" >>/var/safenode-manager/config
         echo "CpuRemove=45" >>/var/safenode-manager/config
         echo "MemRemove=90" >>/var/safenode-manager/config
         echo "HDRemove=90" >>/var/safenode-manager/config
