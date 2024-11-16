@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-vtrack="1.2"
+vtrack="1.3"
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
@@ -27,6 +27,15 @@ declare -A node_details_store
 
 CheckSetUp() {
     if [[ -f "/var/safenode-manager/system" ]]; then
+        # block script from running if previous iteration is still running
+        if [[ -f "/var/safenode-manager/block" ]]; then
+            echo "script already running exiting !!" && echo
+            echo ""$time_hour":"$time_min" script already running exiting !!" >>/var/safenode-manager/simplelog
+            exit 0
+        else
+            # create blocking file
+            touch /var/safenode-manager/block
+        fi
         echo "existing install found loading info" && echo
         . /var/safenode-manager/system
         . /var/safenode-manager/counters
@@ -526,3 +535,6 @@ fi
 echo
 echo
 echo #########################################################################################################################
+
+# remove block file
+rm /var/safenode-manager/block
