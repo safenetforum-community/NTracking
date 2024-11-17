@@ -371,13 +371,13 @@ PrintDetails() {
 }
 
 UpGrade() {
-    # block upgrade if system under heavy load
-    if (($(echo "$LoadAllow != 1" | bc))); then
-        echo ""$time_hour":"$time_min" Upgrade blocked heavy load" >>/var/safenode-manager/simplelog
-        return 0
-    fi
 
     if (($(echo "$Upgrade == 1" | bc))); then
+        # block upgrade if system under heavy load
+        if (($(echo "$LoadAllow != 1" | bc))); then
+            echo ""$time_hour":"$time_min" Upgrade blocked heavy load" >>/var/safenode-manager/simplelog
+            return 0
+        fi
         if (($(echo "$NextToUpgrade <= $RunningNodes" | bc))); then
             echo "upgrade running safenode$NextToUpgrade" && echo
             UpgradeNode $NextToUpgrade
