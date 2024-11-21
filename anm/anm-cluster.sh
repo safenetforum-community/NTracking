@@ -43,7 +43,7 @@ SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist 
     "                 ANM Cluster options                              " 20 70 10 \
     "1" "Exit                                          " ON \
     "2" "Change node count                             " OFF \
-    "3" "Upgrade nodes                                 " OFF \
+    "3" "Upgrade nodes safeup                          " OFF \
     "4" "NTracking upgrade                             " OFF \
     "5" "Start nodes                                   " OFF \
     "6" "Stop nodes                                    " OFF \
