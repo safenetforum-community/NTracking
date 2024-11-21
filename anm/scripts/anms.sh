@@ -520,7 +520,7 @@ if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $Upgr
     rm /var/safenode-manager/log
     rm /var/safenode-manager/simplelog
 
-    if [[ -f "$HOME/.local/share/anm-control" ]]; then
+    if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
         #echo "anm control detected" && echo
         #. $HOME/.local/share/anm-control
         #safeup node $NodeVersion && echo
