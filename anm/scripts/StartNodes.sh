@@ -19,7 +19,8 @@ sudo swapoff -a
 
 # update safe
 
-if [[ -f "$HOME/.local/share/anm-control" ]]; then
+if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
+    chmod u+x $HOME/.local/share/anm-control.sh
     . $HOME/.local/share/anm-control.sh
     #safeup client $ClientVersion
     #safeup node $NodeVersion
