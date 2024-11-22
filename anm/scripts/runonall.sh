@@ -50,8 +50,8 @@
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=9.4/" /var/safenode-manager/config
 
 
-sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=85/" /var/safenode-manager/config
-#sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=95/" /var/safenode-manager/config
+sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
+sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
 
 
 #rm -rf $HOME/.local/share/safe/
