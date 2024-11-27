@@ -22,7 +22,7 @@
 
 #touch $HOME/runonallsystems
 
-#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 #sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
 #make swap file
@@ -68,7 +68,7 @@
 #$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
 #sudo apt install musl musl-dev musl-tools -y
 
-sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config
-sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/safenode-manager/config
+#sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config
+#sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/safenode-manager/config
 
 #rm $HOME/.local/share/anm-wallet
