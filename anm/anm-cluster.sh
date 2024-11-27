@@ -49,7 +49,8 @@ SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist 
     "6" "Stop nodes                                    " OFF \
     "7" "Run on systems                                " OFF \
     "8" "Upgrade nodes                                 " OFF \
-    "9" "Anm-control deploy                            " OFF 3>&1 1>&2 2>&3)
+    "9" "Rolling restart                               " OFF \
+    "10" "Anm-control deploy                            " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -144,8 +145,7 @@ elif [[ "$SELECTION" == "7" ]]; then
         echo "$machine Run on all machines request sent"
     done &
     disown
-
-######################################################################################################################## upgrade nodes 
+######################################################################################################################## upgrade nodes
 elif [[ "$SELECTION" == "8" ]]; then
 
     for machine in $machines; do
@@ -156,8 +156,19 @@ elif [[ "$SELECTION" == "8" ]]; then
     done &
     disown
 
-######################################################################################################################## deploy anm control
+######################################################################################################################## Rolling restart
 elif [[ "$SELECTION" == "9" ]]; then
+
+    for machine in $machines; do
+        ssh -t $machine 'while [[ -f "/var/safenode-manager/block" ]]; do sleep 1; done && sed -i 's/0.112.5/0.112.4/g' /var/safenode-manager/NodeDetails' >/dev/null 2>&1 &
+        disown
+        echo "$machine Rolling restart request sent"
+        sleep 2
+    done &
+    disown
+
+######################################################################################################################## deploy anm control
+elif [[ "$SELECTION" == "10" ]]; then
 
     if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
         for machine in $machines; do
