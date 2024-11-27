@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-vtrack="1.3"
+vtrack="1.4"
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
