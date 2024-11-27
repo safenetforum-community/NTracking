@@ -50,8 +50,8 @@
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=9.4/" /var/safenode-manager/config
 
 
-sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
-sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
+#sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
+#sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
 
 
 #rm -rf $HOME/.local/share/safe/
@@ -68,7 +68,7 @@ sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
 #$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
 #sudo apt install musl musl-dev musl-tools -y
 
-#sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/safenode-manager/config
-
+sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config
+sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/safenode-manager/config
 
 #rm $HOME/.local/share/anm-wallet
