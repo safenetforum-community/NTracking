@@ -10,6 +10,8 @@ export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/:/usr/bin/
 
 # disable swap
 sudo swapoff -a
+# set performance
+sudo cpupower frequency-set --governor performance
 
 # enable swap file
 #sudo swapon /var/cache/swap/swapfile
