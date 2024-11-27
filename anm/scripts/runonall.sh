@@ -9,9 +9,9 @@
 #rm /var/safenode-manager/config
 #fi
 
-sudo apt install linux-tools-generic -y
+#sudo apt install linux-tools-generic -y
 # cpupower -c all frequency-info | grep gov ; cpupower frequency-info
-sudo cpupower frequency-set --governor performance
+#sudo cpupower frequency-set --governor performance
 
 #sudo swapoff -a
 
@@ -54,8 +54,8 @@ sudo cpupower frequency-set --governor performance
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=9.4/" /var/safenode-manager/config
 
 
-#sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
-#sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
+sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
+sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
 
 
 #rm -rf $HOME/.local/share/safe/
@@ -72,7 +72,7 @@ sudo cpupower frequency-set --governor performance
 #$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
 #sudo apt install musl musl-dev musl-tools -y
 
-#sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config
-#sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/safenode-manager/config
+sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/safenode-manager/config
+sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=5/" /var/safenode-manager/config
 
 #rm $HOME/.local/share/anm-wallet
