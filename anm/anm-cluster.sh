@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ClientVersion="--version 0.1.5"
-NodeVersion="--version 0.112.5"
+NodeVersion="--version 0.112.6"
 
 export PATH=$PATH:$HOME/.local/bin
 
@@ -160,7 +160,7 @@ elif [[ "$SELECTION" == "8" ]]; then
 elif [[ "$SELECTION" == "9" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'while [[ -f "/var/safenode-manager/block" ]]; do sleep 1; done && sed -i 's/0.112.5/0.112.4/g' /var/safenode-manager/NodeDetails' >/dev/null 2>&1 &
+        ssh -t $machine 'while [[ -f "/var/safenode-manager/block" ]]; do sleep 1; done && sed -i 's/0.112.4/0.112.5/g' /var/safenode-manager/NodeDetails' >/dev/null 2>&1 &
         disown
         echo "$machine Rolling restart request sent"
         sleep 2
