@@ -50,8 +50,8 @@
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/safenode-manager/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
 
-sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=18.0/" /var/safenode-manager/config
-sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=13.0/" /var/safenode-manager/config
+sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/safenode-manager/config
+sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/safenode-manager/config
 
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
