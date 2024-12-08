@@ -2,6 +2,10 @@
 
 vtrack="1.4"
 
+#Data path: /var/antctl/services/antnode1
+#Log path: /var/log/antnode/antnode1
+#Bin path: /var/antctl/services/antnode1/antnode
+
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
 time_min=$(date +"%M")
