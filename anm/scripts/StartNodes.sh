@@ -19,11 +19,11 @@ sudo cpupower frequency-set --governor performance
 # install safeup
 #curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
 
-# update safe
+# update antnode
 
 if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
-    safeup node --version 0.112.4
-    rm $HOME/.local/share/anm-control
+#    safeup node --version 0.112.4
+#    rm $HOME/.local/share/anm-control
     chmod u+x $HOME/.local/share/anm-control.sh
     . $HOME/.local/share/anm-control.sh
     #safeup client $ClientVersion
@@ -35,12 +35,12 @@ fi
 
 # install / update script
 sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin "$Location"anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
-echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
+echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/antctl/log" | sudo tee /etc/cron.d/anm
 
 # install NTracking
 sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 echo "*/10 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
 # create manager directory for nodes
-sudo mkdir -p /var/safenode-manager
-sudo chown -R $USER:$USER /var/safenode-manager
+sudo mkdir -p /var/antctl
+sudo chown -R $USER:$USER /var/antctl

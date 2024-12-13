@@ -5,6 +5,10 @@ NodeVersion="--version 0.112.6"
 
 export PATH=$PATH:$HOME/.local/bin
 
+#Data path: /var/antctl/services/antnode1
+#Log path: /var/log/antnode/antnode1
+#Bin path: /var/antctl/services/antnode1/antnode
+
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-cluster.sh)
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
@@ -70,9 +74,9 @@ elif [[ "$SELECTION" == "2" ]]; then
         exit 0
     fi
 
-    NodeCountChange='sleep 120 && sed -i "s/^\\(NodeCap=\\).*/\\NodeCap='$NodeCount'/" /var/safenode-manager/config '
-    #NodeCountChange='sleep 120 && sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove='$NodeCount'/" /var/safenode-manager/config '
-    #NodeCountChange='sleep 120 && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed='$NodeCount'/" /var/safenode-manager/config '
+    NodeCountChange='sleep 120 && sed -i "s/^\\(NodeCap=\\).*/\\NodeCap='$NodeCount'/" /var/antctl/config '
+    #NodeCountChange='sleep 120 && sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove='$NodeCount'/" /var/antctl/config '
+    #NodeCountChange='sleep 120 && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed='$NodeCount'/" /var/antctl/config '
 
     for machine in $machines; do
         ssh -t $machine ''$NodeCountChange'' >/dev/null 2>&1 &
@@ -88,7 +92,7 @@ elif [[ "$SELECTION" == "2" ]]; then
 elif [[ "$SELECTION" == "3" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"'$NodeVersion'\"/" /var/safenode-manager/config && safeup node '$NodeVersion'' >/dev/null 2>&1 &
+        ssh -t $machine 'sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"'$NodeVersion'\"/" /var/antctl/config && safeup node '$NodeVersion'' >/dev/null 2>&1 &
         disown
         echo "$machine Upgrade nodes request sent"
         sleep 2
@@ -126,7 +130,7 @@ elif [[ "$SELECTION" == "5" ]]; then
 elif [[ "$SELECTION" == "6" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'rm /var/safenode-manager/config' >/dev/null 2>&1 &
+        ssh -t $machine 'rm /var/antctl/config' >/dev/null 2>&1 &
         disown
         sleep 1
         echo
@@ -160,7 +164,7 @@ elif [[ "$SELECTION" == "8" ]]; then
 elif [[ "$SELECTION" == "9" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'while [[ -f "/var/safenode-manager/block" ]]; do sleep 1; done && sed -i 's/0.112.6/0.112.5/g' /var/safenode-manager/NodeDetails' >/dev/null 2>&1 &
+        ssh -t $machine 'while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/0.112.6/0.112.5/g' /var/antctl/NodeDetails' >/dev/null 2>&1 &
         disown
         echo "$machine Rolling restart request sent"
         sleep 2
@@ -199,20 +203,20 @@ fi
 #    if [[ "$LoadLevel" == "1" ]]; then
 #        #Low
 #        #max load average
-#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 1.5" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 2.5" | bc)/" /var/safenode-manager/config '
-#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=70/" /var/safenode-manager/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=70/" /var/safenode-manager/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=70/" /var/safenode-manager/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/safenode-manager/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=10/" /var/safenode-manager/config '
+#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 1.5" | bc)/" /var/antctl/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 2.5" | bc)/" /var/antctl/config '
+#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=70/" /var/antctl/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=70/" /var/antctl/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=70/" /var/antctl/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/antctl/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=10/" /var/antctl/config '
 #    elif [[ "$LoadLevel" == "2" ]]; then
 #        #Medium
-#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.0" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/safenode-manager/config '
-#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=80/" /var/safenode-manager/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=80/" /var/safenode-manager/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=80/" /var/safenode-manager/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=4/" /var/safenode-manager/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=5/" /var/safenode-manager/config '
+#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.0" | bc)/" /var/antctl/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/antctl/config '
+#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=80/" /var/antctl/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=80/" /var/antctl/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=80/" /var/antctl/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=4/" /var/antctl/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=5/" /var/antctl/config '
 #    elif [[ "$LoadLevel" == "3" ]]; then
 #        #high
-#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.5" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/safenode-manager/config '
-#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=90/" /var/safenode-manager/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=90/" /var/safenode-manager/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=3/" /var/safenode-manager/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=4/" /var/safenode-manager/config '
+#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 2.5" | bc)/" /var/antctl/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/antctl/config '
+#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=90/" /var/antctl/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=90/" /var/antctl/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=3/" /var/antctl/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=4/" /var/antctl/config '
 #    else
 #        #Extream
-#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/safenode-manager/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 4.0" | bc)/" /var/safenode-manager/config '
-#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=95/" /var/safenode-manager/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=95/" /var/safenode-manager/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=95/" /var/safenode-manager/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/safenode-manager/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=3/" /var/safenode-manager/config '
+#        override='sleep 120 && sed -i "s/^\\(DesiredLoadAverage=\\).*/\\1$(echo "$(nproc) "*" 3.0" | bc)/" /var/antctl/config && sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 4.0" | bc)/" /var/antctl/config '
+#        override='sleep 120 && sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=95/" /var/antctl/config && sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=95/" /var/antctl/config && sed -i "s/^\\(HDLessThan=\\).*/\\HDLessThan=95/" /var/antctl/config && sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=2/" /var/antctl/config && sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=3/" /var/antctl/config '
 #    fi
 #
 #    for machine in $machines; do
