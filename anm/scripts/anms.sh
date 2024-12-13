@@ -27,69 +27,69 @@ LatestNodeVer=$($NodePath --version | awk 'NR==1 {print $3}' | cut -c2-)
 
 # declare or load array from file
 declare -A node_details_store
-. /var/safenode-manager/NodeDetails >/dev/null 2>&1
+. /var/antctl/NodeDetails >/dev/null 2>&1
 
 CheckSetUp() {
-    if [[ -f "/var/safenode-manager/system" ]]; then
+    if [[ -f "/var/antctl/system" ]]; then
         # block script from running if previous iteration is still running
-        if [[ -f "/var/safenode-manager/block" ]]; then
+        if [[ -f "/var/antctl/block" ]]; then
             echo "script already running exiting !!" && echo
-            echo ""$time_hour":"$time_min" script already running exiting !!" >>/var/safenode-manager/simplelog
+            echo ""$time_hour":"$time_min" script already running exiting !!" >>/var/antctl/simplelog
             exit 0
         else
             # create blocking file
-            touch /var/safenode-manager/block
+            touch /var/antctl/block
         fi
         echo "existing install found loading info" && echo
-        . /var/safenode-manager/system
-        . /var/safenode-manager/counters
-        rm /var/safenode-manager/counters
-        . /var/safenode-manager/config
+        . /var/antctl/system
+        . /var/antctl/counters
+        rm /var/antctl/counters
+        . /var/antctl/config
     else
         echo "first install creating folders and info" && echo
-        sudo useradd -m -p ed5wsejw6S4ifjlwjfSlwj safe
-        sudo mkdir -p /var/safenode-manager
-        sudo chown -R $USER:$USER /var/safenode-manager
-        sudo mkdir -p /var/safenode-manager/services /var/log/safenode
-        sudo chown -R safe:safe /var/safenode-manager/services /var/log/safenode
-        echo "CpuCount=$(echo "$(nproc) / 1" | bc)" >>/var/safenode-manager/system
-        . /var/safenode-manager/system
-        echo "CounterStart=0" >>/var/safenode-manager/counters
-        echo "CounterUpgrade=0" >>/var/safenode-manager/counters
-        . /var/safenode-manager/counters
-        rm /var/safenode-manager/counters
-        echo "# edit this file to confrol behavior of the script" >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo 'DiscordUsername="--owner DiscordUserName"' >>/var/safenode-manager/config
-        echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/safenode-manager/config
-        echo "DesiredLoadAverage=$(echo "$(nproc) * 0.6" | bc)" >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo "CpuLessThan=50" >>/var/safenode-manager/config
-        echo "MemLessThan=70" >>/var/safenode-manager/config
-        echo "HDLessThan=70" >>/var/safenode-manager/config
-        echo "CpuRemove=45" >>/var/safenode-manager/config
-        echo "MemRemove=90" >>/var/safenode-manager/config
-        echo "HDRemove=90" >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo "# counters start at this number and upon action happening" >>/var/safenode-manager/config
-        echo "# increment down once every time script runs when zero action is allowed again" >>/var/safenode-manager/config
-        echo "# for systems 24 and over cores there is a seperate value calculate " >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo "DelayStart=5" >>/var/safenode-manager/config
-        echo "DelayReStart=5" >>/var/safenode-manager/config
-        echo "DelayUpgrade=5" >>/var/safenode-manager/config
-        echo "DelayRemove=10" >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo "NodeCap=20" >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo "UpgradeHour=$(shuf -i 0-23 -n 1)" >>/var/safenode-manager/config
-        echo "UpgradeMin=$(shuf -i 0-59 -n 1)" >>/var/safenode-manager/config
-        echo >>/var/safenode-manager/config
-        echo 'NodeVersion="--version '$LatestNodeVer'"' >>/var/safenode-manager/config
-        . /var/safenode-manager/config
+        sudo useradd -m -p ed5wsejw6S4ifjlwjfSlwj ant
+        sudo mkdir -p /var/antctl/
+        sudo chown -R $USER:$USER /var/antctl/
+        sudo mkdir -p /var/antctl/services/ /var/log/antnode/
+        sudo chown -R ant:ant /var/antctl/services/ /var/log/antnode/
+        echo "CpuCount=$(echo "$(nproc) / 1" | bc)" >>/var/antctl/system
+        . /var/antctl/system
+        echo "CounterStart=0" >>/var/antctl/counters
+        echo "CounterUpgrade=0" >>/var/antctl/counters
+        . /var/antctl/counters
+        rm /var/antctl/counters
+        echo "# edit this file to confrol behavior of the script" >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo 'DiscordUsername="--owner DiscordUserName"' >>/var/antctl/config
+        echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/antctl/config
+        echo "DesiredLoadAverage=$(echo "$(nproc) * 0.6" | bc)" >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo "CpuLessThan=50" >>/var/antctl/config
+        echo "MemLessThan=70" >>/var/antctl/config
+        echo "HDLessThan=70" >>/var/antctl/config
+        echo "CpuRemove=45" >>/var/antctl/config
+        echo "MemRemove=90" >>/var/antctl/config
+        echo "HDRemove=90" >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo "# counters start at this number and upon action happening" >>/var/antctl/config
+        echo "# increment down once every time script runs when zero action is allowed again" >>/var/antctl/config
+        echo "# for systems 24 and over cores there is a seperate value calculate " >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo "DelayStart=5" >>/var/antctl/config
+        echo "DelayReStart=5" >>/var/antctl/config
+        echo "DelayUpgrade=5" >>/var/antctl/config
+        echo "DelayRemove=10" >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo "NodeCap=20" >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo "UpgradeHour=$(shuf -i 0-23 -n 1)" >>/var/antctl/config
+        echo "UpgradeMin=$(shuf -i 0-59 -n 1)" >>/var/antctl/config
+        echo >>/var/antctl/config
+        echo 'NodeVersion="--version '$LatestNodeVer'"' >>/var/antctl/config
+        . /var/antctl/config
     fi
 }
 
@@ -107,7 +107,7 @@ StartNode() {
         return 0
     fi
 
-    if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
+    if [[ -f "/var/antctl/MaxShunnedNode" ]]; then
         echo "Shuun gun" && echo
         ShunnGun
         return 0
@@ -124,8 +124,8 @@ StartNode() {
     fi
 
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
-    node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Start $node_name" >>/var/safenode-manager/simplelog
+    node_name=antnode$node_number
+    echo ""$time_hour":"$time_min" Start $node_name" >>/var/antctl/simplelog
     echo "Starting $node_name"
     sudo ufw allow $ntpr$node_number/udp comment "$node_name"
     echo "Opened firewall port $ntpr$node_number/udp"
@@ -136,29 +136,29 @@ StartNode() {
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
     node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
     PeerId="$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
-    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
+    node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "$node_name Started"
-    sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
+    sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/antctl/counters
     echo "reset node start timer" && echo
 }
 
 AddNode() {
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
-    node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Add $node_name" >>/var/safenode-manager/simplelog
+    node_name=antnode$node_number
+    echo ""$time_hour":"$time_min" Add $node_name" >>/var/antctl/simplelog
     echo "Adding $node_name"
-    sudo mkdir -p /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
-    echo "mkdir -p /var/safenode-manager/services/$node_name"
-    sudo cp $NodePath /var/safenode-manager/services/$node_name
-    echo "cp $NodePath /var/safenode-manager/services/$node_name"
-    sudo chown -R safe:safe /var/safenode-manager/services/$node_name /var/log/safenode/$node_name /var/safenode-manager/services/$node_name/safenode
-    echo "ownership changed to user safe"
+    sudo mkdir -p /var/antctl/services/$node_name /var/log/antnode/$node_name
+    echo "mkdir -p /var/antctl/services/$node_name"
+    sudo cp $NodePath /var/antctl/services/$node_name
+    echo "cp $NodePath /var/antctl/services/$node_name"
+    sudo chown -R ant:ant /var/antctl/services/$node_name /var/log/antnode/$node_name /var/antctl/services/$node_name/antnode
+    echo "ownership changed to user ant"
     sudo tee /etc/systemd/system/"$node_name".service 2>&1 >/dev/null <<EOF
 [Unit]
 Description=$node_name
 [Service]
-User=safe
-ExecStart=/var/safenode-manager/services/$node_name/safenode --root-dir /var/safenode-manager/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $RewardsAddress --log-output-dest /var/log/safenode/$node_name --max-log-files 1 --max-archived-log-files 1 evm-arbitrum-sepolia
+User=ant
+ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $RewardsAddress --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 evm-arbitrum-sepolia
 Restart=always
 RestartSec=300
 EOF
@@ -172,14 +172,14 @@ TearDown() {
     echo "Nuke sequence initiated !!" && echo
     sudo rm /etc/cron.d/anm
     echo "rm /etc/cron.d/anm"
-    sudo systemctl stop safenode*
-    echo "systemctl stop safenode*"
-    sudo rm /etc/systemd/system/safenode*
-    echo "rm /etc/systemd/system/safenode*"
+    sudo systemctl stop antnode*
+    echo "systemctl stop antnode*"
+    sudo rm /etc/systemd/system/antnode*
+    echo "rm /etc/systemd/system/antnode*"
     sudo systemctl daemon-reload
     echo "systemctl daemon-reload"
-    sudo rm -rf /var/log/safenode
-    echo "rm -rf /var/log/safenode" && echo
+    sudo rm -rf /var/log/antnode
+    echo "rm -rf /var/log/antnode" && echo
     unset 'node_details_store[*]'
     echo "cleared array"
     for ((i = 1; i <= $RunningNodes; i++)); do
@@ -190,15 +190,15 @@ TearDown() {
     sudo rm -f /etc/cron.d/scrape
     sudo rm -f /usr/bin/scrape.sh
     sudo rm -f $HOME/scrape
-    sudo rm -rf /var/safenode-manager
-    sudo rm -rf /home/safe/.local/share/safe/node
+    sudo rm -rf /var/antctl
+    sudo rm -rf /home/ant/.local/share/autonomi/node
     sleep 5
-    sudo rm -rf /var/safenode-manager
-    sudo rm -rf /home/safe/.local/share/safe/node
+    sudo rm -rf /var/antctl
+    sudo rm -rf /home/ant/.local/share/autonomi/node
     # save all wallets for later scraping
-    cp -r /var/safenode-manager/wallets $HOME/.local/share/wallets
+    #cp -r /var/antctl/wallets $HOME/.local/share/wallets
     sleep 5
-    echo "rm -rf /var/safenode-manager"
+    echo "rm -rf /var/antctl"
     sudo rm -f /usr/bin/anms.sh
     echo
     sudo reboot
@@ -206,13 +206,13 @@ TearDown() {
 
 RemoveNode() {
     node_number=$(seq -f "%03g" $1 $1)
-    node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Remove $node_name" >>/var/safenode-manager/simplelog
+    node_name=antnode$node_number
+    echo ""$time_hour":"$time_min" Remove $node_name" >>/var/antctl/simplelog
     echo "Removing $node_name" && echo
     sudo systemctl stop --now $node_name
     echo "Stopping $node_name"
-    sudo rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name
-    echo "rm -rf /var/safenode-manager/services/$node_name /var/log/safenode/$node_name"
+    sudo rm -rf /var/antctl/services/$node_name /var/log/antnode/$node_name
+    echo "rm -rf /var/antctl/services/$node_name /var/log/antnode/$node_name"
     sudo rm /etc/systemd/system/$node_name.service
     echo "rm /etc/systemd/system/$node_name.service"
     sudo systemctl daemon-reload
@@ -230,8 +230,8 @@ StopNode() {
         return 0
     fi
     node_number=$(seq -f "%03g" $NextNodeSorR $NextNodeSorR)
-    node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Stop $node_name" >>/var/safenode-manager/simplelog
+    node_name=antnode$node_number
+    echo ""$time_hour":"$time_min" Stop $node_name" >>/var/antctl/simplelog
     echo "Stopping $node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
     NVS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')
@@ -242,8 +242,8 @@ StopNode() {
     sudo ufw delete allow $ntpr$node_number/udp
     echo "closed firewall port $ntpr$node_number/udp"
     echo "$node_name Stopped" && echo
-    echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/safenode-manager/counters
-    sed -i 's/CounterStart=.*/CounterStart='$DelayReStart'/g' /var/safenode-manager/counters
+    echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/antctl/counters
+    sed -i 's/CounterStart=.*/CounterStart='$DelayReStart'/g' /var/antctl/counters
     echo "reset node start timer" && echo
 }
 
@@ -257,16 +257,16 @@ UpgradeNode() {
         return 0
     fi
     node_number=$(seq -f "%03g" $1 $1)
-    node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Upgrade $node_name running" >>/var/safenode-manager/simplelog
+    node_name=antnode$node_number
+    echo ""$time_hour":"$time_min" Upgrade $node_name running" >>/var/antctl/simplelog
     echo "upgradeing $node_name"
     sudo systemctl stop $node_name
     echo "systemctl stop $node_name"
     # remove old node data on upgrade
-    sudo rm -rf /var/safenode-manager/services/$node_name/*
-    echo "rm -rf /var/safenode-manager/services/$node_name/*"
-    sudo cp $NodePath /var/safenode-manager/services/$node_name
-    echo "cp $NodePath /var/safenode-manager/services/$node_name"
+    sudo rm -rf /var/antctl/services/$node_name/*
+    echo "rm -rf /var/antctl/services/$node_name/*"
+    sudo cp $NodePath /var/antctl/services/$node_name
+    echo "cp $NodePath /var/antctl/services/$node_name"
     sudo systemctl start $node_name
     echo "systemctl start $node_name"
     sleep 45
@@ -274,24 +274,24 @@ UpgradeNode() {
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
     node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
     PeerId="$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
-    node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
+    node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "updated array"
-    sed -i 's/CounterUpgrade=.*/CounterUpgrade='$DelayUpgrade'/g' /var/safenode-manager/counters
+    sed -i 's/CounterUpgrade=.*/CounterUpgrade='$DelayUpgrade'/g' /var/antctl/counters
     echo "reset node upgrade timer" && echo
 }
 
 StoppedUpgrade() {
     node_number=$(seq -f "%03g" $1 $1)
-    node_name=safenode$node_number
-    echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/safenode-manager/simplelog
+    node_name=antnode$node_number
+    echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/antctl/simplelog
     echo "upgradeing $node_name"
     # remove old node data on upgrade
-    sudo rm -rf /var/safenode-manager/services/$node_name/*
-    echo "rm -rf /var/safenode-manager/services/$node_name/*"
-    sudo cp $NodePath /var/safenode-manager/services/$node_name
-    echo "cp $NodePath /var/safenode-manager/services/$node_name"
+    sudo rm -rf /var/antctl/services/$node_name/*
+    echo "rm -rf /var/antctl/services/$node_name/*"
+    sudo cp $NodePath /var/antctl/services/$node_name
+    echo "cp $NodePath /var/antctl/services/$node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
-    node_details_store[$node_number]="$node_name,$PIS,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),STOPPED"
+    node_details_store[$node_number]="$node_name,$PIS,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),STOPPED"
     echo "updated array" && echo
 }
 
@@ -300,7 +300,7 @@ CalculateValues() {
         echo "${node_details_store[$num]}"
     done)
 
-    TotalNodes=$(ls /var/safenode-manager/services | wc -l)
+    TotalNodes=$(ls /var/antctl/services | wc -l)
     RunningNodes=$(echo "$ArrayAsString" | grep -c "RUNNING")
     StoppedNodes=$(echo "$ArrayAsString" | grep -c "STOPPED")
     if (($(echo "$StoppedNodes > 0" | bc))); then
@@ -371,7 +371,7 @@ PrintDetails() {
     echo "LoadAllow $LoadAllow LoadNotAllow $LoadNotAllow AllowNodeCap $AllowNodeCap"
     echo "DelayStart $DelayStart DelayReStart $DelayReStart DelayUpgrade $DelayUpgrade DelayRemove $DelayRemove"
     echo "CounterStart $CounterStart CounterUpgrade $CounterUpgrade" && echo
-    echo "$(</var/safenode-manager/counters)" && echo
+    echo "$(</var/antctl/counters)" && echo
 }
 
 UpGrade() {
@@ -379,11 +379,11 @@ UpGrade() {
     if (($(echo "$Upgrade == 1" | bc))); then
         # block upgrade if system under heavy load
         if (($(echo "$LoadNotAllow == 1" | bc))); then
-            echo ""$time_hour":"$time_min" Upgrade safenode"$NextToUpgrade" blocked heavy load" >>/var/safenode-manager/simplelog
+            echo ""$time_hour":"$time_min" Upgrade antnode"$NextToUpgrade" blocked heavy load" >>/var/antctl/simplelog
             return 0
         fi
         if (($(echo "$NextToUpgrade <= $RunningNodes" | bc))); then
-            echo "upgrade running safenode$NextToUpgrade" && echo
+            echo "upgrade running antnode$NextToUpgrade" && echo
             UpgradeNode $NextToUpgrade
         else
             echo "upgrade stopped nodes" && echo
@@ -416,30 +416,30 @@ IncrementCounters() {
     if (($(echo "$CounterUpgrade > 0 " | bc))); then
         CounterUpgrade=$(echo "$CounterUpgrade - 1" | bc)
     fi
-    echo "CounterStart=$CounterStart" >>/var/safenode-manager/counters
-    echo "CounterUpgrade=$CounterUpgrade" >>/var/safenode-manager/counters
+    echo "CounterStart=$CounterStart" >>/var/antctl/counters
+    echo "CounterUpgrade=$CounterUpgrade" >>/var/antctl/counters
     for ((i = 1; i <= $StoppedNodes; i++)); do
         nfr=$(echo "$RunningNodes + $i" | bc)
         nfrcn="RemoveCounter$nfr"
         nfrc="${!nfrcn}"
         if (($(echo "$nfrc > 0 " | bc))); then
             nfrc=$(echo "$nfrc - 1" | bc)
-            echo "$nfrcn=$nfrc" >>/var/safenode-manager/counters
+            echo "$nfrcn=$nfrc" >>/var/antctl/counters
         fi
     done
 }
 
 ShunnGun() {
-    if [[ -f "/var/safenode-manager/MaxShunnedNode" ]]; then
+    if [[ -f "/var/antctl/MaxShunnedNode" ]]; then
         if (($(echo "$Upgrade != 0" | bc))); then
             echo "Shunngun not allowed during upgrade" && echo
             return 0
         fi
         # load veraiable from ntracking for max shunned node
-        . /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
+        . /var/antctl/MaxShunnedNode >/dev/null 2>&1
         node_number=$(seq -f "%03g" $MaxShunnedNode $MaxShunnedNode)
-        node_name=safenode$node_number
-        echo ""$time_hour":"$time_min" Shunn gun $node_name Shunn's $ShunnedValue" >>/var/safenode-manager/simplelog
+        node_name=antnode$node_number
+        echo ""$time_hour":"$time_min" Shunn gun $node_name Shunn's $ShunnedValue" >>/var/antctl/simplelog
         echo && echo "Shunngun $node_name" && echo
         #stop max shunned node
         echo "Stopping $node_name"
@@ -452,11 +452,11 @@ ShunnGun() {
         # copy wallet to folder for later scraping
         WalletDir=""$(date +%s)"-"$node_name"-Shunn"
         mkdir -p $HOME/.local/share/wallets/$WalletDir/wallet
-        cp -r /var/safenode-manager/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
-        sudo rm -rf /var/safenode-manager/services/$node_name/*
+        cp -r /var/antctl/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
+        sudo rm -rf /var/antctl/services/$node_name/*
         sleep 5
-        sudo cp $NodePath /var/safenode-manager/services/$node_name
-        echo "cp $NodePath /var/safenode-manager/services/$node_name"
+        sudo cp $NodePath /var/antctl/services/$node_name
+        echo "cp $NodePath /var/antctl/services/$node_name"
         sleep 5
         #restart node
         echo "Starting $node_name"
@@ -465,18 +465,18 @@ ShunnGun() {
         sleep 30
         status="$(sudo systemctl status $node_name.service --no-page)"
         PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-        node_details_store[$node_number]="$node_name,$PeerId,$(/var/safenode-manager/services/$node_name/safenode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
+        node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
         echo "$node_name Started"
-        sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/safenode-manager/counters
+        sed -i 's/CounterStart=.*/CounterStart='$DelayStart'/g' /var/antctl/counters
         echo "reset node start timer" && echo
         # remove veraiable from ntracking for max shunned node
-        rm /var/safenode-manager/MaxShunnedNode >/dev/null 2>&1
+        rm /var/antctl/MaxShunnedNode >/dev/null 2>&1
     fi
 }
 
 CheckSetUp
 # overrides
-. /var/safenode-manager/override
+. /var/antctl/override
 CalculateValues
 IncrementCounters
 . $HOME/.local/share/anm-wallet
@@ -485,7 +485,7 @@ UpGrade
 Removal
 
 ####################################################################################### logic for starting and stoping nodes
-if [[ ! -f "/var/safenode-manager/config" ]] || [[ "$Action" == "4" ]]; then
+if [[ ! -f "/var/antctl/config" ]] || [[ "$Action" == "4" ]]; then
     echo "Initiate Nuke" && echo
     TearDown
 elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) && (($(echo $AllowNodeCap))) || [[ "$Action" == "1" ]]; then
@@ -518,21 +518,21 @@ done
 echo
 
 #save node details aray
-declare -p node_details_store >/var/safenode-manager/NodeDetails
+declare -p node_details_store >/var/antctl/NodeDetails
 
 if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $UpgradeMin" | bc))) && (($(echo "$Upgrade == 0" | bc))); then
-    rm /var/safenode-manager/log
-    rm /var/safenode-manager/simplelog
+    rm /var/antctl/log
+    rm /var/antctl/simplelog
 
     if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
         #echo "anm control detected" && echo
         #. $HOME/.local/share/anm-control
         #safeup node $NodeVersion && echo
-        #echo "upgradeing safe node binary with safeup node $NodeVersion" && echo
+        #echo "upgradeing ant node binary with safeup node $NodeVersion" && echo
         sleep 1
     else
         safeup node $NodeVersion && echo
-        echo "upgradeing safe node binary with safeup node $NodeVersion" && echo
+        echo "upgradeing ant node binary with safeup node $NodeVersion" && echo
     fi
 fi
 
@@ -541,4 +541,4 @@ echo
 echo #########################################################################################################################
 
 # remove block file
-rm /var/safenode-manager/block
+rm /var/antctl/block

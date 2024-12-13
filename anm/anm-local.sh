@@ -3,6 +3,10 @@
 ClientVersion="--version 0.1.5"
 NodeVersion="--version 0.112.6"
 
+#Data path: /var/antctl/services/antnode1
+#Log path: /var/log/antnode/antnode1
+#Bin path: /var/antctl/services/antnode1/antnode
+
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
@@ -41,29 +45,29 @@ if [[ "$SELECTION" == "1" ]]; then
 ################################################################################################################ view log
 elif [[ "$SELECTION" == "2" ]]; then
 
-    if [[ ! -f "/var/safenode-manager/config" ]]; then
+    if [[ ! -f "/var/antctl/config" ]]; then
         clear
         echo && echo "Start some nodes first" && echo
         exit 0
     fi
 
-    clear && tail -f /var/safenode-manager/log
+    clear && tail -f /var/antctl/log
 
 ######################################################################################################################### Start Vdash
 elif [[ "$SELECTION" == "3" ]]; then
-    vdash --glob-path "/var/log/safenode/safenode*/safenode.log"
+    vdash --glob-path "/var/log/antnode/antnode*/antnode.log"
 
 ################################################################################################################ change node count
 elif [[ "$SELECTION" == "4" ]]; then
 
-    if [[ ! -f "/var/safenode-manager/config" ]]; then
+    if [[ ! -f "/var/antctl/config" ]]; then
         clear
         echo && echo "Start some nodes first" && echo
         exit 0
     fi
 
     # load values from config
-    . /var/safenode-manager/config
+    . /var/antctl/config
 
     ### set nodecount
     NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "$NodeCap" 3>&1 1>&2 2>&3)
@@ -72,20 +76,20 @@ elif [[ "$SELECTION" == "4" ]]; then
     fi
 
     # Set new nodecount
-    sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=$NodeCount/" /var/safenode-manager/config
+    sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=$NodeCount/" /var/antctl/config
 
 ######################################################################################################################## upgrade nodes
 elif [[ "$SELECTION" == "5" ]]; then
 
-    if [[ ! -f "/var/safenode-manager/config" ]]; then
+    if [[ ! -f "/var/antctl/config" ]]; then
         clear
         echo && echo "Start some nodes first" && echo
         exit 0
     fi
 
     # update config
-    sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"$NodeVersion\"/" /var/safenode-manager/config
-    # install safenode
+    sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"$NodeVersion\"/" /var/antctl/config
+    # install antnode
     safeup node $NodeVersion
     safeup client $ClientVersion
 
@@ -103,7 +107,7 @@ elif [[ "$SELECTION" == "7" ]]; then
     #exit 0
     #echo && echo
 
-    if [[ -f "/var/safenode-manager/config" ]]; then
+    if [[ -f "/var/antctl/config" ]]; then
         clear
         echo && echo "nodes running stop nodes first" && echo
         exit 0
@@ -191,28 +195,28 @@ elif [[ "$SELECTION" == "7" ]]; then
     sudo sed -i 's/DelayUpgrade=5/DelayUpgrade='$NodeUpgrade'/g' /usr/bin/anms.sh
 
     # create manager directory for nodes
-    sudo mkdir -p /var/safenode-manager
+    sudo mkdir -p /var/antctl
     # change owner and allow start
-    sudo chown -R $USER:$USER /var/safenode-manager
-    touch /var/safenode-manager/log
+    sudo chown -R $USER:$USER /var/antctl
+    touch /var/antctl/log
 
     # enable anms script cron job
-    echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/safenode-manager/log" | sudo tee /etc/cron.d/anm
+    echo "* * * * * $USER /bin/bash /usr/bin/anms.sh >> /var/antctl/log" | sudo tee /etc/cron.d/anm
 
     clear
     echo
     echo "about to view log file to exit log file press ctl c"
     echo "after exiting log file nodes will continue to run on exit"
     sleep 10
-    tail -f /var/safenode-manager/log
+    tail -f /var/antctl/log
 
 ######################################################################################################################## Stop nodes
 elif [[ "$SELECTION" == "8" ]]; then
 
-    rm /var/safenode-manager/config
+    rm /var/antctl/config
     clear
 
-    while [[ -f "/var/safenode-manager/NodeDetails" ]]; do
+    while [[ -f "/var/antctl/NodeDetails" ]]; do
         echo "Please wait"
         sleep 10
     done

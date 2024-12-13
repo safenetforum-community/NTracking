@@ -9,7 +9,7 @@ MetricsPortFirst=13001
 
 # Environment  setup
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/cargo
-base_dir="/var/safenode-manager/services"
+base_dir="/var/antctl/services"
 . $HOME/.local/share/anm-wallet
 
 # Current time for influx database entries
@@ -28,7 +28,7 @@ declare -A node_numbers
 declare -A node_details_str
 
 declare -A node_details_store
-. /var/safenode-manager/NodeDetails >/dev/null 2>&1
+. /var/antctl/NodeDetails >/dev/null 2>&1
 
 # count node foldrs
 NumberOfNodes=$(ls $base_dir | wc -l)
@@ -42,36 +42,36 @@ ShunnedValue=15
 # Process nodes
 for ((i = 1; i <= $NumberOfNodes; i++)); do
     node_number=$(seq -f "%03g" $i $i)
-    node_name=safenode$node_number
+    node_name=antnode$node_number
     node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
     node_metadata="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metadata)"
 
     if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
         status="\"Running\""
-        mem_used=$(echo "$node_details" | grep sn_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
-        cpu_usage=$(echo "$node_details" | grep sn_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
-        records=$(echo "$node_details" | grep sn_networking_records_stored | awk 'NR==3 {print $2}')
-        network_size=$(echo "$node_details" | grep sn_networking_estimated_network_size | awk 'NR==3 {print $2}')
-        shunned_count=$(echo "$node_details" | grep sn_networking_shunned_count_total | awk 'NR==1 {print $2}')
-        bad_peers=$(echo "$node_details" | grep sn_networking_bad_peers_count_total | awk 'NR==1 {print $2}')
-        rewards_balance=$(echo "$node_details" | grep sn_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
-        connected_peers=$(echo "$node_details" | grep sn_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
-        store_cost=$(echo "$node_details" | grep sn_networking_store_cost | awk 'NR==3 {print $2}')
+        mem_used=$(echo "$node_details" | grep ant_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
+        cpu_usage=$(echo "$node_details" | grep ant_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
+        records=$(echo "$node_details" | grep ant_networking_records_stored | awk 'NR==3 {print $2}')
+        network_size=$(echo "$node_details" | grep ant_networking_estimated_network_size | awk 'NR==3 {print $2}')
+        shunned_count=$(echo "$node_details" | grep ant_networking_shunned_count_total | awk 'NR==1 {print $2}')
+        bad_peers=$(echo "$node_details" | grep ant_networking_bad_peers_count_total | awk 'NR==1 {print $2}')
+        rewards_balance=$(echo "$node_details" | grep ant_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
+        connected_peers=$(echo "$node_details" | grep ant_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
+        store_cost=$(echo "$node_details" | grep ant_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
-        puts=$(echo "$node_details" | grep sn_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
-        up_time=$(echo "$node_details" | grep sn_node_uptime | awk 'NR==3 {print $2}')
-        live_time=$(echo "$node_details" | grep sn_networking_live_time | awk 'NR==3 {print $2}')
-        rel_records=$(echo "$node_details" | grep sn_networking_relevant_records | awk 'NR==3 {print $2}')
+        puts=$(echo "$node_details" | grep ant_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
+        up_time=$(echo "$node_details" | grep ant_node_uptime | awk 'NR==3 {print $2}')
+        live_time=$(echo "$node_details" | grep ant_networking_live_time | awk 'NR==3 {print $2}')
+        rel_records=$(echo "$node_details" | grep ant_networking_relevant_records | awk 'NR==3 {print $2}')
 
         if [[ -z "$puts" ]]; then
             puts=0
         fi
         # from metadata
-        PeerId="\"$(echo "$node_metadata" | grep sn_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
-        NodeVersion="\"$(echo "$node_metadata" | grep sn_node_safenode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
+        PeerId="\"$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
+        NodeVersion="\"$(echo "$node_metadata" | grep ant_node_antnode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
 
-        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
+        if [[ -f "/var/antctl/NodeDetails" ]]; then
 
             # shunn gun
             if (($(echo "$shunned_count > $ShunnedValue" | bc))); then
@@ -98,21 +98,21 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         live_time=0
         rel_records=0
 
-        if [[ -f "/var/safenode-manager/NodeDetails" ]]; then
+        if [[ -f "/var/antctl/NodeDetails" ]]; then
             # for anm
             PeerId="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')\""
             NodeVersion="\"$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $3}')\""
         else
-            # for safe node manager service
+            # for antctl node manager service
             PeerId="\"NotReachableStoppedNode\""
-            NodeVersion="\"$(/var/safenode-manager/services/safenode$i/safenode -V | awk '{print $3}')\""
+            NodeVersion="\"$(/var/antctl/services/antnode$i/antnode -V | awk '{print $3}')\""
         fi
     fi
 
     # save Shunngun target
     if (($(echo "$Shunngun == 1" | bc))); then
-        echo "MaxShunnedNode=$ShunnedNode" >/var/safenode-manager/MaxShunnedNode
-        echo "ShunnedValue=$ShunnedValue" >>/var/safenode-manager/MaxShunnedNode
+        echo "MaxShunnedNode=$ShunnedNode" >/var/antctl/MaxShunnedNode
+        echo "ShunnedValue=$ShunnedValue" >>/var/antctl/MaxShunnedNode
     fi
 
     # Format for InfluxDB
@@ -159,6 +159,7 @@ total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
 # sleep till all nodes have systems have finished prosessing
 
 while (($(("$time_min" + "5")) > $(date +"%M"))); do
+    #5
     sleep 10
 done
 
