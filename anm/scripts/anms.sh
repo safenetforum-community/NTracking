@@ -22,7 +22,7 @@ echo
 export PATH=$PATH:$HOME/.local/bin
 source ~/.config/safe/env
 
-NodePath=$(which safenode)
+NodePath=$(which antnode)
 LatestNodeVer=$($NodePath --version | awk 'NR==1 {print $3}' | cut -c2-)
 
 # declare or load array from file
@@ -149,7 +149,7 @@ AddNode() {
     echo "Adding $node_name"
     sudo mkdir -p /var/antctl/services/$node_name /var/log/antnode/$node_name
     echo "mkdir -p /var/antctl/services/$node_name"
-    sudo cp $NodePath /var/antctl/services/$node_name/antnode
+    sudo cp $NodePath /var/antctl/services/$node_name
     echo "cp $NodePath /var/antctl/services/$node_name"
     sudo chown -R ant:ant /var/antctl/services/$node_name /var/log/antnode/$node_name /var/antctl/services/$node_name/antnode
     echo "ownership changed to user ant"
@@ -455,7 +455,7 @@ ShunnGun() {
         cp -r /var/antctl/services/$node_name/wallet/* $HOME/.local/share/wallets/$WalletDir/wallet
         sudo rm -rf /var/antctl/services/$node_name/*
         sleep 5
-        sudo cp $NodePath /var/antctl/services/$node_name/antnode
+        sudo cp $NodePath /var/antctl/services/$node_name
         echo "cp $NodePath /var/antctl/services/$node_name"
         sleep 5
         #restart node
