@@ -82,7 +82,22 @@
 
 #rm $HOME/.local/share/anm-wallet
 
-sudo apt update -y
-sudo apt upgrade -y
-sleep 3
-sudo reboot
+#sudo apt update -y
+#sudo apt upgrade -y
+#sleep 3
+#sudo reboot
+
+sudo rm $(which safe)
+sudo rm $(which safeup)
+sudo rm $(which autonomi)
+sudo rm $(which antctl)
+
+sudo rm $(which safe)
+sudo rm $(which safeup)
+sudo rm $(which autonomi)
+sudo rm $(which antctl)
+
+sudo rm $(which safe)
+sudo rm $(which safeup)
+sudo rm $(which autonomi)
+sudo rm $(which antctl)
