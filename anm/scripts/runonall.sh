@@ -55,8 +55,8 @@
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/antctl/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/antctl/config
 
-sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/antctl/config
-sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/config
+#sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/antctl/config
+#sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/config
 
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
@@ -81,3 +81,8 @@ sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/c
 #sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=5/" /var/antctl/config
 
 #rm $HOME/.local/share/anm-wallet
+
+sudo apt update -y
+sudo apt upgrade -y
+sleep 3
+sudo reboot
