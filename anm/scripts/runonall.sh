@@ -87,36 +87,34 @@
 #sleep 3
 #sudo reboot
 
-sudo rm $(which safe)
-sudo rm $(which safeup)
-sudo rm $(which autonomi)
-sudo rm $(which antctl)
+a=$(which safe)
+sudo rm $a
+a=$(which safeup)
+sudo rm $a
+a=$(which autonomi)
+sudo rm $a
+a=$(which antctl)
+sudo rm $a
 
-sudo rm $(which safe)
-sudo rm $(which safeup)
-sudo rm $(which autonomi)
-sudo rm $(which antctl)
+a=$(which safe)
+sudo rm $a
+a=$(which safeup)
+sudo rm $a
+a=$(which autonomi)
+sudo rm $a
+a=$(which antctl)
+sudo rm $a
 
-sudo rm $(which safe)
-sudo rm $(which safeup)
-sudo rm $(which autonomi)
-sudo rm $(which antctl)
-
-rm $(which safe)
-rm $(which safeup)
-rm $(which autonomi)
-rm $(which antctl)
-
-rm $(which safe)
-rm $(which safeup)
-rm $(which autonomi)
-rm $(which antctl)
-
-rm $(which safe)
-rm $(which safeup)
-rm $(which autonomi)
-rm $(which antctl)
+a=$(which safe)
+sudo rm $a
+a=$(which safeup)
+sudo rm $a
+a=$(which autonomi)
+sudo rm $a
+a=$(which antctl)
+sudo rm $a
 
 
 
-curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+
+#curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
