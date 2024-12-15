@@ -47,7 +47,7 @@ SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist 
     "                 ANM Cluster options                              " 20 70 10 \
     "1" "Exit                                          " ON \
     "2" "Change node count                             " OFF \
-    "3" "Upgrade nodes safeup                          " OFF \
+    "3" "Upgrade nodes antup                          " OFF \
     "4" "NTracking upgrade                             " OFF \
     "5" "Start nodes                                   " OFF \
     "6" "Stop nodes                                    " OFF \
@@ -92,7 +92,7 @@ elif [[ "$SELECTION" == "2" ]]; then
 elif [[ "$SELECTION" == "3" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"'$NodeVersion'\"/" /var/antctl/config && safeup node '$NodeVersion'' >/dev/null 2>&1 &
+        ssh -t $machine 'sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"'$NodeVersion'\"/" /var/antctl/config && antup node '$NodeVersion'' >/dev/null 2>&1 &
         disown
         echo "$machine Upgrade nodes request sent"
         sleep 2

@@ -16,21 +16,18 @@ sudo cpupower frequency-set --governor performance
 # enable swap file
 #sudo swapon /var/cache/swap/swapfile
 
-# install safeup
-#curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
+# install antup
+curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
+antup node
 
 # update antnode
 
 if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
-#    safeup node --version 0.112.4
-#    rm $HOME/.local/share/anm-control
     chmod u+x $HOME/.local/share/anm-control.sh
     . $HOME/.local/share/anm-control.sh
-    #safeup client $ClientVersion
-    #safeup node $NodeVersion
 else
-    safeup client $ClientVersion
-    safeup node $NodeVersion
+    antup client $ClientVersion
+    antup node $NodeVersion
 fi
 
 # install / update script

@@ -90,8 +90,8 @@ elif [[ "$SELECTION" == "5" ]]; then
     # update config
     sed -i "s/^\\(NodeVersion=\\).*/NodeVersion=\"$NodeVersion\"/" /var/antctl/config
     # install antnode
-    safeup node $NodeVersion
-    safeup client $ClientVersion
+    antup node $NodeVersion
+    antup client $ClientVersion
 
 ######################################################################################################################## NTracking upgrade
 elif [[ "$SELECTION" == "6" ]]; then
@@ -116,18 +116,18 @@ elif [[ "$SELECTION" == "7" ]]; then
     #disable swap
     sudo swapoff -a
 
-    # install safeup
-    #curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
+    # install antup
+    curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | bash
 
     #update node and client
 
     if [[ -f "$HOME/.local/share/anm-control" ]]; then
         . $HOME/.local/share/anm-control
-        #safeup client $ClientVersion
-        #safeup node $NodeVersion
+        #antup client $ClientVersion
+        #antup node $NodeVersion
     else
-        safeup client $ClientVersion
-        safeup node $NodeVersion
+        antup client $ClientVersion
+        antup node $NodeVersion
     fi
 
     # install / update anm script

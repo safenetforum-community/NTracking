@@ -321,7 +321,7 @@ CalculateValues() {
         N1V=$(echo "$Node1Version" | tr -d .)
         if (($(echo "$LNV < $N1V" | bc -l))); then
             Upgrade=0
-            safeup node --version $Node1Version && echo
+            antup node --version $Node1Version && echo
             echo "node upgrade canceled due to lower version" && echo
         fi
     fi
@@ -527,12 +527,12 @@ if (($(echo "$time_hour == $UpgradeHour" | bc))) && (($(echo "$time_min == $Upgr
     if [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
         #echo "anm control detected" && echo
         #. $HOME/.local/share/anm-control
-        #safeup node $NodeVersion && echo
-        #echo "upgradeing ant node binary with safeup node $NodeVersion" && echo
+        #antup node $NodeVersion && echo
+        #echo "upgradeing ant node binary with antup node $NodeVersion" && echo
         sleep 1
     else
-        safeup node $NodeVersion && echo
-        echo "upgradeing ant node binary with safeup node $NodeVersion" && echo
+        antup node $NodeVersion && echo
+        echo "upgradeing ant node binary with antup node $NodeVersion" && echo
     fi
 fi
 
