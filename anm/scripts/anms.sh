@@ -159,8 +159,8 @@ Description=$node_name
 [Service]
 User=ant
 ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number $RewardsAddress --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 evm-arbitrum-sepolia
-Restart=always
-RestartSec=300
+#Restart=always
+#RestartSec=300
 EOF
 
     echo "service file created at /etc/systemd/system/"$node_name".service"
