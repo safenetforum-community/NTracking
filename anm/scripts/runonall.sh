@@ -88,31 +88,31 @@
 #sudo reboot
 
 a=$(which safe)
-sudo rm $a
+rm $a
 a=$(which safeup)
-sudo rm $a
+rm $a
 a=$(which autonomi)
-sudo rm $a
+rm $a
 a=$(which antctl)
-sudo rm $a
+rm $a
 
 a=$(which safe)
-sudo rm $a
+rm $a
 a=$(which safeup)
-sudo rm $a
+rm $a
 a=$(which autonomi)
-sudo rm $a
+rm $a
 a=$(which antctl)
-sudo rm $a
+rm $a
 
 a=$(which safe)
-sudo rm $a
+rm $a
 a=$(which safeup)
-sudo rm $a
+rm $a
 a=$(which autonomi)
-sudo rm $a
+rm $a
 a=$(which antctl)
-sudo rm $a
+rm $a
 
 
 
