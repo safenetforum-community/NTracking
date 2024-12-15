@@ -102,4 +102,21 @@ sudo rm $(which safeup)
 sudo rm $(which autonomi)
 sudo rm $(which antctl)
 
+rm $(which safe)
+rm $(which safeup)
+rm $(which autonomi)
+rm $(which antctl)
+
+rm $(which safe)
+rm $(which safeup)
+rm $(which autonomi)
+rm $(which antctl)
+
+rm $(which safe)
+rm $(which safeup)
+rm $(which autonomi)
+rm $(which antctl)
+
+
+
 curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
