@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
+#Data path: /var/antctl/services/antnode1
+#Log path: /var/log/antnode/antnode1
+#Bin path: /var/antctl/services/antnode1/antnode
+
+
 #sudo rm /etc/cron.d/node_balance
 
 #NodePath=$(which safenode)
 #LatestNodeVer=$($NodePath -V | awk '{print $3}')
 
 #if [[ "$LatestNodeVer" != "0.110.0" ]]; then
-#rm /var/safenode-manager/config
+#rm /var/antctl/config
 #fi
 
 #sudo apt install linux-tools-generic -y
@@ -22,7 +27,7 @@
 #sudo ufw allow 4574/tcp comment 'SSH'
 #echo "y" | sudo ufw enable
 
-#sudo rm -rf /var/safenode-manager
+#sudo rm -rf /var/antctl
 
 #touch $HOME/runonallsystems
 
@@ -41,38 +46,38 @@
 #sleep 5
 #sudo rm /var/cache/swap/swapfile
 
-#sudo rm -rf $HOME/.local/share/safe/node
+#sudo rm -rf $HOME/.local/share/autonomi/node
 
-#sudo rm -rf /home/safe/.local/share/safe
-
-
-
-#sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/safenode-manager/config
-#sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/safenode-manager/config
-
-sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/safenode-manager/config
-sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/safenode-manager/config
+#sudo rm -rf /home/autonomi/.local/share/autonomi
 
 
-#sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/safenode-manager/config
-#sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/safenode-manager/config
+
+#sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/antctl/config
+#sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/antctl/config
+
+sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/antctl/config
+sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/config
 
 
-#rm -rf $HOME/.local/share/safe/
+#sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
+#sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/antctl/config
+
+
+#rm -rf $HOME/.local/share/autonomi/
 #rm -rf $HOME/.local/share/wallets
 
 #safePath=$(which safe)
 #sudo rm $safePath
 
-#sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/safenode-manager/config
+#sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\1$(echo "$(nproc) "*" 3.5" | bc)/" /var/antctl/config
 
-#sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/safenode-manager/config
+#sudo sed -i 's/PGRADEHOUR=18/UpgradeHour=19/g' /var/antctl/config
 
 #sudo apt update
 #$HOME/.cargo/bin/rustup target install x86_64-unknown-linux-musl
 #sudo apt install musl musl-dev musl-tools -y
 
-#sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/safenode-manager/config
-#sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=5/" /var/safenode-manager/config
+#sed -i "s/^\\(DelayStart=\\).*/\\DelayStart=5/" /var/antctl/config
+#sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=5/" /var/antctl/config
 
 #rm $HOME/.local/share/anm-wallet

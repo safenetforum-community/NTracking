@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-vtrack="1.4"
-
-#Data path: /var/antctl/services/antnode1
-#Log path: /var/log/antnode/antnode1
-#Bin path: /var/antctl/services/antnode1/antnode
+vtrack="2.0"
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
@@ -20,7 +16,7 @@ echo $(date '+%d/%m/%Y  %H:%M')
 echo
 
 export PATH=$PATH:$HOME/.local/bin
-source ~/.config/safe/env
+source ~/.config/autonomi/env
 
 NodePath=$(which antnode)
 LatestNodeVer=$($NodePath --version | awk 'NR==1 {print $3}' | cut -c2-)

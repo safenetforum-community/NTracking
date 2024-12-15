@@ -5,10 +5,6 @@ NodeVersion="--version 0.112.6"
 
 export PATH=$PATH:$HOME/.local/bin
 
-#Data path: /var/antctl/services/antnode1
-#Log path: /var/log/antnode/antnode1
-#Bin path: /var/antctl/services/antnode1/antnode
-
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-cluster.sh)
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
