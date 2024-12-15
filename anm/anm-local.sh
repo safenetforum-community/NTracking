@@ -112,6 +112,22 @@ elif [[ "$SELECTION" == "7" ]]; then
     #disable swap
     sudo swapoff -a
 
+    # remove old installs
+    sudo rm $(which safe)
+    sudo rm $(which safeup)
+    sudo rm $(which autonomi)
+    sudo rm $(which antctl)
+
+    sudo rm $(which safe)
+    sudo rm $(which safeup)
+    sudo rm $(which autonomi)
+    sudo rm $(which antctl)
+
+    sudo rm $(which safe)
+    sudo rm $(which safeup)
+    sudo rm $(which autonomi)
+    sudo rm $(which antctl)
+
     # install antup
     curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
 
