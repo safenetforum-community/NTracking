@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-#Data path: /var/antctl/services/antnode1
-#Log path: /var/log/antnode/antnode1
-#Bin path: /var/antctl/services/antnode1/antnode
-
 
 #sudo rm /etc/cron.d/node_balance
 
@@ -86,35 +82,6 @@
 #sudo apt upgrade -y
 #sleep 3
 #sudo reboot
-
-a=$(which safe)
-rm $a
-a=$(which safeup)
-rm $a
-a=$(which autonomi)
-rm $a
-a=$(which antctl)
-rm $a
-
-a=$(which safe)
-rm $a
-a=$(which safeup)
-rm $a
-a=$(which autonomi)
-rm $a
-a=$(which antctl)
-rm $a
-
-a=$(which safe)
-rm $a
-a=$(which safeup)
-rm $a
-a=$(which autonomi)
-rm $a
-a=$(which antctl)
-rm $a
-
-
 
 
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash

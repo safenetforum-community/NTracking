@@ -17,6 +17,7 @@ sudo cpupower frequency-set --governor performance
 #sudo swapon /var/cache/swap/swapfile
 
 # install antup
+curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
 curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
 antup node
 
