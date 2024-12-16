@@ -84,7 +84,7 @@
 #sudo reboot
 
 rm $(which antup)
-rm $(which antup)
+sudo rm $(which antup)
 
 
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
