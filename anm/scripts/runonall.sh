@@ -83,8 +83,7 @@
 #sleep 3
 #sudo reboot
 
-rm $(which antup)
-sudo rm $(which antup)
-
+rm home/$USER/.local/bin/antup
+rm /usr/local/bin/antup
 
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
