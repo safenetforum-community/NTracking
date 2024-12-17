@@ -115,6 +115,7 @@ elif [[ "$SELECTION" == "7" ]]; then
     # install antup
     curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
     curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+    antup node
 
     #update node and client
 
