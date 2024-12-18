@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-ClientVersion="--version 0.1.5"
-NodeVersion="--version 0.112.6"
+
+ClientVersion="--version 0.3.0"
+NodeVersion="--version 0.3.0"
 
 export PATH=$PATH:$HOME/.local/bin
 
