@@ -43,14 +43,15 @@ SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist 
     "                 ANM Cluster options                              " 20 70 10 \
     "1" "Exit                                          " ON \
     "2" "Change node count                             " OFF \
-    "3" "Upgrade nodes antup                          " OFF \
+    "3" "Upgrade nodes antup                           " OFF \
     "4" "NTracking upgrade                             " OFF \
     "5" "Start nodes                                   " OFF \
     "6" "Stop nodes                                    " OFF \
     "7" "Run on systems                                " OFF \
     "8" "Upgrade nodes                                 " OFF \
     "9" "Rolling restart                               " OFF \
-    "10" "Anm-control deploy                            " OFF 3>&1 1>&2 2>&3)
+    "10" "Anm-control deploy                           " OFF \
+    "11" "Anm-wallet deploy                            " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -182,6 +183,20 @@ elif [[ "$SELECTION" == "10" ]]; then
         echo "no anm-control detected"
     fi
 
+######################################################################################################################## deploy anm wallet
+elif [[ "$SELECTION" == "11" ]]; then
+
+    if [[ -f "$HOME/.local/share/anm-wallet" ]]; then
+        for machine in $machines; do
+            rsync -avz --update $HOME/.local/share/anm-wallet $machine:$HOME/.local/share/anm-wallet >/dev/null 2>&1 &
+            disown
+            echo "$machine anm-wallet deploy request sent"
+            sleep 2
+        done &
+        disown
+    else
+        echo "no anm-control detected"
+    fi
 fi
 
 #### old load level
