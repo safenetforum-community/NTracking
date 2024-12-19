@@ -139,6 +139,7 @@ StartNode() {
 }
 
 AddNode() {
+    . $HOME/.local/share/anm-wallet
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=antnode$node_number
     echo ""$time_hour":"$time_min" Add $node_name" >>/var/antctl/simplelog
@@ -475,7 +476,6 @@ CheckSetUp
 . /var/antctl/override
 CalculateValues
 IncrementCounters
-. $HOME/.local/share/anm-wallet
 PrintDetails
 UpGrade
 Removal
