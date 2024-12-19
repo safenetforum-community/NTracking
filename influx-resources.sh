@@ -64,6 +64,11 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         live_time=$(echo "$node_details" | grep ant_networking_live_time | awk 'NR==3 {print $2}')
         rel_records=$(echo "$node_details" | grep ant_networking_relevant_records | awk 'NR==3 {print $2}')
 
+        # store cost removed set to 0 for now
+        if [[ -z "$store_cost" ]]; then
+            store_cost=0
+        fi
+
         if [[ -z "$puts" ]]; then
             puts=0
         fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ClientVersion="--version 0.1.5"
-NodeVersion="--version 0.112.6"
+ClientVersion="--version 0.3.0"
+NodeVersion="--version 0.3.0"
 
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
@@ -115,6 +115,7 @@ elif [[ "$SELECTION" == "7" ]]; then
     # install antup
     curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
     curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+    antup node
 
     #update node and client
 
