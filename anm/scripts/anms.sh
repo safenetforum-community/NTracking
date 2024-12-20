@@ -143,6 +143,7 @@ AddNode() {
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=antnode$node_number
     echo ""$time_hour":"$time_min" Add $node_name $RewardsAddress" >>/var/antctl/simplelog
+    echo ""$time_hour":"$time_min" Add $node_name $RewardsAddress" >>/var/antctl/wallet-log
     echo "Adding $node_name"
     sudo mkdir -p /var/antctl/services/$node_name /var/log/antnode/$node_name
     echo "mkdir -p /var/antctl/services/$node_name"
