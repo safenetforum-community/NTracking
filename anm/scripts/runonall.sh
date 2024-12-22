@@ -54,6 +54,8 @@
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/antctl/config
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/config
 
+sed -i "s/^\\(CpuLessThan=\\).*/\\MemLessThan=80/" /var/antctl/config
+
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
 #sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/antctl/config
@@ -92,4 +94,4 @@
 #rm /var/antctl/log
 #rm /var/antctl/wallet-log
 
-sudo systemctl start antnode001.service
+#sudo systemctl start antnode001.service
