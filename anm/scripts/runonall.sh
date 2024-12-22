@@ -88,6 +88,8 @@
 
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
 
-rm /var/antctl/simplelog
-rm /var/antctl/log
-rm /var/antctl/wallet-log
+#rm /var/antctl/simplelog
+#rm /var/antctl/log
+#rm /var/antctl/wallet-log
+
+sudo systemctl start antnode001.service
