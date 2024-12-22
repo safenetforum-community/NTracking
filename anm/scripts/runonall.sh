@@ -54,7 +54,7 @@
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=24.0/" /var/antctl/config
 #sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/config
 
-sed -i "s/^\\(CpuLessThan=\\).*/\\MemLessThan=80/" /var/antctl/config
+sed -i "s/^\\(MemLessThan=80\\).*/\\CpuLessThan=80/" /var/antctl/config
 
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
