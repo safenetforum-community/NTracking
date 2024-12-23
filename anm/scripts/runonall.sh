@@ -51,14 +51,14 @@
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/antctl/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/antctl/config
 
-#sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=30.0/" /var/antctl/config
-#sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=24.0/" /var/antctl/config
+sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=36.0/" /var/antctl/config
+sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/config
 
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
 #sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/antctl/config
 
-sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=98/" /var/antctl/config
+#sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=98/" /var/antctl/config
 
 
 #rm -rf $HOME/.local/share/autonomi/
