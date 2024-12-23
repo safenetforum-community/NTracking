@@ -51,8 +51,8 @@
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/antctl/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/antctl/config
 
-sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=36.0/" /var/antctl/config
-sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/config
+#sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=36.0/" /var/antctl/config
+#sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/config
 
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
@@ -94,9 +94,9 @@ sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/c
 #rm /var/antctl/log
 #rm /var/antctl/wallet-log
 
-#sudo systemctl start antnode001.service
+sudo systemctl start antnode001.service
 
 
-curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
-curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
-antup node
+#curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
+#curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+#antup node
