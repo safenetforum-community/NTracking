@@ -58,7 +58,7 @@
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
 #sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=96/" /var/antctl/config
 
-sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=98/" /var/antctl/config
+#sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=98/" /var/antctl/config
 
 
 #rm -rf $HOME/.local/share/autonomi/
@@ -95,3 +95,8 @@ sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=98/" /var/antctl/config
 #rm /var/antctl/wallet-log
 
 #sudo systemctl start antnode001.service
+
+
+curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+antup node
