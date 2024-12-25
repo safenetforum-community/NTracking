@@ -215,7 +215,7 @@ elif [[ "$SELECTION" == "7" ]]; then
 ######################################################################################################################## Rolling Restart
 elif [[ "$SELECTION" == "8" ]]; then
 
-while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/',$NodeRestarVer1,'/',$NodeRestarVer2,'/g' /var/antctl/NodeDetails
+while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/'",$NodeRestarVer1,"'/'",$NodeRestarVer2,"'/g' /var/antctl/NodeDetails
 
 ######################################################################################################################## Stop nodes
 elif [[ "$SELECTION" == "9" ]]; then
