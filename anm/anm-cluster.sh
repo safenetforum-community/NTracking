@@ -4,6 +4,9 @@
 ClientVersion="--version 0.3.1"
 NodeVersion="--version 0.3.1"
 
+NodeRestarVer1="0.3.1"
+NodeRestarVer2="0.2.1"
+
 export PATH=$PATH:$HOME/.local/bin
 
 #run with
@@ -162,7 +165,7 @@ elif [[ "$SELECTION" == "8" ]]; then
 elif [[ "$SELECTION" == "9" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/0.3.1/0.2.1/g' /var/antctl/NodeDetails' >/dev/null 2>&1 &
+        ssh -t $machine 'while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/",$NodeRestarVer1,"/",$NodeRestarVer2,"/g' /var/antctl/NodeDetails' >/dev/null 2>&1 &
         disown
         echo "$machine Rolling restart request sent"
         sleep 2
