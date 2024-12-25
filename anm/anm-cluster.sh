@@ -162,7 +162,7 @@ elif [[ "$SELECTION" == "8" ]]; then
 elif [[ "$SELECTION" == "9" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/0.112.6/0.112.5/g' /var/antctl/NodeDetails' >/dev/null 2>&1 &
+        ssh -t $machine 'while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/0.3.1.6/0.3.01/g' /var/antctl/NodeDetails' >/dev/null 2>&1 &
         disown
         echo "$machine Rolling restart request sent"
         sleep 2
