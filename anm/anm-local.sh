@@ -2,6 +2,7 @@
 
 ClientVersion="--version 0.3.1"
 NodeVersion="--version 0.3.1"
+NodeRestarVer="0.2.1"
 
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
@@ -27,7 +28,8 @@ SELECTION=$(whiptail --title "aatonnomicc node manager v 2.0" --radiolist \
     "5" "Upgrade nodes" OFF \
     "6" "NTracking Upgrade" OFF \
     "7" "Start nodes" OFF \
-    "8" "Stop nodes                          " OFF 3>&1 1>&2 2>&3)
+    "8" "Rolling restart " OFF \
+    "9" "Stop nodes                          " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -208,8 +210,13 @@ elif [[ "$SELECTION" == "7" ]]; then
     sleep 10
     tail -f /var/antctl/log
 
-######################################################################################################################## Stop nodes
+######################################################################################################################## Rolling Restart
 elif [[ "$SELECTION" == "8" ]]; then
+
+while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/'$NodeVersion'/'$NodeRestarVer'/g' /var/antctl/NodeDetails
+
+######################################################################################################################## Stop nodes
+elif [[ "$SELECTION" == "9" ]]; then
 
     rm /var/antctl/config
     clear
