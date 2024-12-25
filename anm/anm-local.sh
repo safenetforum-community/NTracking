@@ -2,7 +2,9 @@
 
 ClientVersion="--version 0.3.1"
 NodeVersion="--version 0.3.1"
-NodeRestarVer="0.2.1"
+
+NodeRestarVer1="0.3.1"
+NodeRestarVer2="0.2.1"
 
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
@@ -213,7 +215,7 @@ elif [[ "$SELECTION" == "7" ]]; then
 ######################################################################################################################## Rolling Restart
 elif [[ "$SELECTION" == "8" ]]; then
 
-while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/'$NodeVersion'/'$NodeRestarVer'/g' /var/antctl/NodeDetails
+while [[ -f "/var/antctl/block" ]]; do sleep 1; done && sed -i 's/'$NodeRestarVer2'/'$NodeRestarVer2'/g' /var/antctl/NodeDetails
 
 ######################################################################################################################## Stop nodes
 elif [[ "$SELECTION" == "9" ]]; then
