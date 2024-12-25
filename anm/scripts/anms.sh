@@ -308,7 +308,8 @@ CalculateValues() {
     fi
     NextNodeToSorA=$(echo "$RunningNodes + 1" | bc)
     NextNodeSorR=$RunningNodes
-    NodesLatestV=$(echo "$ArrayAsString" | grep -c $LatestNodeVer)
+    # here ","
+    NodesLatestV=$(echo "$ArrayAsString" | grep -c ",$LatestNodeVer,")
     NodesToUpgrade=$(($TotalNodes - $NodesLatestV))
     NextToUpgrade=$(($TotalNodes - $NodesToUpgrade + 1))
     Upgrade=$(echo "$NodesToUpgrade >= 1" | bc) && echo
