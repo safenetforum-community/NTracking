@@ -9,7 +9,7 @@ nodes must be started with safe node manager and have open-metrics enabled with 
 ie an example for 50 nodes --node-port can be customised or -- home network may be used.
 update the --owner flag for your discord id or remove the --owner flag and timbobjohnes if you are not in a wave
 ```
-sudo env "PATH=$PATH" antctl add --node-port 12001-12050  --count 50 --rewards-address <EtheriumAddress> --enable-metrics-server --metrics-port 13001-13050
+sudo env "PATH=$PATH" antctl add --node-port 12001-12050  --count 50 --rewards-address <EtheriumAddress> --enable-metrics-server --metrics-port 13001-13050 evm-arbitrum-sepolia
 sudo env "PATH=$PATH" antctl start --interval 301000
 ```
 
