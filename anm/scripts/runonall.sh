@@ -52,7 +52,7 @@
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/antctl/config
 
 #sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=36.0/" /var/antctl/config
-#sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/config
+sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=18.0/" /var/antctl/config
 
 
 #sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=90/" /var/antctl/config
@@ -100,7 +100,7 @@
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
 #antup node
-sudo apt update -y
-sudo apt install file -y
-sleep 5
-sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+#sudo apt update -y
+#sudo apt install file -y
+#sleep 5
+#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
