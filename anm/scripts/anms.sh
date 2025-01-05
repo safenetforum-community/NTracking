@@ -486,7 +486,7 @@ LoadTrimmer() {
             AntNodeString=$(sudo file /proc/"$largest_pid"/exe)
             HiMemNode=$(echo $AntNodeString | grep -P -i -o '[antnode]+[0-9]+' | grep -P -i -o '[0-9]+')
             node_number=$HiMemNode
-            node_number=$(seq -f "%03g" $1 $1)
+            node_number=$(seq -f "%03g" $node_number $node_number)
             node_name=antnode$node_number
             echo ""$time_hour":"$time_min" replace hi load node $node_name" >>/var/antctl/simplelog
             echo "replacing $node_name"
