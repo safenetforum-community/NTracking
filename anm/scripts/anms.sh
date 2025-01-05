@@ -160,6 +160,7 @@ ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/service
 #Restart=always
 #RestartSec=300
 EOF
+
     echo "service file created at /etc/systemd/system/"$node_name".service"
     sudo systemctl daemon-reload
     echo "systemctl daemon-reload" && echo
@@ -474,7 +475,7 @@ ShunnGun() {
 
 LoadTrimmer() {
 
-    if [[ $time_min == 2 ]] || [[ $time_min == 17 ]] || [[ $time_min == 32 ]] || [[ $time_min == 47 ]]; then
+    if [[ $time_min == 04 ]] || [[ $time_min == 17 ]] || [[ $time_min == 32 ]] || [[ $time_min == 47 ]]; then
 
         if (($(echo "$Upgrade != 0" | bc))); then
             echo "node replacement not allowed during upgrade" && echo
