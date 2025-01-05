@@ -346,7 +346,7 @@ CalculateValues() {
     RemCpu=$(echo "$UsedCpuPercent > $CpuRemove " | bc)
     RemMem=$(echo "$UsedMemPercent > $MemRemove " | bc)
     RemHD=$(echo "$UsedHdPercent > $HDRemove " | bc)
-    AllowNodeCap=$(echo "$RunningNodes <= $NodeCap" | bc)
+    AllowNodeCap=$(echo "$RunningNodes < $NodeCap" | bc)
 
     #variable delay start test
     if (($(echo "$CpuCount >= 24 " | bc))); then
