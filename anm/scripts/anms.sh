@@ -475,7 +475,7 @@ ShunnGun() {
 
 LoadTrimmer() {
 
-    if [[ -f "$HOME/.local/share/anm-control.sh" ]] && [[ $time_min == 02 ]] || [[ $time_min == 17 ]] || [[ $time_min == 32 ]] || [[ $time_min == 47 ]]; then
+    if [[ -f "$HOME/.local/share/anm-control.sh" ]] && [[ $LoadAllow == 0 ]] && [[ $time_min == 02 ]] || [[ $time_min == 17 ]] || [[ $time_min == 32 ]] || [[ $time_min == 47 ]]; then
 
         if (($(echo "$Upgrade != 0" | bc))); then
             echo "node replacement not allowed during upgrade" && echo
