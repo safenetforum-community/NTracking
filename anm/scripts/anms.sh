@@ -160,7 +160,6 @@ ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/service
 #Restart=always
 #RestartSec=300
 EOF
-
     echo "service file created at /etc/systemd/system/"$node_name".service"
     sudo systemctl daemon-reload
     echo "systemctl daemon-reload" && echo
@@ -475,39 +474,38 @@ ShunnGun() {
 
 LoadTrimmer() {
 
-if (($("$time_min") == 2)) || (($("$time_min") == 17)) || (($("$time_min") == 32)) || (($("$time_min") == 47)); then
+    if (($("$time_min") == 2)) || (($("$time_min") == 17)) || (($("$time_min") == 32)) || (($("$time_min") == 47)); then
 
-    if (($(echo "$Upgrade != 0" | bc))); then
-        echo "node replacement not allowed during upgrade" && echo
-        return 0
-    fi
+        if (($(echo "$Upgrade != 0" | bc))); then
+            echo "node replacement not allowed during upgrade" && echo
+            return 0
+        fi
 
-    largest_pid=$(ps -eo pid,comm,%mem --sort=-%mem | awk '/antnode/ {print $1; exit}')
-    if [ -n "$largest_pid" ]; then
-    AntNodeString=$(sudo file /proc/"$largest_pid"/exe)
-    HiMemNode=$(echo $AntNodeString | grep -P -i -o '[antnode]+[0-9]+' | grep -P -i -o '[0-9]+')    
-    node_number=$HiMemNode
-    node_number=$(seq -f "%03g" $1 $1)
-    node_name=antnode$node_number
-    echo ""$time_hour":"$time_min" replace hi load node $node_name" >>/var/antctl/simplelog
-    echo "replacing $node_name"
-    sudo systemctl stop $node_name
-    echo "systemctl stop $node_name"
-    sudo rm -rf /var/antctl/services/$node_name/*
-    echo "rm -rf /var/antctl/services/$node_name/*"
-    sudo cp $NodePath /var/antctl/services/$node_name
-    echo "cp $NodePath /var/antctl/services/$node_name"
-    sudo systemctl start $node_name
-    echo "systemctl start $node_name"
-    sleep 45
-    node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
-    PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
-    node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
-    echo "updated array"
+        largest_pid=$(ps -eo pid,comm,%mem --sort=-%mem | awk '/antnode/ {print $1; exit}')
+        if [ -n "$largest_pid" ]; then
+            AntNodeString=$(sudo file /proc/"$largest_pid"/exe)
+            HiMemNode=$(echo $AntNodeString | grep -P -i -o '[antnode]+[0-9]+' | grep -P -i -o '[0-9]+')
+            node_number=$HiMemNode
+            node_number=$(seq -f "%03g" $1 $1)
+            node_name=antnode$node_number
+            echo ""$time_hour":"$time_min" replace hi load node $node_name" >>/var/antctl/simplelog
+            echo "replacing $node_name"
+            sudo systemctl stop $node_name
+            echo "systemctl stop $node_name"
+            sudo rm -rf /var/antctl/services/$node_name/*
+            echo "rm -rf /var/antctl/services/$node_name/*"
+            sudo cp $NodePath /var/antctl/services/$node_name
+            echo "cp $NodePath /var/antctl/services/$node_name"
+            sudo systemctl start $node_name
+            echo "systemctl start $node_name"
+            sleep 45
+            node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+            PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
+            node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
+            echo "updated array"
+        fi
     fi
-fi
 }
-
 
 CheckSetUp
 # overrides
@@ -525,7 +523,7 @@ if [[ ! -f "/var/antctl/config" ]] || [[ "$Action" == "4" ]]; then
 elif (($(echo $AllowCpu))) && (($(echo $AllowMem))) && (($(echo $AllowHD))) && (($(echo $LoadAllow))) && (($(echo $AllowNodeCap))) || [[ "$Action" == "1" ]]; then
     echo "start node" && echo
     StartNode
-elif (($(echo "$RemCpu == 1" | bc))) || (($(echo "$RemMem == 1" | bc))) || (($(echo "$RemHD == 1" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]] || (($(echo "$AllowNodeCap == 0" | bc))); then
+elif (($(echo "$RemCpu == 1" | bc))) || (($(echo "$RemMem == 1" | bc))) || (($(echo "$RemHD == 1" | bc))) || (($(echo "$LoadNotAllow == 1" | bc))) || [[ "$Action" == "2" ]] || (($(echo "$TotalNodes > $NodeCap" | bc))); then
     if (($(echo "$RemHD == 1" | bc))); then
         StopNode
         RemoveNode $TotalNodes
