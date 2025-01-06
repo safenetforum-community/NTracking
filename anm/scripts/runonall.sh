@@ -94,12 +94,12 @@
 #rm /var/antctl/log
 #rm /var/antctl/wallet-log
 
-#sudo systemctl start antnode001.service
+sudo systemctl start antnode001.service
 
 
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
 #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
-antup node
+#antup node
 #sudo apt update -y
 #sudo apt install file -y
 #sleep 5
