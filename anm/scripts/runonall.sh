@@ -93,6 +93,7 @@
 #rm /var/antctl/simplelog
 #rm /var/antctl/log
 #rm /var/antctl/wallet-log
+#
 
 sudo systemctl start antnode001.service
 
