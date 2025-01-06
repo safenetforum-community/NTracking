@@ -86,6 +86,7 @@ CheckSetUp() {
         echo >>/var/antctl/config
         echo 'NodeVersion="--version '$LatestNodeVer'"' >>/var/antctl/config
         . /var/antctl/config
+        sleep 10
     fi
 }
 
