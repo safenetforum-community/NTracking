@@ -128,6 +128,8 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     total_rewards_balance=$(echo "$total_rewards_balance + $rewards_balance" | bc -l)
     total_network_size=$(($total_network_size + $network_size))
 
+    sleep 1
+
 done
 
 network_size=$(echo "$total_network_size / $total_nodes_running" | bc)
