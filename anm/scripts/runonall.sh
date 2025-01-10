@@ -51,16 +51,17 @@
 #sed -i "s/^\\(UpgradeHour=\\).*/\\UpgradeHour=16/" /var/antctl/config
 #sed -i "s/^\\(NodeCap=\\).*/\\NodeCap=100/" /var/antctl/config
 
-sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=36.0/" /var/antctl/config
-sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/config
+#sed -i "s/^\\(MaxLoadAverageAllowed=\\).*/\\MaxLoadAverageAllowed=36.0/" /var/antctl/config
+#sed -i "s/^\\(DesiredLoadAverage=\\).*/\\DesiredLoadAverage=30.0/" /var/antctl/config
 
 
-sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=93/" /var/antctl/config
-sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=99/" /var/antctl/config
+#sed -i "s/^\\(MemLessThan=\\).*/\\MemLessThan=93/" /var/antctl/config
+#sed -i "s/^\\(MemRemove=\\).*/\\MemRemove=99/" /var/antctl/config
 
-sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=90/" /var/antctl/config
-sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=99/" /var/antctl/config
+#sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=90/" /var/antctl/config
+#sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=99/" /var/antctl/config
 
+sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/antctl/config
 
 #rm -rf $HOME/.local/share/autonomi/
 #rm -rf $HOME/.local/share/wallets
