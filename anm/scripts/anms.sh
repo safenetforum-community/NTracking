@@ -485,7 +485,7 @@ LoadTrimmer() {
 
         largest_pid=$(ps -eo pid,comm,%mem --sort=-%mem | awk '/antnode/ {print $1; exit}')
         #&& [[ $LoadAllow == 0 ]]
-        if [ -n "$largest_pid" ] && [[ -f "$HOME/.local/share/anm-control.sh" ]]; then
+        if [ -n "$largest_pid" ] && [[ -f "$HOME/.local/share/anm-control.sh" ]] && [[ $LoadAllow == 0 ]]; then
             AntNodeString=$(sudo file /proc/"$largest_pid"/exe)
             HiMemNode=$(echo $AntNodeString | grep -P -i -o '[antnode]+[0-9]+' | grep -P -i -o '[0-9]+')
             node_number=$HiMemNode

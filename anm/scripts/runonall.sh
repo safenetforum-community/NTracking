@@ -27,7 +27,7 @@
 
 #touch $HOME/runonallsystems
 
-#sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 #sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
 
 #make swap file
@@ -61,7 +61,7 @@
 #sed -i "s/^\\(CpuLessThan=\\).*/\\CpuLessThan=90/" /var/antctl/config
 #sed -i "s/^\\(CpuRemove=\\).*/\\CpuRemove=99/" /var/antctl/config
 
-sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/antctl/config
+#sed -i "s/^\\(DelayUpgrade=\\).*/\\DelayUpgrade=2/" /var/antctl/config
 
 #rm -rf $HOME/.local/share/autonomi/
 #rm -rf $HOME/.local/share/wallets
