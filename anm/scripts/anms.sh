@@ -85,6 +85,7 @@ CheckSetUp() {
         echo "UpgradeMin=$(shuf -i 0-59 -n 1)" >>/var/antctl/config
         echo >>/var/antctl/config
         echo 'NodeVersion="--version '$LatestNodeVer'"' >>/var/antctl/config
+        echo "CounterStart=1" >>/var/antctl/counters
         . /var/antctl/config
         sleep 10
     fi
