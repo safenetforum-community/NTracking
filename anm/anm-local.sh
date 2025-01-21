@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-ClientVersion="--version 0.3.4"
-NodeVersion="--version 0.3.4"
+ClientVersion="--version 0.3.5"
+NodeVersion="--version 0.3.5"
 
-NodeRestarVer1="0.3.4"
-NodeRestarVer2="0.2.4"
+NodeRestarVer1="0.3.5"
+NodeRestarVer2="0.2.5"
 
 #run with
 # bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/anm-local.sh)
