@@ -75,7 +75,7 @@ sudo echo -e -n ''$USER' ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-us
 
 ```
 #install safe up
-curl -sSL https://raw.githubusercontent.com/maidsafe/safeup/main/install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
 ```
 4. All nodeports closed in UFW firewall script will open and close ports as needed.
 
@@ -88,22 +88,7 @@ bash <(curl -s https://raw.githubusercontent.com/safenetforum-community/NTrackin
 # monitoring
 
 1. Ntracking prefered way to monitor 
-2. to manualy view the log file ```tail -f /var/safenode-manager/log```  This refreshes once per minnute when ams is running.
-
-# scraping 
-
-If Discord username is left blank then a scraping script will be installed at ```/usr/bin/scrape.sh```
-This will run at 5 past the hour and scrape all node wallets with nanos into the client wallet in the default location.
-The script can take some time to run as it sleeps between each wallet balance call so as to spread the load out as this can be cpu intensive.
-
-reasoning for doing once an hour is that stopping the node to get the wallet and restarting is very resource hungry and if all the nodes need scraped at once it will cause a melt down.
-once per hour means only a few nodes will be scraped at a time so as to keep the system happy.
-
-before trying to move coins out from the host check the status of the script to make sure it is not running !!!
-
-```
-tail -f /var/safenode-manager/scrape.log
-```
+2. to manualy view the log file ```tail -f /var/antctl/log```  This refreshes once per minnute when ams is running.
 
 # Stopping nodes
 
@@ -120,11 +105,11 @@ just select stop nodes option from the script and on next run it will
 1. manualy stop and clear out everything
 ```
 sudo rm /etc/cron.d/anm
-sudo systemctl stop safenode*
+sudo systemctl stop antnode*
 sudo rm /etc/systemd/system/safenode*
 sudo systemctl daemon-reload
 sudo rm -rf /var/log/safenode
-sudo rm -rf /var/safenode-manager
+sudo rm -rf /var/antctl
 sudo rm -f /usr/bin/anms.sh
 sudo rm -f /etc/cron.d/scrape
 sudo rm -f /usr/bin/scrape.sh
