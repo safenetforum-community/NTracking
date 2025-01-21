@@ -25,15 +25,6 @@ Once the script has started the first node the main script can be run again and 
 ![image](https://github.com/user-attachments/assets/0d4d1fac-bed4-4504-ae96-f460da688107)
 
 
-since the load levels go by cpu count an example for a 4 cpu system would look like this
-
-1. Low        Below 6 Start new nodes  Over 10 Stop nodes
-2. Medium     Below 8 Start new nodes  Over 12 Stop nodes
-3. High       Below 10 Start new nodes Over 14 Stop nodes
-4. Extream    Below 12 Start new nodes Over 16 Stop nodes
-
-anms.sh can stop one node each time it runs (normally every 60 ses) but can only start a new node every 3 minutes. In addition if a node is stopped for 5 hours it will delete the node.
-
 After first run a config file is created at /var/safenode-manager/config.
 
 ![image](https://github.com/user-attachments/assets/f1203a76-24d9-4633-b045-8a88ae73eb99)
