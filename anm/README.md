@@ -6,17 +6,18 @@ This script will control the number of nodes running on an ubuntu system saving 
 
 The script will be installed by selecting start nodes option
 
-![image](https://github.com/user-attachments/assets/6d7da7d0-750e-46a8-aef7-8bc0d2bfcd08)
+![image](https://github.com/user-attachments/assets/80581fa1-8ce4-44ed-b4a7-ba795deaa3ee)
+
 
 
 This will install the anms.sh script in /usr/bin and set the script to run on a 1 min cron schedule
 On first startup it will ask for
 
-1. Discord username
-2. Logging options
-3. Port range default is set at 55 which means first node will start on port 55001 and iterate up from there.
-4. NodeCap - sets a hard limit of nodes so as to not overload routers.
-
+1. Port range default is set at 55 which means first node will start on port 55001 and iterate up from there.
+2. ETH Rewards Address
+3. Node Cap - How many nodes to start
+4. Node Start Interval - sets delay in minnutes bettwen starting nodes
+5. Node Upgrade Interval - sets delay in minnutes bettwen upgrading nodes
 
 Default load levels are set to low. No more new nodes will be added when the load average exceeds (Number of cpu's * 1.5)  and will stop nodes if the load average goes to (Number of cpu's * 2.5).
 Once the script has started the first node the main script can be run again and a custom load level set if required.
