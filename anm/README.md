@@ -19,7 +19,7 @@ On first startup it will ask for
 4. Node Start Interval - sets delay in minnutes bettwen starting nodes
 5. Node Upgrade Interval - sets delay in minnutes bettwen upgrading nodes
 
-After first run a config file is created at /var/safenode-manager/config.
+After first run a config file is created at /var/antctl/config.
 
 ![image](https://github.com/user-attachments/assets/f1203a76-24d9-4633-b045-8a88ae73eb99)
 
