@@ -63,11 +63,13 @@ cd (make sure and do the cd to change to correct home folder !!!)
 sudo rm /etc/sudoers.d/*
 sudo echo -e -n ''$USER' ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/10-users
 ```
-3. Safeup must be installed.
+3. Antup & antnode must be installed.
 
 ```
-#install safe up
+#install ant up
 curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+close teminal and reopen to add antup to the path after install
+antup node
 ```
 4. All nodeports closed in UFW firewall script will open and close ports as needed.
 
