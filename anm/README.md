@@ -19,12 +19,6 @@ On first startup it will ask for
 4. Node Start Interval - sets delay in minnutes bettwen starting nodes
 5. Node Upgrade Interval - sets delay in minnutes bettwen upgrading nodes
 
-Default load levels are set to low. No more new nodes will be added when the load average exceeds (Number of cpu's * 1.5)  and will stop nodes if the load average goes to (Number of cpu's * 2.5).
-Once the script has started the first node the main script can be run again and a custom load level set if required.
-
-![image](https://github.com/user-attachments/assets/0d4d1fac-bed4-4504-ae96-f460da688107)
-
-
 After first run a config file is created at /var/safenode-manager/config.
 
 ![image](https://github.com/user-attachments/assets/f1203a76-24d9-4633-b045-8a88ae73eb99)
