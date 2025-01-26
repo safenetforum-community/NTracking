@@ -10,7 +10,8 @@ MetricsPortFirst=13001
 # Environment  setup
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/cargo
 base_dir="/var/antctl/services"
-. $HOME/.local/share/anm-wallet
+
+#. $HOME/.local/share/anm-wallet
 
 # Current time for influx database entries
 influx_time="$(date +%s%N | awk '{printf "%d0000000000\n", $0 / 10000000000}')"
@@ -49,29 +50,30 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     if [[ -n "$node_details" ]]; then
         total_nodes_running=$(($total_nodes_running + 1))
         status="\"Running\""
-        mem_used=$(echo "$node_details" | grep ant_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
-        cpu_usage=$(echo "$node_details" | grep ant_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
-        records=$(echo "$node_details" | grep ant_networking_records_stored | awk 'NR==3 {print $2}')
-        network_size=$(echo "$node_details" | grep ant_networking_estimated_network_size | awk 'NR==3 {print $2}')
-        shunned_count=$(echo "$node_details" | grep ant_networking_shunned_count_total | awk 'NR==1 {print $2}')
-        bad_peers=$(echo "$node_details" | grep ant_networking_bad_peers_count_total | awk 'NR==1 {print $2}')
-        rewards_balance=$(echo "$node_details" | grep ant_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
-        connected_peers=$(echo "$node_details" | grep ant_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
-        store_cost=$(echo "$node_details" | grep ant_networking_store_cost | awk 'NR==3 {print $2}')
         gets=$(echo "$node_details" | grep libp2p_kad_query_result_get_record_ok_total | awk '{print $2}')
         puts=$(echo "$node_details" | grep ant_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
         up_time=$(echo "$node_details" | grep ant_node_uptime | awk 'NR==3 {print $2}')
-        live_time=$(echo "$node_details" | grep ant_networking_live_time | awk 'NR==3 {print $2}')
+        rewards_balance=$(echo "$node_details" | grep ant_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
+        records=$(echo "$node_details" | grep ant_networking_records_stored | awk 'NR==3 {print $2}')
+        connected_peers=$(echo "$node_details" | grep ant_networking_connected_peers | awk 'NR==3 {print $2}')
+        network_size=$(echo "$node_details" | grep ant_networking_estimated_network_size | awk 'NR==3 {print $2}')
+        open_connections=$(echo "$node_details" | grep ant_networking_open_connections | awk 'NR==3 {print $2}')
+        total_peers=$(echo "$node_details" | grep ant_networking_peers_in_routing_table | awk 'NR==3 {print $2}')
+        shunned_count=$(echo "$node_details" | grep ant_networking_shunned_count_total | awk 'NR==1 {print $2}')
+        bad_peers=$(echo "$node_details" | grep ant_networking_bad_peers_count_total | awk 'NR==1 {print $2}')
+        mem_used=$(echo "$node_details" | grep ant_networking_process_memory_used_mb | awk 'NR==3 {print $2}')
+        cpu_usage=$(echo "$node_details" | grep ant_networking_process_cpu_usage_percentage | awk 'NR==3 {print $2}')
         rel_records=$(echo "$node_details" | grep ant_networking_relevant_records | awk 'NR==3 {print $2}')
-
-        # store cost removed set to 0 for now
-        if [[ -z "$store_cost" ]]; then
-            store_cost=0
-        fi
+        max_records=$(echo "$node_details" | grep ant_networking_max_records | awk 'NR==3 {print $2}')
+        payment_count=$(echo "$node_details" | grep ant_networking_received_payment_count | awk 'NR==3 {print $2}')
+        live_time=$(echo "$node_details" | grep ant_networking_live_time | awk 'NR==3 {print $2}')
+        shunned_closedgroup=$(echo "$node_details" | grep ant_networking_shunned_by_close_group | awk 'NR==3 {print $2}')
+        shunned_oldclosedgroup=$(echo "$node_details" | grep ant_networking_shunned_by_old_close_group | awk 'NR==3 {print $2}')
 
         if [[ -z "$puts" ]]; then
             puts=0
         fi
+
         # from metadata
         PeerId="\"$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
         NodeVersion="\"$(echo "$node_metadata" | grep ant_node_antnode_version | awk 'NR==3 {print $1}' | cut -d'"' -f 2)\""
@@ -83,25 +85,33 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
                 Shunngun=1
                 ShunnedNode=$i
                 ShunnedValue=$shunned_count
+            else
+            Shunngun=0
             fi
         fi
 
     else
         total_nodes_killed=$(($total_nodes_killed + 1))
         status="\"Stopped\""
-        mem_used=0
-        cpu_usage=0
-        records=0
-        network_size=0
-        shunned_count=0
-        bad_peers=0
-        rewards_balance=0
-        connected_peers=0
-        store_cost=0
         gets=0
         puts=0
-        live_time=0
+        up_time=0
+        rewards_balance=0
+        records=0
+        connected_peers=0
+        network_size=0
+        open_connections=0
+        total_peers=0
+        shunned_count=0
+        bad_peers=0
+        mem_used=0
+        cpu_usage=0
         rel_records=0
+        max_records=0
+        payment_count=0
+        live_time=0
+        shunned_closedgroup=0
+        shunned_oldclosedgroup=0
 
         if [[ -f "/var/antctl/NodeDetails" ]]; then
             # for anm
@@ -121,7 +131,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     fi
 
     # Format for InfluxDB
-    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,records="$records"i,connected_peers="$connected_peers"i,rewards="$rewards_balance"i,store_cost="$store_cost"i,cpu="$cpu_usage",mem="$mem_used",puts="$puts"i,gets="$gets"i,version=$NodeVersion,networ_size="$network_size"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,live_time="$live_time"i,up_time="$up_time"i,rel_records="$rel_records"i $influx_time"
+    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,version=$NodeVersion,gets="$gets"i,puts="$puts"i,up_time="$up_time"i,rewards="$rewards_balance"i,records="$records"i,connected_peers="$connected_peers"i,networ_size="$network_size"i,open_connections="$open_connections"i,total_peers="$total_peers"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,mem="$mem_used",cpu="$cpu_usage",rel_records="$rel_records"i,max_records="$max_records"i,payment_count="$payment_count"i,live_time="$live_time"i,shunned_closedgroup="$shunned_closedgroup"i,shunned_oldclosedgroup="$shunned_oldclosedgroup"i $influx_time"
     #sleep to slow script down to spread out cpu spike
     #rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc)
     #total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
