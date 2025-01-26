@@ -54,6 +54,8 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         puts=$(echo "$node_details" | grep ant_node_put_record_ok_total | awk '{print $2}' | paste -sd+ | bc)
         up_time=$(echo "$node_details" | grep ant_node_uptime | awk 'NR==3 {print $2}')
         rewards_balance=$(echo "$node_details" | grep ant_node_current_reward_wallet_balance | awk 'NR==3 {print $2}')
+        # convert rewars to ANT from attos
+        rewards_balance=$(echo "scale=18; $rewards_balance / 1000000000000000000" | bc)
         records=$(echo "$node_details" | grep ant_networking_records_stored | awk 'NR==3 {print $2}')
         connected_peers=$(echo "$node_details" | grep ant_networking_connected_peers | awk 'NR==3 {print $2}')
         network_size=$(echo "$node_details" | grep ant_networking_estimated_network_size | awk 'NR==3 {print $2}')
@@ -131,11 +133,11 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     fi
 
     # Format for InfluxDB
-    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,version=$NodeVersion,gets="$gets"i,puts="$puts"i,up_time="$up_time"i,rewards="$rewards_balance"i,records="$records"i,connected_peers="$connected_peers"i,networ_size="$network_size"i,open_connections="$open_connections"i,total_peers="$total_peers"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,mem="$mem_used",cpu="$cpu_usage",rel_records="$rel_records"i,max_records="$max_records"i,payment_count="$payment_count"i,live_time="$live_time"i,shunned_closedgroup="$shunned_closedgroup"i,shunned_oldclosedgroup="$shunned_oldclosedgroup"i $influx_time"
+    node_details_str[$i]="nodes,id=$node_number PeerId=$PeerId,status=$status,version=$NodeVersion,gets="$gets"i,puts="$puts"i,up_time="$up_time"i,rewards="$rewards_balance",records="$records"i,connected_peers="$connected_peers"i,networ_size="$network_size"i,open_connections="$open_connections"i,total_peers="$total_peers"i,shunned_count="$shunned_count"i,bad_peers="$bad_peers"i,mem="$mem_used",cpu="$cpu_usage",rel_records="$rel_records"i,max_records="$max_records"i,payment_count="$payment_count"i,live_time="$live_time"i,shunned_closedgroup="$shunned_closedgroup"i,shunned_oldclosedgroup="$shunned_oldclosedgroup"i $influx_time"
     #sleep to slow script down to spread out cpu spike
     #rewards_balance=$(echo "scale=10; $rewards_balance / 1000000000" | bc)
     #total_rewards_balance=$(echo "scale=10; $total_rewards_balance + $rewards_balance" | bc -l)
-    total_rewards_balance=$(echo "$total_rewards_balance + $rewards_balance" | bc -l)
+    total_rewards_balance=$(echo "scale=18; $total_rewards_balance + $rewards_balance" | bc -l)
     total_network_size=$(($total_network_size + $network_size))
 
     sleep 1
@@ -160,8 +162,8 @@ if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
     market_cap_usd=$(awk -F'[:}]' '{print $6}' <<<$coingecko)
 
     # calculate earnings in usd & gbp
-    earnings_gbp=$(echo $total_rewards_balance*$exchange_rate_gbp/1000000000000000000 | bc)
-    earnings_usd=$(echo $total_rewards_balance*$exchange_rate_usd/1000000000000000000 | bc)
+    earnings_gbp=$(echo scale=20; $total_rewards_balance*$exchange_rate_gbp | bc)
+    earnings_usd=$(echo scale=20; $total_rewards_balance*$exchange_rate_usd | bc)
 fi
 
 # get wallet balacnes direct from arbitrum wallet
