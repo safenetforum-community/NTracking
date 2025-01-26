@@ -159,9 +159,9 @@ if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
     exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<<$coingecko)
     market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<<$coingecko)
     exchange_rate_eur=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
-    market_cap_eur=$(awk -F'[:}]' '{print $9}' <<<$coingecko)
+    market_cap_eur=$(awk -F'[:,}]' '{print $9}' <<<$coingecko)
     exchange_rate_usd=$(awk -F'[:,]' '{print $11}' <<<$coingecko)
-    market_cap_usd=$(awk -F'[:}]' '{print $13}' <<<$coingecko)
+    market_cap_usd=$(awk -F'[:,}]' '{print $13}' <<<$coingecko)
 
     # calculate earnings in usd & gbp
     earnings_gbp=$(echo "scale=20; $total_rewards_balance*$exchange_rate_gbp" | bc)
