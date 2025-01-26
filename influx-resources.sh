@@ -162,8 +162,8 @@ if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
     market_cap_usd=$(awk -F'[:}]' '{print $6}' <<<$coingecko)
 
     # calculate earnings in usd & gbp
-    earnings_gbp=$(echo scale=20; $total_rewards_balance*$exchange_rate_gbp | bc)
-    earnings_usd=$(echo scale=20; $total_rewards_balance*$exchange_rate_usd | bc)
+    earnings_gbp=$(echo "scale=20; $total_rewards_balance*$exchange_rate_gbp" | bc)
+    earnings_usd=$(echo "scale=20; $total_rewards_balance*$exchange_rate_usd" | bc)
 fi
 
 # get wallet balacnes direct from arbitrum wallet
