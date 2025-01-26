@@ -155,14 +155,17 @@ if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
     # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
     # https://www.coingecko.com/api/documentation
     ##############################################################################################
-    coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp%2Cusd&include_market_cap=true' -H 'accept: application/json')
+    coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp,eur%2Cusd&include_market_cap=true' -H 'accept: application/json')
     exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<<$coingecko)
     market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<<$coingecko)
-    exchange_rate_usd=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
-    market_cap_usd=$(awk -F'[:}]' '{print $6}' <<<$coingecko)
+    exchange_rate_eur=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
+    market_cap_eur=$(awk -F'[:}]' '{print $9}' <<<$coingecko)
+    exchange_rate_usd=$(awk -F'[:,]' '{print $11}' <<<$coingecko)
+    market_cap_usd=$(awk -F'[:}]' '{print $13}' <<<$coingecko)
 
     # calculate earnings in usd & gbp
     earnings_gbp=$(echo "scale=20; $total_rewards_balance*$exchange_rate_gbp" | bc)
+    earnings_eur=$(echo "scale=20; $total_rewards_balance*$exchange_rate_eur" | bc)
     earnings_usd=$(echo "scale=20; $total_rewards_balance*$exchange_rate_usd" | bc)
 fi
 
@@ -196,5 +199,6 @@ echo "nodes latency=$latency $influx_time"
 echo "$walletbalance"
 if [[ $geko_time == 1 ]]; then
     echo "nodes_coingecko,curency=gbp exchange_rate=$exchange_rate_gbp,marketcap=$market_cap_gbp,earnings=$earnings_gbp  $influx_time"
+    echo "nodes_coingecko,curency=eur exchange_rate=$exchange_rate_eur,marketcap=$market_cap_eur,earnings=$earnings_eur  $influx_time"
     echo "nodes_coingecko,curency=usd exchange_rate=$exchange_rate_usd,marketcap=$market_cap_usd,earnings=$earnings_usd  $influx_time"
 fi
