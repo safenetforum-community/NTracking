@@ -317,7 +317,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -30m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -1051,7 +1051,7 @@
           "refId": "A"
         }
       ],
-      "title": "CPU",
+      "title": "Hard Drive",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -1502,7 +1502,7 @@
           "refId": "A"
         }
       ],
-      "title": "Host earnings in Atto's",
+      "title": "Host earnings in ANT",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -1824,26 +1824,26 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
+                "color": "green",
                 "value": null
               },
               {
-                "color": "dark-green",
-                "value": 604800
+                "color": "red",
+                "value": 80
               }
             ]
           },
-          "unit": "s"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 1,
+        "h": 7,
+        "w": 2,
         "x": 0,
         "y": 84
       },
-      "id": 65078,
+      "id": 65081,
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -1886,7 +1886,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r.host =~ /${host}/ and\n    r._measurement == \"system\" and\n    r._field == \"uptime\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r.host == \"${host}\" and \n    r._measurement == \"system\" and\n    r._field == \"n_cpus\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1907,113 +1907,7 @@
           "tags": []
         }
       ],
-      "title": "Uptime",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#299c46",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 1
-              },
-              {
-                "color": "#d44a3a",
-                "value": 5
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 1,
-        "x": 1,
-        "y": 84
-      },
-      "id": 65085,
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"processes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total\")\n  |> filter(fn: (r) =>  r.host == \"${host}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Processes",
+      "title": "CPUs",
       "type": "stat"
     },
     {
@@ -2053,7 +1947,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
+        "w": 4,
         "x": 2,
         "y": 84
       },
@@ -2159,8 +2053,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 4,
+        "w": 4,
+        "x": 6,
         "y": 84
       },
       "id": 65122,
@@ -2265,8 +2159,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 6,
+        "w": 4,
+        "x": 10,
         "y": 84
       },
       "id": 65083,
@@ -2371,8 +2265,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 8,
+        "w": 4,
+        "x": 14,
         "y": 84
       },
       "id": 65079,
@@ -2450,6 +2344,319 @@
           "color": {
             "mode": "thresholds"
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 604800
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 18,
+        "y": 84
+      },
+      "id": 65078,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r.host =~ /${host}/ and\n    r._measurement == \"system\" and\n    r._field == \"uptime\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#299c46",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 1
+              },
+              {
+                "color": "#d44a3a",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 20,
+        "y": 84
+      },
+      "id": 65086,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"processes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total_threads\")\n  |> filter(fn: (r) =>  r.host == \"${host}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Threads",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#299c46",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 1
+              },
+              {
+                "color": "#d44a3a",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 22,
+        "y": 84
+      },
+      "id": 65085,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"processes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total\")\n  |> filter(fn: (r) =>  r.host == \"${host}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Processes",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "decimals": 1,
           "mappings": [],
           "max": 4,
@@ -2482,8 +2689,8 @@
       "gridPos": {
         "h": 7,
         "w": 3,
-        "x": 10,
-        "y": 84
+        "x": 0,
+        "y": 91
       },
       "id": 65120,
       "maxDataPoints": 100,
@@ -2581,8 +2788,8 @@
       "gridPos": {
         "h": 7,
         "w": 2,
-        "x": 13,
-        "y": 84
+        "x": 3,
+        "y": 91
       },
       "id": 65092,
       "options": {
@@ -2658,9 +2865,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 15,
-        "y": 84
+        "w": 3,
+        "x": 5,
+        "y": 91
       },
       "id": 65094,
       "options": {
@@ -2691,7 +2898,7 @@
           "refId": "A"
         }
       ],
-      "title": "Attos",
+      "title": "ANT",
       "transformations": [
         {
           "id": "calculateField",
@@ -2731,9 +2938,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 17,
-        "y": 84
+        "w": 3,
+        "x": 8,
+        "y": 91
       },
       "id": 65119,
       "options": {
@@ -2790,9 +2997,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 19,
-        "y": 84
+        "w": 3,
+        "x": 11,
+        "y": 91
       },
       "id": 65117,
       "options": {
@@ -2824,7 +3031,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -30m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> group(columns: [\"_value\"])\r\n  |> map(fn: (r) => ({_value: r._value, Ver: 1}))\r\n  |> cumulativeSum(columns: [\"Ver\"]) \r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -2860,9 +3067,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 1,
-        "x": 21,
-        "y": 84
+        "w": 3,
+        "x": 14,
+        "y": 91
       },
       "id": 65103,
       "options": {
@@ -2925,9 +3132,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 1,
-        "x": 22,
-        "y": 84
+        "w": 3,
+        "x": 17,
+        "y": 91
       },
       "id": 65106,
       "options": {
@@ -2990,9 +3197,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 1,
-        "x": 23,
-        "y": 84
+        "w": 4,
+        "x": 20,
+        "y": 91
       },
       "id": 65091,
       "options": {
@@ -3036,213 +3243,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 1,
-        "x": 0,
-        "y": 87
-      },
-      "id": 65081,
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r.host == \"${host}\" and \n    r._measurement == \"system\" and\n    r._field == \"n_cpus\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "CPUs",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#299c46",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 1
-              },
-              {
-                "color": "#d44a3a",
-                "value": 5
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 1,
-        "x": 1,
-        "y": 87
-      },
-      "id": 65086,
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"processes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total_threads\")\n  |> filter(fn: (r) =>  r.host == \"${host}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Threads",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "decimals": 1,
           "mappings": [],
           "max": 100,
@@ -3272,7 +3272,7 @@
         "h": 8,
         "w": 2,
         "x": 0,
-        "y": 91
+        "y": 98
       },
       "id": 65087,
       "maxDataPoints": 100,
@@ -3376,7 +3376,7 @@
         "h": 8,
         "w": 3,
         "x": 2,
-        "y": 91
+        "y": 98
       },
       "id": 65080,
       "maxDataPoints": 100,
@@ -3482,7 +3482,7 @@
         "h": 8,
         "w": 3,
         "x": 5,
-        "y": 91
+        "y": 98
       },
       "id": 65084,
       "maxDataPoints": 100,
@@ -3616,7 +3616,7 @@
         "h": 8,
         "w": 3,
         "x": 8,
-        "y": 91
+        "y": 98
       },
       "id": 28239,
       "interval": "$inter",
@@ -3755,7 +3755,7 @@
         "h": 8,
         "w": 13,
         "x": 11,
-        "y": 91
+        "y": 98
       },
       "id": 42026,
       "interval": "$inter",
@@ -3957,7 +3957,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 99
+        "y": 106
       },
       "id": 54694,
       "interval": "$inter",
@@ -4120,7 +4120,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 99
+        "y": 106
       },
       "id": 12054,
       "interval": "$inter",
@@ -4285,7 +4285,7 @@
         "h": 10,
         "w": 5,
         "x": 12,
-        "y": 99
+        "y": 106
       },
       "id": 52240,
       "interval": "$inter",
@@ -4431,7 +4431,7 @@
         "h": 10,
         "w": 7,
         "x": 17,
-        "y": 99
+        "y": 106
       },
       "id": 13782,
       "interval": "$inter",
@@ -4631,7 +4631,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 109
+        "y": 116
       },
       "id": 56720,
       "interval": "$inter",
@@ -4831,7 +4831,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 109
+        "y": 116
       },
       "id": 60200,
       "interval": "$inter",
@@ -5023,7 +5023,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "sishort"
         },
         "overrides": []
       },
@@ -5031,7 +5031,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 124
       },
       "id": 65113,
       "options": {
@@ -5056,7 +5056,7 @@
           "refId": "A"
         }
       ],
-      "title": "Node earnings in Attos",
+      "title": "Node earnings in ANT",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -5121,7 +5121,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "sishort"
         },
         "overrides": [
           {
@@ -5193,6 +5194,10 @@
               {
                 "id": "unit",
                 "value": "percent"
+              },
+              {
+                "id": "custom.width",
+                "value": 111
               }
             ]
           },
@@ -5205,6 +5210,10 @@
               {
                 "id": "unit",
                 "value": "decmbytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 107
               }
             ]
           },
@@ -5262,7 +5271,7 @@
         "h": 25,
         "w": 24,
         "x": 0,
-        "y": 126
+        "y": 133
       },
       "id": 65124,
       "options": {
@@ -5278,12 +5287,7 @@
         },
         "frameIndex": 78,
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "PeerId"
-          }
-        ]
+        "sortBy": []
       },
       "pluginVersion": "11.2.0",
       "targets": [
@@ -5292,7 +5296,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -20m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\" or r[\"_field\"] == \"store_cost\" or r[\"_field\"] == \"status\" or r[\"_field\"] == \"shunned_count\" or r[\"_field\"] == \"rewards\" or r[\"_field\"] == \"records\" or r[\"_field\"] == \"puts\" or r[\"_field\"] == \"networ_size\" or r[\"_field\"] == \"mem\" or r[\"_field\"] == \"gets\" or r[\"_field\"] == \"cpu\" or r[\"_field\"] == \"connected_peers\" or r[\"_field\"] == \"bad_peers\" or r[\"_field\"] == \"PeerId\" or r[\"_field\"] == \"live_time\" or r[\"_field\"] == \"rel_records\" or r[\"_field\"] == \"up_time\")\r\n  |> drop(columns: [\"_start\", \"_stop\", \"result\", \"table\", \"_path\", \"_measurement\", \"path\", \"latency\"])\r\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\r\n  |> group()",
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: -30m, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"version\" or r[\"_field\"] == \"up_time\" or r[\"_field\"] == \"total_peers\" or r[\"_field\"] == \"store_cost\" or r[\"_field\"] == \"status\" or r[\"_field\"] == \"shunned_oldclosedgroup\" or r[\"_field\"] == \"shunned_count\" or r[\"_field\"] == \"shunned_closedgroup\" or r[\"_field\"] == \"rewards\" or r[\"_field\"] == \"records\" or r[\"_field\"] == \"rel_records\" or r[\"_field\"] == \"puts\" or r[\"_field\"] == \"payment_count\" or r[\"_field\"] == \"open_connections\" or r[\"_field\"] == \"networ_size\" or r[\"_field\"] == \"mem\" or r[\"_field\"] == \"max_records\" or r[\"_field\"] == \"live_time\" or r[\"_field\"] == \"gets\" or r[\"_field\"] == \"cpu\" or r[\"_field\"] == \"connected_peers\" or r[\"_field\"] == \"PeerId\" or r[\"_field\"] == \"bad_peers\")\r\n  |> drop(columns: [\"_start\", \"_stop\", \"result\", \"table\", \"_path\", \"_measurement\", \"path\", \"latency\"])\r\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\r\n  |> group()",
           "refId": "A"
         }
       ],
@@ -5302,48 +5306,61 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "_time": true
+              "PeerId": true,
+              "_time": true,
+              "latency": true
             },
             "includeByName": {},
             "indexByName": {
               "PeerId": 3,
               "_time": 1,
-              "bad_peers": 16,
-              "connected_peers": 8,
-              "cpu": 9,
-              "gets": 12,
+              "bad_peers": 22,
+              "connected_peers": 11,
+              "cpu": 6,
+              "gets": 15,
               "host": 0,
               "id": 2,
-              "live_time": 6,
-              "mem": 10,
-              "networ_size": 7,
-              "puts": 11,
-              "records": 13,
-              "rel_records": 14,
-              "rewards": 19,
-              "shunned_count": 15,
+              "live_time": 9,
+              "max_records": 18,
+              "mem": 7,
+              "networ_size": 13,
+              "open_connections": 12,
+              "payment_count": 23,
+              "puts": 14,
+              "records": 16,
+              "rel_records": 17,
+              "rewards": 24,
+              "shunned_closedgroup": 20,
+              "shunned_count": 19,
+              "shunned_oldclosedgroup": 21,
               "status": 4,
-              "store_cost": 18,
+              "total_peers": 10,
               "up_time": 5,
-              "version": 17
+              "version": 8
             },
             "renameByName": {
               "PeerId": "PeerID",
               "bad_peers": "Bad peers",
-              "connected_peers": "Peers",
+              "connected_peers": "Active Peers",
               "cpu": "Cpu",
               "gets": "Gets",
               "id": "Node",
               "live_time": "Live time",
+              "max_records": "Max records",
               "mem": "Mem",
               "networ_size": "Network size",
+              "open_connections": "Connections",
+              "payment_count": "Pay count",
               "puts": "Puts",
               "records": "Records stored",
               "rel_records": "Live Records",
-              "rewards": "Attos",
-              "shunned_count": "Shunned",
+              "rewards": "ANT",
+              "shunned_closedgroup": "Shunn group",
+              "shunned_count": "Total shunn",
+              "shunned_oldclosedgroup": "Shunn old group",
               "status": "Status",
               "store_cost": "Stoe cost",
+              "total_peers": "Total Peers",
               "up_time": "Up time",
               "version": "Ver"
             }
@@ -5549,6 +5566,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 90,
+  "version": 109,
   "weekStart": ""
 }
