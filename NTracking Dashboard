@@ -128,7 +128,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "sishort"
         },
         "overrides": []
       },
@@ -283,7 +283,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
+        "w": 3,
         "x": 6,
         "y": 1
       },
@@ -354,8 +354,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
-        "x": 8,
+        "w": 4,
+        "x": 9,
         "y": 1
       },
       "id": 65098,
@@ -412,7 +412,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 3,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -433,8 +433,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 3,
-        "x": 11,
+        "w": 4,
+        "x": 13,
         "y": 1
       },
       "id": 65129,
@@ -491,7 +491,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 6,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -512,87 +512,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 14,
-        "y": 1
-      },
-      "id": 65107,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_coingecko\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")\r\n    |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> filter(fn: (r) => r[\"curency\"] == \"gbp\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
-        }
-      ],
-      "title": "Exchange Rate",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 6,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 50
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 2,
-        "x": 16,
+        "w": 4,
+        "x": 17,
         "y": 1
       },
       "id": 65099,
@@ -649,85 +570,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 50
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 4,
-        "x": 18,
-        "y": 1
-      },
-      "id": 65111,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_network\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"size\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
-        }
-      ],
-      "title": "Network size",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 3,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -748,8 +591,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 2,
-        "x": 22,
+        "w": 3,
+        "x": 21,
         "y": 1
       },
       "id": 65126,
@@ -804,6 +647,324 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 32,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 0,
+        "y": 8
+      },
+      "id": 65107,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_coingecko\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")\r\n    |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> filter(fn: (r) => r[\"curency\"] == \"gbp\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
+        }
+      ],
+      "title": "Exchange Rate",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 32,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 7,
+        "x": 9,
+        "y": 8
+      },
+      "id": 65133,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_coingecko\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"marketcap\")\r\n    |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> filter(fn: (r) => r[\"curency\"] == \"gbp\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
+        }
+      ],
+      "title": "Market cap",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 32,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 65111,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"telegraf\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"nodes_network\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"size\")\r\n  |> filter(fn: (r) => r.host == \"${host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "from(bucket: \"telegraf\")   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)   |> filter(fn: (r) => r[\"_measurement\"] == \"coingecko\")   |> filter(fn: (r) => r[\"_field\"] == \"exchange_rate\")   |> filter(fn: (r) => r[\"curency\"] == \"gbp\")   |> filter(fn: (r) => r[\"host\"] == \"s00\")   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)   |> yield(name: \"last\")"
+        }
+      ],
+      "title": "Network size",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "decimals": 0,
@@ -834,7 +995,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 15
       },
       "id": 65102,
       "options": {
@@ -937,7 +1098,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 25
       },
       "id": 65130,
       "options": {
@@ -1019,7 +1180,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 35
       },
       "id": 65132,
       "options": {
@@ -1132,8 +1293,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1149,7 +1309,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 45
       },
       "id": 65115,
       "options": {
@@ -1224,8 +1384,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "green",
@@ -1241,7 +1400,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 55
       },
       "id": 65127,
       "options": {
@@ -1335,8 +1494,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1352,7 +1510,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 62
       },
       "id": 65108,
       "options": {
@@ -1459,8 +1617,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1476,7 +1633,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 72
       },
       "id": 65128,
       "options": {
@@ -1583,8 +1740,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1600,7 +1756,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 75
+        "y": 82
       },
       "id": 65116,
       "options": {
@@ -1707,8 +1863,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1724,7 +1879,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 75
+        "y": 82
       },
       "id": 65118,
       "options": {
@@ -1793,7 +1948,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 83
+        "y": 90
       },
       "id": 65058,
       "panels": [],
@@ -1824,8 +1979,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1841,7 +1995,7 @@
         "h": 7,
         "w": 2,
         "x": 0,
-        "y": 84
+        "y": 91
       },
       "id": 65081,
       "maxDataPoints": 100,
@@ -1928,8 +2082,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -1949,7 +2102,7 @@
         "h": 7,
         "w": 4,
         "x": 2,
-        "y": 84
+        "y": 91
       },
       "id": 65082,
       "maxDataPoints": 100,
@@ -2034,8 +2187,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -2055,7 +2207,7 @@
         "h": 7,
         "w": 4,
         "x": 6,
-        "y": 84
+        "y": 91
       },
       "id": 65122,
       "maxDataPoints": 100,
@@ -2140,8 +2292,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -2161,7 +2312,7 @@
         "h": 7,
         "w": 4,
         "x": 10,
-        "y": 84
+        "y": 91
       },
       "id": 65083,
       "maxDataPoints": 100,
@@ -2246,8 +2397,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -2267,7 +2417,7 @@
         "h": 7,
         "w": 4,
         "x": 14,
-        "y": 84
+        "y": 91
       },
       "id": 65079,
       "maxDataPoints": 100,
@@ -2349,8 +2499,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "dark-green",
@@ -2366,7 +2515,7 @@
         "h": 7,
         "w": 2,
         "x": 18,
-        "y": 84
+        "y": 91
       },
       "id": 65078,
       "maxDataPoints": 100,
@@ -2451,8 +2600,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -2472,7 +2620,7 @@
         "h": 7,
         "w": 2,
         "x": 20,
-        "y": 84
+        "y": 91
       },
       "id": 65086,
       "maxDataPoints": 100,
@@ -2557,8 +2705,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -2578,7 +2725,7 @@
         "h": 7,
         "w": 2,
         "x": 22,
-        "y": 84
+        "y": 91
       },
       "id": 65085,
       "maxDataPoints": 100,
@@ -2665,8 +2812,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "dark-yellow",
@@ -2690,7 +2836,7 @@
         "h": 7,
         "w": 3,
         "x": 0,
-        "y": 91
+        "y": 98
       },
       "id": 65120,
       "maxDataPoints": 100,
@@ -2772,8 +2918,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "green",
@@ -2789,7 +2934,7 @@
         "h": 7,
         "w": 2,
         "x": 3,
-        "y": 91
+        "y": 98
       },
       "id": 65092,
       "options": {
@@ -2850,8 +2995,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "green",
@@ -2867,7 +3011,7 @@
         "h": 7,
         "w": 3,
         "x": 5,
-        "y": 91
+        "y": 98
       },
       "id": 65094,
       "options": {
@@ -2928,8 +3072,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -2940,7 +3083,7 @@
         "h": 7,
         "w": 3,
         "x": 8,
-        "y": 91
+        "y": 98
       },
       "id": 65119,
       "options": {
@@ -2999,7 +3142,7 @@
         "h": 7,
         "w": 3,
         "x": 11,
-        "y": 91
+        "y": 98
       },
       "id": 65117,
       "options": {
@@ -3053,8 +3196,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3069,7 +3211,7 @@
         "h": 7,
         "w": 3,
         "x": 14,
-        "y": 91
+        "y": 98
       },
       "id": 65103,
       "options": {
@@ -3118,8 +3260,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3134,7 +3275,7 @@
         "h": 7,
         "w": 3,
         "x": 17,
-        "y": 91
+        "y": 98
       },
       "id": 65106,
       "options": {
@@ -3183,8 +3324,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3199,7 +3339,7 @@
         "h": 7,
         "w": 4,
         "x": 20,
-        "y": 91
+        "y": 98
       },
       "id": 65091,
       "options": {
@@ -3251,8 +3391,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -3272,7 +3411,7 @@
         "h": 8,
         "w": 2,
         "x": 0,
-        "y": 98
+        "y": 105
       },
       "id": 65087,
       "maxDataPoints": 100,
@@ -3355,8 +3494,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -3376,7 +3514,7 @@
         "h": 8,
         "w": 3,
         "x": 2,
-        "y": 98
+        "y": 105
       },
       "id": 65080,
       "maxDataPoints": 100,
@@ -3461,8 +3599,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -3482,7 +3619,7 @@
         "h": 8,
         "w": 3,
         "x": 5,
-        "y": 98
+        "y": 105
       },
       "id": 65084,
       "maxDataPoints": 100,
@@ -3599,8 +3736,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3616,7 +3752,7 @@
         "h": 8,
         "w": 3,
         "x": 8,
-        "y": 98
+        "y": 105
       },
       "id": 28239,
       "interval": "$inter",
@@ -3738,8 +3874,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3755,7 +3890,7 @@
         "h": 8,
         "w": 13,
         "x": 11,
-        "y": 98
+        "y": 105
       },
       "id": 42026,
       "interval": "$inter",
@@ -3940,8 +4075,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3957,7 +4091,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 106
+        "y": 113
       },
       "id": 54694,
       "interval": "$inter",
@@ -4079,8 +4213,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4120,7 +4253,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 106
+        "y": 113
       },
       "id": 12054,
       "interval": "$inter",
@@ -4244,8 +4377,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4285,7 +4417,7 @@
         "h": 10,
         "w": 5,
         "x": 12,
-        "y": 106
+        "y": 113
       },
       "id": 52240,
       "interval": "$inter",
@@ -4414,8 +4546,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4431,7 +4562,7 @@
         "h": 10,
         "w": 7,
         "x": 17,
-        "y": 106
+        "y": 113
       },
       "id": 13782,
       "interval": "$inter",
@@ -4614,8 +4745,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4631,7 +4761,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 116
+        "y": 123
       },
       "id": 56720,
       "interval": "$inter",
@@ -4814,8 +4944,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4831,7 +4960,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 116
+        "y": 123
       },
       "id": 60200,
       "interval": "$inter",
@@ -5014,8 +5143,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5031,7 +5159,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 124
+        "y": 131
       },
       "id": 65113,
       "options": {
@@ -5113,8 +5241,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5153,8 +5280,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -5229,8 +5355,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-red",
-                      "value": null
+                      "color": "dark-red"
                     },
                     {
                       "color": "semi-dark-green",
@@ -5271,7 +5396,7 @@
         "h": 25,
         "w": 24,
         "x": 0,
-        "y": 133
+        "y": 140
       },
       "id": 65124,
       "options": {
@@ -5566,6 +5691,6 @@
   "timezone": "browser",
   "title": "Safe Dashboard",
   "uid": "7JdIffTn9z",
-  "version": 110,
+  "version": 117,
   "weekStart": ""
 }
