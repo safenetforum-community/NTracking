@@ -177,6 +177,7 @@ fi
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
+UsedHdPercent=$(df -hP /var | awk '{print $5}' | tail -1 | sed 's/%$//g')
 
 # sleep till all nodes have systems have finished prosessing
 
@@ -193,7 +194,7 @@ for num in $(echo "${!node_details_str[@]}" | tr ' ' '\n' | sort -n); do
 done
 
 echo "nodes_totals rewards=$total_rewards_balance,nodes_running="$total_nodes_running"i,nodes_killed="$total_nodes_killed"i $influx_time"
-echo "nodes_totals total_disk="$total_disk"i $influx_time"
+echo "nodes_totals total_disk="$total_disk"i,Disk_percent="$UsedHdPercent"i $influx_time"
 echo "nodes_network size="$network_size"i $influx_time"
 echo "nodes latency=$latency $influx_time"
 echo "$walletbalance"
