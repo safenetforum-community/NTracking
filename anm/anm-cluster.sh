@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 ClientVersion="--version 0.3.5"
 NodeVersion="--version 0.3.5"
 
@@ -55,7 +54,8 @@ SELECTION=$(whiptail --title "aatonnomicc cluster controler v 2.0 " --radiolist 
     "8" "Upgrade nodes                                 " OFF \
     "9" "Rolling restart                               " OFF \
     "10" "Anm-control deploy                           " OFF \
-    "11" "Anm-wallet deploy                            " OFF 3>&1 1>&2 2>&3)
+    "11" "Anm-wallet deploy                            " OFF \
+    "12" "Start wallet switch                          " OFF 3>&1 1>&2 2>&3)
 
 if [[ $? -eq 255 ]]; then
     exit 0
@@ -154,7 +154,7 @@ elif [[ "$SELECTION" == "7" ]]; then
 elif [[ "$SELECTION" == "8" ]]; then
 
     for machine in $machines; do
-        ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && . $HOME/.local/share/anm-control.sh && rm $HOME/.local/share/anm-control' >/dev/null 2>&1 &
+        ssh -t $machine 'chmod u+x $HOME/.local/share/anm-control.sh && . $HOME/.local/share/anm-control.sh' >/dev/null 2>&1 &
         disown
         echo "$machine anm-control upgrade nodes request sent"
         sleep 2
@@ -194,12 +194,29 @@ elif [[ "$SELECTION" == "11" ]]; then
         for machine in $machines; do
             rsync -avz --update $HOME/.local/share/anm-wallet $machine:$HOME/.local/share/anm-wallet >/dev/null 2>&1 &
             disown
+            rsync -avz --update $HOME/.local/share/anm-switch-wallets.sh $machine:$HOME/.local/share/anm-switch-wallets.sh >/dev/null 2>&1 &
+            disown
             echo "$machine anm-wallet deploy request sent"
             sleep 2
         done &
         disown
     else
         echo "no anm-control detected"
+    fi
+
+######################################################################################################################## switch wallets
+elif [[ "$SELECTION" == "12" ]]; then
+
+    if [[ -f "$HOME/.local/share/anm-wallet" ]]; then
+        for machine in $machines; do
+            ssh -t $machine 'chmod u+x $HOME/.local/share/anm-switch-wallets.sh && . $HOME/.local/share/anm-switch-wallets.sh' >/dev/null 2>&1 &
+            disown
+            echo "$machine anm-wallet switch wallets request sent"
+            sleep 2
+        done &
+        disown
+    else
+        echo "no switch wallets detected"
     fi
 fi
 
