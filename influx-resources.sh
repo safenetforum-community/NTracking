@@ -149,7 +149,7 @@ network_size=$(echo "$total_network_size / $total_nodes_running" | bc)
 # Latency
 latency=$(ping -c 4 8.8.8.8 | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
 
-if [[ $time_min == 0 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
+if [[ $time_min == 00 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
     geko_time=1
     ##############################################################################################
     # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
