@@ -201,7 +201,13 @@ TearDown() {
     echo "rm -rf /var/antctl"
     sudo rm -f /usr/bin/anms.sh
     echo
-    sudo reboot
+
+    if [[ -f "$HOME/.local/share/no-reboot" ]]; then
+        sleep 1
+    else
+        sudo reboot
+    fi
+
 }
 
 RemoveNode() {
