@@ -170,7 +170,7 @@ if [[ $time_min == 00 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
 fi
 
 # get wallet balacnes direct from arbitrum wallet
-attos=$(wget -qO- https://sepolia.arbiscan.io/token/0xbe1802c27c324a28aebcd7eec7d734246c807194?a=$WalletAddress 2>&1 | grep -oP "[0-9]+.[0-9]+ (ANT)" | awk '{print $1}')
+attos=$(wget -qO- curl https://arbiscan.io/token/0xa78d8321B20c4Ef90eCd72f2588AA985A4BDb684?a=$WalletAddress 2>&1 | grep -oP "[0-9]+.[0-9]+ (ANT)" | awk '{print $1}')
 if [[ -n "$attos" ]]; then
     walletbalance="nodes_totals total_attos="$attos" $influx_time"
 fi
