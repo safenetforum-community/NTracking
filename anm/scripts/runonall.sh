@@ -111,4 +111,4 @@
 #rm /var/antctl/block
 #rm /var/antctl/config
 
-rf $HOME/.local/share/autonomi/anm-control.sh
+rf $HOME/.local/share/anm-control.sh
