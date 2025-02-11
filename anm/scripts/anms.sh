@@ -158,7 +158,7 @@ AddNode() {
 Description=$node_name
 [Service]
 User=ant
-ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-sepolia
+ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
 Restart=always
 #RestartSec=300
 EOF
