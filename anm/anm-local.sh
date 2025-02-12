@@ -121,7 +121,7 @@ elif [[ "$SELECTION" == "7" ]]; then
     #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
     #antup node
 
-    #update node and client
+    # update node and client
 
     if [[ -f "$HOME/.local/share/anm-control" ]]; then
         . $HOME/.local/share/anm-control
