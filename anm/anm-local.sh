@@ -117,9 +117,9 @@ elif [[ "$SELECTION" == "7" ]]; then
     sudo swapoff -a
 
     # install antup
-    curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
-    curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
-    antup node
+    #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | bash
+    #curl -sSL https://raw.githubusercontent.com/maidsafe/antup/main/install.sh | sudo bash
+    #antup node
 
     #update node and client
 
