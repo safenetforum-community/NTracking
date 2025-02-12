@@ -46,8 +46,8 @@ CheckSetUp() {
         sudo useradd -m -p ed5wsejw6S4ifjlwjfSlwj ant
         sudo mkdir -p /var/antctl/
         sudo chown -R $USER:$USER /var/antctl/
-        sudo mkdir -p /var/antctl/services/ /var/log/antnode/
-        sudo chown -R ant:ant /var/antctl/services/ /var/log/antnode/
+        sudo mkdir -p /var/antctl/services/ /var/log/antnode/ /var/antctl/services/bootstrap-cache/
+        sudo chown -R ant:ant /var/antctl/services/ /var/log/antnode/ /var/antctl/services/bootstrap-cache/
         echo "CpuCount=$(echo "$(nproc) / 1" | bc)" >>/var/antctl/system
         . /var/antctl/system
         echo "CounterStart=0" >>/var/antctl/counters
@@ -158,7 +158,7 @@ AddNode() {
 Description=$node_name
 [Service]
 User=ant
-ExecStart=/var/antctl/services/$node_name/antnode --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
+ExecStart=/var/antctl/services/$node_name/antnode --bootstrap-cache-dir /var/antctl/services/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
 Restart=always
 #RestartSec=300
 EOF
