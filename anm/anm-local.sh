@@ -178,8 +178,8 @@ elif [[ "$SELECTION" == "7" ]]; then
         exit 0
     fi
     # Set new storage location
-    sudo sed -i 's,/var/antctl/services,/'$NodeStorage'/g' /usr/bin/anms.sh
-
+    sudo sed -i 's,/var/antctl/services,'$NodeStorage',g' /usr/bin/anms.sh
+    
     ### set nodecount
     NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
