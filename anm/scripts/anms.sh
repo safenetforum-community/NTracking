@@ -78,6 +78,11 @@ CheckSetUp() {
         echo "DelayReStart=5" >>/var/antctl/config
         echo "DelayUpgrade=5" >>/var/antctl/config
         echo "DelayRemove=10" >>/var/antctl/config
+<<<<<<< HEAD
+=======
+        echo >>/var/antctl/config
+        echo "NodeStorage=/var/antctl/services" >>/var/antctl/config
+>>>>>>> ec664f9 (typo)
         echo >>/var/antctl/config
         echo "NodeCap=20" >>/var/antctl/config
         echo >>/var/antctl/config
