@@ -122,7 +122,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
         else
             # for antctl node manager service
             PeerId="\"NotReachableStoppedNode\""
-            NodeVersion="\"$(/var/antctl/services/antnode$i/antnode -V | awk '{print $3}')\""
+            NodeVersion="\"$(${base_dir}/antnode$i/antnode -V | awk '{print $3}')\""
         fi
     fi
 
@@ -179,7 +179,7 @@ fi
 
 # calculate total storage of the node services folder
 total_disk=$(echo "scale=0;("$(du -s "$base_dir" | cut -f1)")/1024" | bc)
-UsedHdPercent=$(df -hP /var | awk '{print $5}' | tail -1 | sed 's/%$//g')
+UsedHdPercent=$(df -hP ${base_dir} | awk '{print $5}' | tail -1 | sed 's/%$//g')
 
 # sleep till all nodes have systems have finished prosessing
 
