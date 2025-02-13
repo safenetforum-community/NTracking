@@ -82,7 +82,7 @@ CheckSetUp() {
 =======
         echo >>/var/antctl/config
         echo "NodeStorage=/var/antctl/services" >>/var/antctl/config
->>>>>>> ec664f9 (typo)
+        echo "NodeStorage=/var/antctl/services" >>/var/antctl/teardown_config
         echo >>/var/antctl/config
         echo "NodeCap=20" >>/var/antctl/config
         echo >>/var/antctl/config
@@ -175,6 +175,7 @@ EOF
 
 TearDown() {
     echo "Nuke sequence initiated !!" && echo
+    . /var/antctl/teardown_config
     sudo rm /etc/cron.d/anm
     echo "rm /etc/cron.d/anm"
     sudo systemctl stop antnode*
