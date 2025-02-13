@@ -198,7 +198,7 @@ TearDown() {
     sudo rm -rf $NodeStorage /var/antctl
     sudo rm -rf /home/ant/.local/share/autonomi/node
     sleep 5
-    sudo rm -rf /var/antctl
+    sudo rm -rf $NodeStorage /var/antctl
     sudo rm -rf /home/ant/.local/share/autonomi/node
     # save all wallets for later scraping
     #cp -r /var/antctl/wallets $HOME/.local/share/wallets
