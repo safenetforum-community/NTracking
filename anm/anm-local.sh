@@ -179,6 +179,7 @@ elif [[ "$SELECTION" == "7" ]]; then
     fi
     # Set new storage location
     sudo sed -i 's,/var/antctl/services,'$NodeStorage',g' /usr/bin/anms.sh
+    sudo sed -i 's,/var/antctl/services,'$NodeStorage',g' /usr/bin/influx-resources.sh
     
     ### set nodecount
     NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)
