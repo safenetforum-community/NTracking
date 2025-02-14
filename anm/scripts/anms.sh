@@ -298,9 +298,9 @@ StoppedUpgrade() {
     node_name=antnode$node_number
     echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/antctl/simplelog
     echo "upgradeing $node_name"
-    # remove old node data on upgrade
-    sudo rm -rf /var/antctl/services/$node_name/*
-    echo "rm -rf /var/antctl/services/$node_name/*"
+    ## remove old node data on upgrade
+    #sudo rm -rf /var/antctl/services/$node_name/*
+    #echo "rm -rf /var/antctl/services/$node_name/*"
     sudo cp $NodePath /var/antctl/services/$node_name
     echo "cp $NodePath /var/antctl/services/$node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
