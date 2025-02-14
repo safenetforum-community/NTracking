@@ -105,7 +105,7 @@
 #antup node
 #sudo apt update -y
 #sudo apt install file -y
-#sleep 5
+# sleep 5
 sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
 
 #rm /var/antctl/block
