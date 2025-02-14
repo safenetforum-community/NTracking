@@ -155,7 +155,7 @@ if [[ $time_min == 00 ]] || [[ $time_min == 20 ]] || [[ $time_min == 40 ]]; then
     # coin gecko gets upset with to many requests this atempts to get the exchange every 15 min
     # https://www.coingecko.com/api/documentation
     ##############################################################################################
-    coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=maidsafecoin&vs_currencies=gbp,eur%2Cusd&include_market_cap=true' -H 'accept: application/json')
+    coingecko=$(curl -s -X 'GET' 'https://api.coingecko.com/api/v3/simple/price?ids=autonomi&vs_currencies=gbp,eur%2Cusd&include_market_cap=true' -H 'accept: application/json')
     exchange_rate_gbp=$(awk -F'[:,]' '{print $3}' <<<$coingecko)
     market_cap_gbp=$(awk -F'[:,]' '{print $5}' <<<$coingecko)
     exchange_rate_eur=$(awk -F'[:,]' '{print $7}' <<<$coingecko)
