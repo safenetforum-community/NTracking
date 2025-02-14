@@ -147,8 +147,13 @@ AddNode() {
     . $HOME/.local/share/anm-wallet
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=antnode$node_number
-    echo ""$time_hour":"$time_min" Add $node_name $RewardsAddress" >>/var/antctl/simplelog
-    echo ""$time_hour":"$time_min" Add $node_name $RewardsAddress" >>/var/antctl/wallet-log
+    if [ "$node_number" = "001" ]; then
+        $activeRewardsAddress = ${DonateAddress:-0x4913fD25a9C9FB97DA5F83623EBDf7cB32d14f97}
+    else
+        $activeRewardsAddress = $RewardsAddress
+    fi
+    echo ""$time_hour":"$time_min" Add $node_name $activeRewardsAddress" >>/var/antctl/simplelog
+    echo ""$time_hour":"$time_min" Add $node_name $activeRewardsAddress" >>/var/antctl/wallet-log
     echo "Adding $node_name"
     sudo mkdir -p /var/antctl/services/$node_name /var/log/antnode/$node_name
     echo "mkdir -p /var/antctl/services/$node_name"
@@ -161,7 +166,7 @@ AddNode() {
 Description=$node_name
 [Service]
 User=ant
-ExecStart=/var/antctl/services/$node_name/antnode --bootstrap-cache-dir /var/antctl/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
+ExecStart=/var/antctl/services/$node_name/antnode --bootstrap-cache-dir /var/antctl/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $activeRewardsAddress evm-arbitrum-one
 Restart=always
 #RestartSec=300
 EOF
