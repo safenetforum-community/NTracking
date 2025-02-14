@@ -148,7 +148,7 @@ AddNode() {
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=antnode$node_number
     if [ "$node_number" = "001" ]; then
-        activeRewardsAddress=${DonateAddress:-0x4913fD25a9C9FB97DA5F83623EBDf7cB32d14f97}
+        activeRewardsAddress="--rewards-address ${DonateAddress:-0x4913fD25a9C9FB97DA5F83623EBDf7cB32d14f97}"
     else
         activeRewardsAddress=$RewardsAddress
     fi
