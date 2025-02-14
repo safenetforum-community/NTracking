@@ -148,9 +148,9 @@ AddNode() {
     node_number=$(seq -f "%03g" $NextNodeToSorA $NextNodeToSorA)
     node_name=antnode$node_number
     if [ "$node_number" = "001" ]; then
-        activeRewardsAddress = ${DonateAddress:-0x4913fD25a9C9FB97DA5F83623EBDf7cB32d14f97}
+        activeRewardsAddress=${DonateAddress:-0x4913fD25a9C9FB97DA5F83623EBDf7cB32d14f97}
     else
-        activeRewardsAddress = $RewardsAddress
+        activeRewardsAddress=$RewardsAddress
     fi
     echo ""$time_hour":"$time_min" Add $node_name $activeRewardsAddress" >>/var/antctl/simplelog
     echo ""$time_hour":"$time_min" Add $node_name $activeRewardsAddress" >>/var/antctl/wallet-log
