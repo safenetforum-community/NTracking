@@ -270,15 +270,22 @@ UpgradeNode() {
     node_name=antnode$node_number
     echo ""$time_hour":"$time_min" Upgrade $node_name running" >>/var/antctl/simplelog
     echo "upgradeing $node_name"
-    sudo systemctl stop $node_name
-    echo "systemctl stop $node_name"
-    # remove old node data on upgrade
-    sudo rm -rf /var/antctl/services/$node_name/*
-    echo "rm -rf /var/antctl/services/$node_name/*"
-    sudo cp $NodePath /var/antctl/services/$node_name
-    echo "cp $NodePath /var/antctl/services/$node_name"
-    sudo systemctl start $node_name
-    echo "systemctl start $node_name"
+    
+    echo "sudo cp -f $NodePath /var/antctl/services/$node_name/antnode"
+    sudo cp -f $NodePath /var/antctl/services/$node_name/antnode
+    sudo systemctl restart $node_name.service
+    echo "sudo systemctl restart $node_name.service"
+
+    #sudo systemctl stop $node_name
+    #echo "systemctl stop $node_name"
+    ## remove old node data on upgrade
+    #sudo rm -rf /var/antctl/services/$node_name/*
+    #echo "rm -rf /var/antctl/services/$node_name/*"
+    #sudo cp $NodePath /var/antctl/services/$node_name
+    #echo "cp $NodePath /var/antctl/services/$node_name"
+    #sudo systemctl start $node_name
+    #echo "systemctl start $node_name"
+    
     sleep 45
     # status="$(sudo systemctl status $node_name.service --no-page)"
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
@@ -295,9 +302,9 @@ StoppedUpgrade() {
     node_name=antnode$node_number
     echo ""$time_hour":"$time_min" Upgrade $node_name stopped" >>/var/antctl/simplelog
     echo "upgradeing $node_name"
-    # remove old node data on upgrade
-    sudo rm -rf /var/antctl/services/$node_name/*
-    echo "rm -rf /var/antctl/services/$node_name/*"
+    ## remove old node data on upgrade
+    #sudo rm -rf /var/antctl/services/$node_name/*
+    #echo "rm -rf /var/antctl/services/$node_name/*"
     sudo cp $NodePath /var/antctl/services/$node_name
     echo "cp $NodePath /var/antctl/services/$node_name"
     PIS=$(echo "${node_details_store[$node_number]}" | awk -F',' '{print $2}')
