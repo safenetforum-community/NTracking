@@ -29,6 +29,12 @@ If you wish fully automatic upgrades of nodes set
 to
 ```NodeVersion=""``` and the upgrade will start at the upgrade hour and minnute.
 
+## Donation enabled
+
+By default, the first node of each server is marked for a donation wallet. The standard wallet address targetted is the [ANT Faucet](https://ant.xd7.org).
+
+The donation target wallet address can be changed by setting ```DonateAddress="0x..."``` in the file $HOME/.local/share/anm-wallet
+
 # In Action
 
 ![image](https://github.com/user-attachments/assets/eac0ccd0-a706-4b8c-8a09-7c036518766d)
