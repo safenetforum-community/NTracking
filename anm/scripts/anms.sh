@@ -79,6 +79,9 @@ CheckSetUp() {
         echo "DelayUpgrade=5" >>/var/antctl/config
         echo "DelayRemove=10" >>/var/antctl/config
         echo >>/var/antctl/config
+        echo "NodeStorage=/var/antctl/services" >>/var/antctl/config
+        echo "NodeStorage=/var/antctl/services" >>/var/antctl/teardown_config
+        echo >>/var/antctl/config
         echo "NodeCap=20" >>/var/antctl/config
         echo >>/var/antctl/config
         echo "UpgradeHour=$(shuf -i 0-23 -n 1)" >>/var/antctl/config
@@ -170,6 +173,7 @@ EOF
 
 TearDown() {
     echo "Nuke sequence initiated !!" && echo
+    . /var/antctl/teardown_config
     sudo rm /etc/cron.d/anm
     echo "rm /etc/cron.d/anm"
     sudo systemctl stop antnode*
@@ -190,10 +194,10 @@ TearDown() {
     sudo rm -f /etc/cron.d/scrape
     sudo rm -f /usr/bin/scrape.sh
     sudo rm -f $HOME/scrape
-    sudo rm -rf /var/antctl
+    sudo rm -rf $NodeStorage /var/antctl
     sudo rm -rf /home/ant/.local/share/autonomi/node
     sleep 5
-    sudo rm -rf /var/antctl
+    sudo rm -rf $NodeStorage /var/antctl
     sudo rm -rf /home/ant/.local/share/autonomi/node
     # save all wallets for later scraping
     #cp -r /var/antctl/wallets $HOME/.local/share/wallets

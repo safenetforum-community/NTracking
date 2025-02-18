@@ -171,7 +171,17 @@ elif [[ "$SELECTION" == "7" ]]; then
     fi
     # Set new rewards address
     sudo sed -i 's/--rewards-address EtheriumAddress/--rewards-address '$RewardsAddress'/g' /usr/bin/anms.sh
+    sudo sed -i 's/WalletAddress=YourWalletAddress/WalletAddress='$RewardsAddress'/g' /usr/bin/influx-resources.sh
 
+    ### set node storage location
+    NodeStorage=$(whiptail --title "Node Storage Location" --inputbox "\nEnter the path to store node information" 8 40 "/var/antctl/services/" 3>&1 1>&2 2>&3)
+    if [[ $? -eq 255 ]]; then
+        exit 0
+    fi
+    # Set new storage location
+    sudo sed -i 's,/var/antctl/services,'$NodeStorage',g' /usr/bin/anms.sh
+    sudo sed -i 's,/var/antctl/services,'$NodeStorage',g' /usr/bin/influx-resources.sh
+    
     ### set nodecount
     NodeCount=$(whiptail --title "Set node count" --inputbox "\nEnter node count" 8 40 "20" 3>&1 1>&2 2>&3)
     if [[ $? -eq 255 ]]; then
