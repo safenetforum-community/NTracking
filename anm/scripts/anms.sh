@@ -66,7 +66,7 @@ CheckSetUp() {
         echo "CpuLessThan=50" >>/var/antctl/config
         echo "MemLessThan=70" >>/var/antctl/config
         echo "HDLessThan=70" >>/var/antctl/config
-        echo "CpuRemove=45" >>/var/antctl/config
+        echo "CpuRemove=70" >>/var/antctl/config
         echo "MemRemove=90" >>/var/antctl/config
         echo "HDRemove=90" >>/var/antctl/config
         echo >>/var/antctl/config
