@@ -97,6 +97,14 @@ elif [[ "$SELECTION" == "5" ]]; then
 elif [[ "$SELECTION" == "6" ]]; then
 
     sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin "$Location"influx-resources.sh && sudo chmod u+x /usr/bin/influx-resources.sh
+    # If we've configured options, redeploy the changes
+    if [ -f /var/antctl/teardown_config ]; then
+        . /var/antctl/teardown_config
+        WalletAddress=${RewardsAddress##* }
+        # Fallback to defaults if we don't get have settings for some reason
+        sudo sed -i 's,/var/antctl/services,'${NodeStorage:-/var/ant/services}',g' /usr/bin/influx-resources.sh
+        sudo sed -i 's/WalletAddress=YourWalletAddress/WalletAddress='${WalletAddress:-YourWalletAddress}'/g' /usr/bin/influx-resources.sh
+    fi
     echo "*/20 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 
 ######################################################################################################################## Start nodes

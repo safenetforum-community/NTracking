@@ -58,6 +58,7 @@ CheckSetUp() {
         echo >>/var/antctl/config
         echo 'DiscordUsername="--owner DiscordUserName"' >>/var/antctl/config
         echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/antctl/config
+        echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/antctl/teardown_config
         echo >>/var/antctl/config
         echo >>/var/antctl/config
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/antctl/config
