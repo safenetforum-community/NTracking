@@ -129,14 +129,14 @@ StartNode() {
     node_name=antnode$node_number
     echo ""$time_hour":"$time_min" Start $node_name" >>/var/antctl/simplelog
     echo "Starting $node_name"
-    sudo ufw allow $ntpr$node_number/udp comment "$node_name"
-    echo "Opened firewall port $ntpr$node_number/udp"
+    sudo ufw allow $(($ntpr*1000+$node_number))/udp comment "$node_name"
+    echo "Opened firewall port $(($ntpr*1000+$node_number))/udp"
     sudo systemctl start $node_name
     echo "systemctl start $node_name"
     sleep 45
     # status="$(sudo systemctl status $node_name.service --no-page)"
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+    node_metadata="$(curl -s 127.0.0.1:$((13*1000+$node_number))/metadata)"
     PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "$node_name Started"
@@ -162,7 +162,7 @@ AddNode() {
 Description=$node_name
 [Service]
 User=ant
-ExecStart=/var/antctl/services/$node_name/antnode --bootstrap-cache-dir /var/antctl/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $ntpr$node_number --enable-metrics-server --metrics-server-port 13$node_number --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
+ExecStart=/var/antctl/services/$node_name/antnode --bootstrap-cache-dir /var/antctl/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $(($ntpr*1000+$node_number)) --enable-metrics-server --metrics-server-port $((13*1000+$node_number)) --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
 Restart=always
 #RestartSec=300
 EOF
@@ -228,8 +228,8 @@ RemoveNode() {
     echo "rm /etc/systemd/system/$node_name.service"
     sudo systemctl daemon-reload
     echo "systemctl daemon-reload"
-    sudo ufw delete allow $ntpr$node_number/udp
-    echo "closed firewall port $ntpr$node_number/udp"
+    sudo ufw delete allow $(($ntpr*1000+$node_number))/udp
+    echo "closed firewall port $(($ntpr*1000+$node_number))/udp"
     unset 'node_details_store[$node_number]'
     echo "deleted array entery" && echo
 
@@ -250,8 +250,8 @@ StopNode() {
     echo "updated array $node_name"
     sudo systemctl stop $node_name
     echo "systemctl stop $node_name"
-    sudo ufw delete allow $ntpr$node_number/udp
-    echo "closed firewall port $ntpr$node_number/udp"
+    sudo ufw delete allow $(($ntpr*1000+$node_number))/udp
+    echo "closed firewall port $(($ntpr*1000+$node_number))/udp"
     echo "$node_name Stopped" && echo
     echo "RemoveCounter$NextNodeSorR=$DelayRemove" >>/var/antctl/counters
     sed -i 's/CounterStart=.*/CounterStart='$DelayReStart'/g' /var/antctl/counters
@@ -290,7 +290,7 @@ UpgradeNode() {
     sleep 45
     # status="$(sudo systemctl status $node_name.service --no-page)"
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+    node_metadata="$(curl -s 127.0.0.1:$((13*1000+$node_number))/metadata)"
     PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "updated array"
@@ -521,7 +521,7 @@ LoadTrimmer() {
             sudo systemctl start $node_name
             echo "systemctl start $node_name"
             sleep 45
-            node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+            node_metadata="$(curl -s 127.0.0.1:$((13*1000+$node_number))/metadata)"
             PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
             node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
             echo "updated array"
