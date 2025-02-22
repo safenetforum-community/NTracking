@@ -58,6 +58,7 @@ CheckSetUp() {
         echo >>/var/antctl/config
         echo 'DiscordUsername="--owner DiscordUserName"' >>/var/antctl/config
         echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/antctl/config
+        echo 'RewardsAddress="--rewards-address EtheriumAddress"' >>/var/antctl/teardown_config
         echo >>/var/antctl/config
         echo >>/var/antctl/config
         echo "MaxLoadAverageAllowed=$(echo "$(nproc) * 1.0" | bc)" >>/var/antctl/config
@@ -66,7 +67,7 @@ CheckSetUp() {
         echo "CpuLessThan=50" >>/var/antctl/config
         echo "MemLessThan=70" >>/var/antctl/config
         echo "HDLessThan=70" >>/var/antctl/config
-        echo "CpuRemove=45" >>/var/antctl/config
+        echo "CpuRemove=70" >>/var/antctl/config
         echo "MemRemove=90" >>/var/antctl/config
         echo "HDRemove=90" >>/var/antctl/config
         echo >>/var/antctl/config
