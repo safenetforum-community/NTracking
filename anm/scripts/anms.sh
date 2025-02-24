@@ -137,7 +137,7 @@ StartNode() {
     sleep 45
     # status="$(sudo systemctl status $node_name.service --no-page)"
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+    node_metadata="$(curl -s 127.0.0.1:$((13000 + $NextNodeToSorA))/metadata)"
     PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "$node_name Started"
@@ -291,7 +291,7 @@ UpgradeNode() {
     sleep 45
     # status="$(sudo systemctl status $node_name.service --no-page)"
     # PeerId=$(echo "$status" | grep "id=" | cut -f2 -d= | cut -d '`' -f 1)
-    node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+    node_metadata="$(curl -s 127.0.0.1:$((13000 + $1))/metadata)"
     PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
     node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
     echo "updated array"
@@ -522,7 +522,7 @@ LoadTrimmer() {
             sudo systemctl start $node_name
             echo "systemctl start $node_name"
             sleep 45
-            node_metadata="$(curl -s 127.0.0.1:13$node_number/metadata)"
+            node_metadata="$(curl -s 127.0.0.1:$((13000 + $node_number))/metadata)"
             PeerId="$(echo "$node_metadata" | grep ant_networking_peer_id | awk 'NR==3 {print $1}' | cut -d'"' -f 2)"
             node_details_store[$node_number]="$node_name,$PeerId,$(/var/antctl/services/$node_name/antnode --version | awk 'NR==1 {print $3}' | cut -c2-),RUNNING"
             echo "updated array"
