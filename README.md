@@ -91,7 +91,7 @@ sudo rm -f /usr/bin/influx-resources.sh* && sudo wget -P /usr/bin  https://raw.g
 
 for cron job
 ```
-echo "*/15 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
+echo "*/20 * * * * $USER /usr/bin/mkdir -p /tmp/influx-resources && /bin/bash /usr/bin/influx-resources.sh > /tmp/influx-resources/influx-resources" | sudo tee /etc/cron.d/influx_resources
 ```
 
 then delete the current dashboard in grafana and re add the one from the git hub if the script changes the dashboard will change with it.
