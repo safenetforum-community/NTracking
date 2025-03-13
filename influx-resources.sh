@@ -140,7 +140,7 @@ for ((i = 1; i <= $NumberOfNodes; i++)); do
     total_rewards_balance=$(echo "scale=18; $total_rewards_balance + $rewards_balance" | bc -l)
     total_network_size=$(($total_network_size + $network_size))
 
-    sleep 1
+    sleep 0.3
 
 done
 
@@ -183,7 +183,7 @@ UsedHdPercent=$(df -hP ${base_dir} | awk '{print $5}' | tail -1 | sed 's/%$//g')
 
 # sleep till all nodes have systems have finished prosessing
 
-while (($(("$time_min" + "10")) > $(date +"%M"))); do
+while (($(("$time_min" + "15")) > $(date +"%M"))); do
     #5
     sleep 10
 done
