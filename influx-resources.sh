@@ -42,7 +42,7 @@ ShunnedValue=15
 
 # Process nodes
 for ((i = 1; i <= $NumberOfNodes; i++)); do
-    node_number=$(seq -f "%03g" $i $i)
+    node_number=$(seq -f "%04g" $i $i)
     node_name=antnode$node_number
     node_details="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metrics)"
     node_metadata="$(curl -s 127.0.0.1:$(($MetricsPortFirst + $i))/metadata)"
