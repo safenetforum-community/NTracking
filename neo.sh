@@ -2,7 +2,7 @@
 
 MetricsPortFirst=44001
 
-# v0.0.2
+# v0.0.3
 
 # Environment  setup
 export PATH=$PATH:$HOME/.local/bin
