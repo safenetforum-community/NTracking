@@ -2,6 +2,8 @@
 
 MetricsPortFirst=44001
 
+# v0.0.1
+
 # Environment  setup
 export PATH=$PATH:$HOME/.local/bin
 base_dir="$HOME/.local/share/safe/node"
