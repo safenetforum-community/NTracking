@@ -3,6 +3,7 @@
 vtrack="2.0 "
 
 # sudo rm -f /usr/bin/anms.sh* && sudo wget -P /usr/bin https://raw.githubusercontent.com/safenetforum-community/NTracking/main/anm/scripts/anms.sh && sudo chmod u+x /usr/bin/anms.sh
+# sudo sed -i '/User=ant/a Environment="ANT_LOG=ant_evm=error"' /etc/systemd/system/antnode*
 
 time_min=$(date +"%M")
 time_hour=$(date +"%H")
@@ -337,7 +338,7 @@ CalculateValues() {
     Upgrade=$(echo "$NodesToUpgrade >= 1" | bc) && echo
     # downgrade blocker
     if (($(echo "$Upgrade == 1" | bc))); then
-        Node1Version="$(echo "${node_details_store[001]}" | awk -F',' '{print $3}')"
+        Node1Version="$(echo "${node_details_store[0001]}" | awk -F',' '{print $3}')"
         LNV=$(echo "$LatestNodeVer" | tr -d .)
         N1V=$(echo "$Node1Version" | tr -d .)
         if (($(echo "$LNV < $N1V" | bc -l))); then
