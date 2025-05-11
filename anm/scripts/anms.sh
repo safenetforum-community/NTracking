@@ -165,7 +165,7 @@ Description=$node_name
 [Service]
 User=ant
 Environment="ANT_LOG=ant_evm=error"
-ExecStart=/var/antctl/services/$node_name/antnode --bootstrap-cache-dir /var/antctl/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $(("$ntpr"000 + $NextNodeToSorA)) --enable-metrics-server --metrics-server-port $((13000 + $NextNodeToSorA)) --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
+ExecStart=/var/antctl/services/$node_name/antnode --no-upnp --bootstrap-cache-dir /var/antctl/bootstrap-cache --root-dir /var/antctl/services/$node_name --port $(("$ntpr"000 + $NextNodeToSorA)) --enable-metrics-server --metrics-server-port $((13000 + $NextNodeToSorA)) --log-output-dest /var/log/antnode/$node_name --max-log-files 1 --max-archived-log-files 1 $RewardsAddress evm-arbitrum-one
 Restart=always
 #RestartSec=300
 EOF
