@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-ClientVersion="--version 0.4.4"
-NodeVersion="--version 0.4.3"
+ClientVersion="--version 0.4.6"
+NodeVersion="--version 0.4.4"
 
-NodeRestarVer1="0.4.3"
-NodeRestarVer2="0.3.3"
+NodeRestarVer1="0.4.4"
+NodeRestarVer2="0.3.4"
 
 export PATH=$PATH:$HOME/.local/bin
 
