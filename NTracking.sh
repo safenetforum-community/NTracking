@@ -523,6 +523,9 @@ sudo apt-get install jq -y
 #install bc
 sudo apt-get install bc -y
 
+#install parallel
+sudo apt install parallel -y
+
 ################################################################### download script to gather node resources
 
 #remove old script if exists
