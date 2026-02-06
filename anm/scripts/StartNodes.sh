@@ -2,11 +2,11 @@
  
 Location="https://raw.githubusercontent.com/safenetforum-community/NTracking/main/"
 
-ClientVersion="--version 0.5.0"
-NodeVersion="--version 0.4.14"
+ClientVersion="--version 0.5.1"
+NodeVersion="--version 0.4.15"
 
-NodeRestarVer1="0.4.14"
-NodeRestarVer2="0.3.14"
+NodeRestarVer1="0.4.15"
+NodeRestarVer2="0.3.15"
 
 #export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin/:/usr/bin/
