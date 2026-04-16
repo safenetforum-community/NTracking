@@ -310,7 +310,7 @@ show_status() {
     # Get version from master binary
     local version="unknown"
     if [[ -x "${DATA_BASE_DIR}/${BINARY_NAME}" ]]; then
-        version=$("${DATA_BASE_DIR}/${BINARY_NAME}" --version 2>/dev/null | head -1)
+        version=$("${DATA_BASE_DIR}/${BINARY_NAME}" --version 2>/dev/null | head -1) || true
     fi
 
     status="Installed version: ${version}\n"
@@ -322,7 +322,7 @@ show_status() {
         local state
         if systemctl --user is-active --quiet "$svc" 2>/dev/null; then
             state="RUNNING"
-            (( active_count++ ))
+            (( active_count++ )) || true
         else
             local svc_state
             svc_state=$(systemctl --user show -p ActiveState --value "$svc" 2>/dev/null || echo "unknown")
