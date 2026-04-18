@@ -238,6 +238,11 @@ setup_nodes() {
         return
     fi
 
+    # Enable linger so user services start on boot without login
+    if [[ "$(loginctl show-user "$USER" -p Linger 2>/dev/null)" != "Linger=yes" ]]; then
+        loginctl enable-linger "$USER" 2>/dev/null || true
+    fi
+
     # Stop any existing nodes first
     stop_all_quiet
 
@@ -307,19 +312,29 @@ show_status() {
         return
     fi
 
-    # Get version from master binary
-    local version="unknown"
+    # Get master binary version (the one new nodes would install)
+    local master_version="unknown"
     if [[ -x "${DATA_BASE_DIR}/${BINARY_NAME}" ]]; then
-        version=$("${DATA_BASE_DIR}/${BINARY_NAME}" --version 2>/dev/null | head -1) || true
+        master_version=$("${DATA_BASE_DIR}/${BINARY_NAME}" --version 2>/dev/null | head -1 | awk '{print $NF}') || true
+        [[ -z "$master_version" ]] && master_version="unknown"
     fi
 
-    status="Installed version: ${version}\n"
+    status="Master binary: ${master_version}\n"
     status+="Configured nodes: ${total}\n"
     status+="─────────────────────────────────\n"
 
+    local -A version_counts=()
+    local versions_seen=""
     for (( i=1; i<=total; i++ )); do
         svc="${SERVICE_PREFIX}-${i}.service"
-        local state
+        local state node_ver="?"
+        local node_bin="${DATA_BASE_DIR}/node-${i}/${BINARY_NAME}"
+        if [[ -x "$node_bin" ]]; then
+            node_ver=$("$node_bin" --version 2>/dev/null | head -1 | awk '{print $NF}') || true
+            [[ -z "$node_ver" ]] && node_ver="?"
+        fi
+        version_counts[$node_ver]=$(( ${version_counts[$node_ver]:-0} + 1 ))
+
         if systemctl --user is-active --quiet "$svc" 2>/dev/null; then
             state="RUNNING"
             (( active_count++ )) || true
@@ -332,11 +347,21 @@ show_status() {
                 state="STOPPED"
             fi
         fi
-        status+="  Node ${i}: ${state}\n"
+        status+="  Node ${i}: ${state}  v${node_ver}\n"
     done
 
     status+="─────────────────────────────────\n"
-    status+="Active: ${active_count}/${total}"
+    status+="Active: ${active_count}/${total}\n"
+    if (( ${#version_counts[@]} > 1 )); then
+        status+="Version drift detected:\n"
+        for v in "${!version_counts[@]}"; do
+            status+="  v${v}: ${version_counts[$v]} node(s)\n"
+        done
+    else
+        for v in "${!version_counts[@]}"; do
+            status+="All nodes on v${v}"
+        done
+    fi
 
     whiptail --title "Node Status" --scrolltext --msgbox "$status" 24 50
 }
