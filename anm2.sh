@@ -435,6 +435,128 @@ cleanup_all() {
     msg_box "$result"
 }
 
+# --- Upgrade Nodes ---
+upgrade_nodes() {
+    local total=0 i
+    for (( i=1; i<=50; i++ )); do
+        if systemctl --user is-enabled --quiet "${SERVICE_PREFIX}-${i}.service" 2>/dev/null; then
+            total=$i
+        fi
+    done
+
+    if (( total == 0 )); then
+        msg_box "No nodes are configured."
+        return
+    fi
+
+    local tag
+    tag=$(get_latest_tag) || { msg_box "Failed to fetch latest release tag."; return; }
+
+    local current_ver="unknown"
+    if [[ -x "${DATA_BASE_DIR}/${BINARY_NAME}" ]]; then
+        current_ver=$("${DATA_BASE_DIR}/${BINARY_NAME}" --version 2>/dev/null | head -1 | awk '{print $NF}')
+        [[ -z "$current_ver" ]] && current_ver="unknown"
+    fi
+
+    local prompt=""
+    prompt+="Upgrade ${total} nodes?\n\n"
+    prompt+="Latest release:  ${tag}\n"
+    prompt+="Current master:  v${current_ver}\n\n"
+    prompt+="Rolling plan:\n"
+    prompt+="  1. Download latest to master\n"
+    prompt+="  2. Per node (${STAGGER_DELAY}s apart):\n"
+    prompt+="     stop, overwrite binary, start\n"
+    prompt+="  3. Wait 30s, then tail logs for\n"
+    prompt+="     startup version confirmation"
+
+    if ! yes_no "$prompt"; then
+        return
+    fi
+
+    # Download new master binary (outside gauge so we can bail on failure)
+    {
+        echo "30"; echo "Downloading ant-node ${tag}..."
+        download_and_extract "$tag" 2>&1
+        echo "100"; echo "Done."
+    } | whiptail --title "Downloading" --gauge "Fetching latest release..." 8 60 0
+
+    if [[ ! -x "${DATA_BASE_DIR}/${BINARY_NAME}" ]]; then
+        msg_box "Download failed. Master binary missing."
+        return
+    fi
+
+    local new_ver
+    new_ver=$("${DATA_BASE_DIR}/${BINARY_NAME}" --version 2>/dev/null | head -1 | awk '{print $NF}')
+    [[ -z "$new_ver" ]] && new_ver="unknown"
+
+    {
+        echo "5"; echo "Rolling upgrade to v${new_ver}..."
+
+        for (( i=1; i<=total; i++ )); do
+            local node_dir="${DATA_BASE_DIR}/node-${i}"
+            local svc="${SERVICE_PREFIX}-${i}.service"
+            local pct=$(( 5 + (i * 75 / total) ))
+
+            echo "$pct"; echo "Node ${i}: stopping service..."
+            systemctl --user stop "$svc" 2>/dev/null || true
+
+            echo "$pct"; echo "Node ${i}: overwriting binary..."
+            cp --remove-destination -f "${DATA_BASE_DIR}/${BINARY_NAME}" "${node_dir}/${BINARY_NAME}" 2>/dev/null || true
+            chmod +x "${node_dir}/${BINARY_NAME}" 2>/dev/null || true
+
+            echo "$pct"; echo "Node ${i}: starting service..."
+            systemctl --user start "$svc" 2>/dev/null || true
+
+            if (( i < total )); then
+                echo "$pct"; echo "Node ${i} upgraded. Waiting ${STAGGER_DELAY}s..."
+                sleep "$STAGGER_DELAY"
+            fi
+        done
+
+        echo "85"; echo "All nodes restarted. Waiting 30s for startup logs..."
+        sleep 30
+        echo "100"; echo "Done."
+    } | whiptail --title "Upgrading Nodes" --gauge "Rolling upgrade..." 8 70 0
+
+    # Verify each node's latest log contains the startup message (only in new bytes)
+    local report=""
+    report+="Rolling upgrade to v${new_ver} complete.\n"
+    report+="─────────────────────────────────\n"
+    local ok=0
+    for (( i=1; i<=total; i++ )); do
+        local log_dir="${RAM_LOG_DIR}/node-${i}"
+        local latest_log=""
+        if [[ -d "$log_dir" ]]; then
+            latest_log=$(find "$log_dir" -type f -name "*.log*" -printf '%T@ %p\n' 2>/dev/null \
+                | sort -rn | head -1 | cut -d' ' -f2-)
+        fi
+
+        if [[ -z "$latest_log" || ! -f "$latest_log" ]]; then
+            report+="  Node ${i}: NO LOG FOUND\n"
+            continue
+        fi
+
+        local startup_line v
+        startup_line=$(grep -aE 'ant_node: ant-node starting version' "$latest_log" 2>/dev/null | tail -1)
+        if [[ -n "$startup_line" ]]; then
+            v=$(echo "$startup_line" | grep -oP 'version="[^"]+"' | head -1 | cut -d'"' -f2)
+            [[ -z "$v" ]] && v="?"
+            if [[ "$v" == "$new_ver" ]]; then
+                report+="  Node ${i}: started v${v}\n"
+                (( ok++ )) || true
+            else
+                report+="  Node ${i}: started v${v} (expected v${new_ver})\n"
+            fi
+        else
+            report+="  Node ${i}: no startup line yet\n"
+        fi
+    done
+    report+="─────────────────────────────────\n"
+    report+="Confirmed started: ${ok}/${total}"
+
+    whiptail --title "Upgrade Results" --scrolltext --msgbox "$report" 24 60
+}
+
 # --- Export Logs ---
 # Core export logic, returns archive path via stdout
 do_export_logs() {
@@ -484,22 +606,24 @@ main_menu() {
     while true; do
         local choice
         choice=$(whiptail --title "Ant Node Manager" \
-            --menu "Manage your Autonomi ant-nodes" 18 60 6 \
+            --menu "Manage your Autonomi ant-nodes" 20 60 7 \
             "1" "Setup & Start Nodes" \
             "2" "Node Status & Version" \
-            "3" "Export Logs" \
-            "4" "Stop All Nodes" \
-            "5" "Stop & Remove Everything" \
-            "6" "Exit" \
+            "3" "Upgrade Nodes (rolling)" \
+            "4" "Export Logs" \
+            "5" "Stop All Nodes" \
+            "6" "Stop & Remove Everything" \
+            "7" "Exit" \
             3>&1 1>&2 2>&3) || break
 
         case "$choice" in
             1) setup_nodes ;;
             2) show_status ;;
-            3) export_logs ;;
-            4) stop_nodes ;;
-            5) cleanup_all ;;
-            6) break ;;
+            3) upgrade_nodes ;;
+            4) export_logs ;;
+            5) stop_nodes ;;
+            6) cleanup_all ;;
+            7) break ;;
         esac
     done
 }
